@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **Migración incremental en curso:** el bloque experto se ubica en `src/features/expert/`; los demás módulos siguen en la raíz.
+Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **Migración incremental en curso:** los bloques experto y aprendizaje se ubican en `src/features/expert/` y `src/features/learning/`; otros módulos siguen en la raíz.
 
 ## Punto de entrada
 
@@ -17,7 +17,7 @@ El mapa siguiente se basa en los nombres y la estructura de navegación; **no es
 
 | Área | Archivos |
 | --- | --- |
-| Aprendizaje y orientación | `onboarding.js`, `dashboard.js`, `courses.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
+| Aprendizaje y orientación | `src/features/learning/`: `onboarding.js`, `dashboard.js`, `courses.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
 | ATT&CK y recorridos | `subtechniques.js`, `attackchains.js`, `visualinvestigation.js` |
 | Casos y misiones | `incidents.js`, `caseacademy.js`, `investigations.js`, `missions.js`, `decisions.js`, `labs.js` |
 | Operaciones SOC | `siem.js`, `queries.js`, `hunting.js`, `correlation.js`, `detection.js`, `response.js` |
@@ -70,3 +70,7 @@ La migración debería hacerse en PRs pequeños, con una verificación de rutas,
 Los tres archivos expertos se mueven sin modificar su contenido: `expert.js`, `toolkit.js` e `integrated.js` → `src/features/expert/`. El HTML cambia solo sus rutas de carga y mantiene su orden. El validador ahora recorre subdirectorios para no omitir archivos.
 
 La prueba de sintaxis no verifica todas las interacciones del navegador; comprueba GitHub Actions y prueba las secciones expertas antes de fusionar.
+
+## Segunda migración: aprendizaje
+
+Se han agrupado ocho módulos educativos en `src/features/learning/` sin modificar sus contenidos. `index.html` conserva el orden original de carga. La comprobación estática recursiva agregada en el PR anterior cubre ahora ambas carpetas. Verificar manualmente el menú, bienvenida, dashboard, itinerarios, lecciones, biblioteca y repaso antes de fusionar.
