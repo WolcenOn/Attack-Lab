@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **Migración incremental en curso:** los bloques experto y aprendizaje se ubican en `src/features/expert/` y `src/features/learning/`; otros módulos siguen en la raíz.
+Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **Migración incremental en curso:** los bloques experto, aprendizaje y SOC se ubican en `src/features/expert/`, `src/features/learning/` y `src/features/soc/`; otros módulos siguen en la raíz.
 
 ## Punto de entrada
 
@@ -20,7 +20,7 @@ El mapa siguiente se basa en los nombres y la estructura de navegación; **no es
 | Aprendizaje y orientación | `src/features/learning/`: `onboarding.js`, `dashboard.js`, `courses.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
 | ATT&CK y recorridos | `subtechniques.js`, `attackchains.js`, `visualinvestigation.js` |
 | Casos y misiones | `incidents.js`, `caseacademy.js`, `investigations.js`, `missions.js`, `decisions.js`, `labs.js` |
-| Operaciones SOC | `siem.js`, `queries.js`, `hunting.js`, `correlation.js`, `detection.js`, `response.js` |
+| Operaciones SOC | `src/features/soc/`: `siem.js`, `queries.js`, `hunting.js`, `correlation.js`, `detection.js`, `response.js` |
 | Telemetría y forense | `telemetry.js`, `network.js`, `networkcases.js`, `forensics.js`, `memorylab.js`, `malwarelab.js` |
 | Práctica experta | `src/features/expert/expert.js`, `src/features/expert/toolkit.js`, `src/features/expert/integrated.js` |
 | Recurso de práctica | `network-training-v24.pcap` |
@@ -74,3 +74,7 @@ La prueba de sintaxis no verifica todas las interacciones del navegador; comprue
 ## Segunda migración: aprendizaje
 
 Se han agrupado ocho módulos educativos en `src/features/learning/` sin modificar sus contenidos. `index.html` conserva el orden original de carga. La comprobación estática recursiva agregada en el PR anterior cubre ahora ambas carpetas. Verificar manualmente el menú, bienvenida, dashboard, itinerarios, lecciones, biblioteca y repaso antes de fusionar.
+
+## Tercera migración: operaciones SOC
+
+Se han agrupado seis módulos relacionados con SIEM, consultas, Threat Hunting, correlación, detección y respuesta a incidentes en `src/features/soc/`, manteniendo su contenido y orden original de ejecución. `index.html` actualiza exclusivamente sus rutas. El validador recursivo comprobará su sintaxis y presencia. Antes de fusionar, probar las secciones SOC y las consultas en navegador, verificar CI y GitHub Pages.
