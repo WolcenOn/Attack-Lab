@@ -33,9 +33,9 @@ def main():
             if not (ROOT / path).is_file():
                 errors.append(f"Referencia rota en index.html: {ref}")
         print(f"Recursos locales HTML comprobados: {len(parser.refs)}")
-    js_files = sorted(ROOT.glob("*.js"))
+    js_files = sorted(ROOT.rglob("*.js"))
     if not js_files:
-        errors.append("No hay módulos JavaScript en la raíz")
+        errors.append("No se encontraron archivos JavaScript")
     for f in js_files:
         try:
             result = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
@@ -44,7 +44,7 @@ def main():
             break
         if result.returncode:
             errors.append(f"Error JS en {f.name}: {result.stderr.strip()}")
-    print(f"Archivos JavaScript inspeccionados: {len(js_files)}")
+    print(f"Archivos JavaScript inspeccionados (recursivo): {len(js_files)}")
     if errors:
         for issue in errors:
             print("ERROR:", issue, file=sys.stderr)

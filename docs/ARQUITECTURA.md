@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **No se ha realizado aún una refactorización de carpetas**, para evitar romper referencias y la publicación.
+Aplicación web estática, sin servidor de aplicación obligatorio. La raíz contiene `index.html`, `styles.css`, un conjunto de módulos `.js`, `data.js` y una PCAP educativa. **Migración incremental en curso:** el bloque experto se ubica en `src/features/expert/`; los demás módulos siguen en la raíz.
 
 ## Punto de entrada
 
@@ -19,10 +19,10 @@ El mapa siguiente se basa en los nombres y la estructura de navegación; **no es
 | --- | --- |
 | Aprendizaje y orientación | `onboarding.js`, `dashboard.js`, `courses.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
 | ATT&CK y recorridos | `subtechniques.js`, `attackchains.js`, `visualinvestigation.js` |
-| Casos y misiones | `incidents.js`, `caseacademy.js`, `investigations.js`, `missions.js`, `integrated.js`, `decisions.js`, `labs.js` |
+| Casos y misiones | `incidents.js`, `caseacademy.js`, `investigations.js`, `missions.js`, `decisions.js`, `labs.js` |
 | Operaciones SOC | `siem.js`, `queries.js`, `hunting.js`, `correlation.js`, `detection.js`, `response.js` |
 | Telemetría y forense | `telemetry.js`, `network.js`, `networkcases.js`, `forensics.js`, `memorylab.js`, `malwarelab.js` |
-| Práctica experta | `expert.js`, `toolkit.js` |
+| Práctica experta | `src/features/expert/expert.js`, `src/features/expert/toolkit.js`, `src/features/expert/integrated.js` |
 | Recurso de práctica | `network-training-v24.pcap` |
 
 ### Límites técnicos
@@ -31,7 +31,7 @@ El mapa siguiente se basa en los nombres y la estructura de navegación; **no es
 - Un módulo que muestra comandos o salidas educativas no ejecuta necesariamente herramientas reales.
 - Si se cambia el nombre o la ubicación de un archivo, hay que actualizar las etiquetas `script`, `link`, las rutas relativas de recursos y las referencias internas.
 
-## Propuesta de estructura futura (NO aplicada)
+## Estructura objetivo (aplicación parcial)
 
 ```text
 /
@@ -64,3 +64,9 @@ La migración debería hacerse en PRs pequeños, con una verificación de rutas,
 5. ¿Los datos sintéticos se identifican como tales?
 6. ¿Se mantienen las explicaciones ES/EN que existían?
 7. ¿Sigue disponible la funcionalidad sin conexión prometida?
+
+## Primera migración de módulos
+
+Los tres archivos expertos se mueven sin modificar su contenido: `expert.js`, `toolkit.js` e `integrated.js` → `src/features/expert/`. El HTML cambia solo sus rutas de carga y mantiene su orden. El validador ahora recorre subdirectorios para no omitir archivos.
+
+La prueba de sintaxis no verifica todas las interacciones del navegador; comprueba GitHub Actions y prueba las secciones expertas antes de fusionar.
