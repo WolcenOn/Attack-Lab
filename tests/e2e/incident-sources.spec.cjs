@@ -41,6 +41,10 @@ test('source reviews persist after reload and display English explanation',async
  for(let n=0;n<2;n++)await page.locator('[data-story-step="next"]').click();
  await expect(page.locator('.incident-evidence-progress')).toContainText('2/3');
  await page.locator('#language').selectOption('en');
+ await expect(page.locator('#language')).toHaveValue('en');
+ await expect(page.locator('html')).toHaveAttribute('lang','en');
+ await expect(page.locator('#incidentIntro')).toContainText('Explore eight');
+
  await expect(page.locator('.incident-evidence-progress')).toContainText('sources reviewed');
  await expect(page.locator('[data-story-decision]')).toHaveCount(3);
 });
