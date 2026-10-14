@@ -117,3 +117,18 @@
 .workspace textarea:hover{border-color:#466478}
 .workspace textarea:focus-visible{border-color:var(--cyan);box-shadow:0 0 0 3px #44e4cb24;outline:none}
 .workspace textarea:disabled{opacity:.6;cursor:not-allowed}
+
+/* Sidebar categories: collapsible without JavaScript; icon styles stay unified. */
+.side-nav .nav-group{border-bottom:1px solid #233446;padding:3px 0 8px;margin:0 0 8px}
+.side-nav .nav-group:last-child{border-bottom:0}
+.side-nav .nav-group-title{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 12px;border-radius:8px;color:#94afc0;font-size:11px;font-weight:800;letter-spacing:.3px;user-select:none}
+.side-nav .nav-group-title::-webkit-details-marker{display:none}
+.side-nav .nav-group-title svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}
+.side-nav .nav-group[open]>.nav-group-title svg{transform:rotate(180deg)}
+.side-nav .nav-group-title:hover,.side-nav .nav-group-title:focus-visible{background:#193344;color:var(--cyan)}
+.side-nav .nav-group-title:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.side-nav .nav-group-items{padding:2px 0 4px}
+.side-nav .nav-group-items .nav-link{padding:10px 12px;font-size:12px;gap:10px}
+.side-nav .nav-group-items .nav-link>.nav-icon{width:20px;height:20px;flex-basis:20px}
+.side-nav .nav-group-items .nav-link>.nav-icon svg{width:18px;height:18px}
+.side-nav .nav-link .nav-count{flex-shrink:0}
