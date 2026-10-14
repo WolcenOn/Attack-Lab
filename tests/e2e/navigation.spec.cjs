@@ -3,6 +3,11 @@ const { test, expect } = require('@playwright/test');
 test.beforeEach(async ({ page }) => {
   // Avoid fetching the large MITRE dataset: test the self-contained demo.
   await page.goto('/');
+  // Complete the real first-visit onboarding flow before interacting with the app.
+  const welcome = page.locator('.welcome-overlay:not([hidden])');
+  await expect(welcome).toBeVisible();
+  await welcome.locator('[data-welcome="skip"]').click();
+  await expect(welcome).toBeHidden();
   await expect(page.locator('#exploreView')).toBeVisible();
   await expect(page.locator('#sidebar')).toBeAttached();
 });
@@ -68,4 +73,16 @@ test('menu toggle still works on mobile', async ({ page, isMobile }) => {
   await expect(sidebar).toHaveClass(/open/);
   await navigate(page, 'dashboard');
   await expect(sidebar).not.toHaveClass(/open/);
+});
+
+test('first-time welcome opens and can be completed with the real controls', async ({ page }) => {
+  await page.evaluate(() => localStorage.removeItem('attacklab-welcome-v10'));
+  await page.reload();
+  const dialog = page.locator('.welcome-overlay:not([hidden])');
+  await expect(dialog).toBeVisible();
+  await dialog.locator('[data-welcome="next"]').click();
+  await dialog.locator('[data-welcome="next"]').click();
+  await dialog.locator('[data-welcome="next"]').click();
+  await expect(dialog).toBeHidden();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('attacklab-welcome-v10'))).toBe('seen');
 });
