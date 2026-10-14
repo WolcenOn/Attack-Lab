@@ -30,6 +30,8 @@ test('eight stories reveal sources before decisions and allow reset',async({page
  }
 });
 test('source reviews persist after reload and display English explanation',async({page})=>{
+ const jsErrors=[];
+ page.on('pageerror',e=>jsErrors.push(e.message));
  await enter(page);
  await page.locator('[data-story-evidence="0"]').click();
  await page.locator('[data-story-evidence="1"]').click();
@@ -47,4 +49,5 @@ test('source reviews persist after reload and display English explanation',async
 
  await expect(page.locator('.incident-evidence-progress')).toContainText('sources reviewed');
  await expect(page.locator('[data-story-decision]')).toHaveCount(3);
+ expect(jsErrors, jsErrors.join('\n')).toEqual([]);
 });
