@@ -14,6 +14,11 @@ async function openSection(page, section) {
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
+  // Complete the real first-visit onboarding flow before interacting with the app.
+  const welcome = page.locator('.welcome-overlay:not([hidden])');
+  await expect(welcome).toBeVisible();
+  await welcome.locator('[data-welcome="skip"]').click();
+  await expect(welcome).toBeHidden();
   await expect(page.locator('#exploreView')).toBeVisible();
 });
 
