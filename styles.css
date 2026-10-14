@@ -147,3 +147,13 @@
 .incident-decision-choice{display:block;width:100%;text-align:left;margin:9px 0;white-space:normal}
 .incident-decision-choice[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan);background:#17343c}
 .incident-decision .incident-answer{margin-top:14px}
+
+/* Progressive source review in incident-story training */
+.incident-investigation{margin:18px 0;padding:16px;border:1px solid var(--border);border-radius:12px;background:#0b1b2b}
+.incident-investigation h4{margin:10px 0;font-size:16px}
+.incident-evidence-progress{color:var(--cyan);font-weight:800;font-size:12px}
+.incident-evidence-item{margin:10px 0;border:1px solid #30495b;border-radius:9px;overflow:hidden}
+.incident-evidence-item .incident-evidence-toggle{width:100%;padding:12px;text-align:left;border:0;border-radius:0;white-space:normal}
+.incident-evidence-item .incident-evidence-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
+.incident-evidence-detail{padding:8px 14px;border-top:1px solid var(--border);line-height:1.7}
+.incident-decision-locked{border:1px dashed #496477;border-radius:8px;padding:12px;color:var(--muted)}

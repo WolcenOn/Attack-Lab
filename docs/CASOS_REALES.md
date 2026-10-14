@@ -25,3 +25,9 @@ Este cambio amplía el catálogo histórico y no altera la lógica de los labora
 - NotPetya: cadena de suministro M.E.Doc, malware destructivo e impacto internacional, fuentes NCSC/NCA y declaración pública del Gobierno británico.
 
 Los vínculos ATT&CK inferidos se etiquetan como mapeos educativos.
+
+## Investigación progresiva
+
+En el capítulo de investigación, cada uno de los ocho incidentes ofrece tres fuentes hipotéticas para examinar. El alumno debe abrir al menos dos para desbloquear la decisión. Cada fuente incluye una explicación del valor de la comprobación y sus límites. No se muestran registros que se presenten como evidencias históricas reales.
+
+Las fuentes revisadas se conservan por caso en el almacenamiento local y pueden reiniciarse. Playwright cubre las ocho historias, el desbloqueo, la selección, el reinicio, la persistencia y la interfaz en inglés.

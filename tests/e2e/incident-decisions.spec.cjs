@@ -11,6 +11,10 @@ test('story mode: simulated decision gives explained feedback',async({page})=>{
  await expect(page.locator('#incidentsView')).toBeVisible();
  for(let x=0;x<2;x++)await page.locator('[data-story-step="next"]').click();
  await expect(page.locator('.incident-decision')).toBeVisible();
+ await expect(page.locator('[data-story-decision]')).toHaveCount(0);
+ await page.locator('[data-story-evidence="0"]').click();
+ await page.locator('[data-story-evidence="1"]').click();
+ await expect(page.locator('[data-story-decision]')).toHaveCount(3);
  await page.locator('[data-story-decision="1"]').click();
  await expect(page.locator('.incident-decision [role="status"]')).toContainText('Revisa');
  await page.locator('[data-story-decision="0"]').click();
