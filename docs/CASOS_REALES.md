@@ -18,3 +18,10 @@ La sección **Incidentes reales** presenta seis casos documentados. Cada histori
 - **MGM Resorts (2023):** desconexión defensiva de sistemas, impacto en servicios e incertidumbre sobre la intrusión.
 
 Este cambio amplía el catálogo histórico y no altera la lógica de los laboratorios sintéticos.
+
+## Incidentes 2017
+
+- WannaCry: propagación y cifrado, continuidad de atención sanitaria, fuentes CERT-EU/NCSC/CISA.
+- NotPetya: cadena de suministro M.E.Doc, malware destructivo e impacto internacional, fuentes NCSC/NCA y declaración pública del Gobierno británico.
+
+Los vínculos ATT&CK inferidos se etiquetan como mapeos educativos.
