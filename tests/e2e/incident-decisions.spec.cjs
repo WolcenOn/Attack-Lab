@@ -1,0 +1,20 @@
+const {test,expect}=require('@playwright/test');
+test('story mode: simulated decision gives explained feedback',async({page})=>{
+ await page.goto('/');
+ const welcome=page.locator('.welcome-overlay:not([hidden])');
+ await expect(welcome).toBeVisible();
+ await welcome.locator('[data-welcome="skip"]').click();
+ const nav=page.locator('#sidebar [data-view="incidents"]');
+ await nav.locator('xpath=ancestor::details').evaluate(el=>el.open=true);
+ if(await page.locator('#menuButton').isVisible())await page.locator('#menuButton').click();
+ await nav.click();
+ await expect(page.locator('#incidentsView')).toBeVisible();
+ for(let x=0;x<2;x++)await page.locator('[data-story-step="next"]').click();
+ await expect(page.locator('.incident-decision')).toBeVisible();
+ await page.locator('[data-story-decision="1"]').click();
+ await expect(page.locator('.incident-decision [role="status"]')).toContainText('Revisa');
+ await page.locator('[data-story-decision="0"]').click();
+ await expect(page.locator('.incident-decision [role="status"]')).toContainText('Decisión razonada');
+ await page.locator('[data-story-mode]').click();
+ await expect(page.locator('.incident-reference')).toBeVisible();
+});
