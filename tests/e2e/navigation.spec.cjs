@@ -43,6 +43,11 @@ test('all sidebar navigation targets open the corresponding view', async ({ page
 
 test('accordion groups expand, collapse and open active section', async ({ page }) => {
   const group = page.locator('#sidebar details[data-nav-group="soc"]');
+  // The sidebar is off-screen on mobile until the hamburger button is pressed.
+  if (await page.locator('#menuButton').isVisible()) {
+    await page.locator('#menuButton').click();
+    await expect(page.locator('#sidebar')).toHaveClass(/open/);
+  }
   await group.locator('summary').click();
   const wasOpen = await group.evaluate(node => node.open);
   await group.locator('summary').click();
