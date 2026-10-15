@@ -157,3 +157,26 @@
 .incident-evidence-item .incident-evidence-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
 .incident-evidence-detail{padding:8px 14px;border-top:1px solid var(--border);line-height:1.7}
 .incident-decision-locked{border:1px dashed #496477;border-radius:8px;padding:12px;color:var(--muted)}
+
+/* ASIR 2 technical study path */
+.asir2-progress,.asir2-overview,.asir2-lesson,.asir2-source{border:1px solid var(--border);background:var(--panel);border-radius:12px;padding:18px;margin:14px 0}
+.asir2-progress p,.asir2-overview p,.asir2-lesson p,.asir2-source p{line-height:1.75;color:#c1d3de}
+.asir2-progress progress{display:block;width:min(100%,400px);height:13px;margin:12px 0;accent-color:var(--cyan)}
+.asir2-modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:17px 0}
+.asir2-module{display:flex;flex-direction:column;gap:8px;align-items:start;text-align:left;border:1px solid #334e60;border-radius:10px;background:#112437;color:var(--text);padding:13px;min-height:105px}
+.asir2-module small{color:var(--cyan);font-weight:800}
+.asir2-module b{font-size:12px;line-height:1.45}
+.asir2-module span{color:var(--muted);font-size:11px}
+.asir2-module[aria-pressed="true"],.asir2-unit[aria-pressed="true"]{background:#15343e;border-color:var(--cyan);color:#e7fffb}
+.asir2-units{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.asir2-unit{padding:10px;border:1px solid #334e60;background:#112437;color:var(--text);border-radius:8px;text-align:left;font-weight:650}
+.asir2-lesson section{padding:7px 0 14px;border-bottom:1px solid var(--border)}
+.asir2-lesson h3{font:700 23px 'Space Grotesk',sans-serif;line-height:1.3}
+.asir2-lesson h4{font:700 15px 'Space Grotesk',sans-serif;margin:12px 0}
+.asir2-lesson .asir2-note{font-size:11px;color:var(--muted)}
+.asir2-answer{padding:14px;margin:12px 0;border-left:3px solid var(--cyan);background:#14353e;border-radius:7px;line-height:1.75}
+.asir2-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.asir2-source{font-size:12px}
+.asir2-source a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}
+.asir2-module:focus-visible,.asir2-unit:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(max-width:650px){.asir2-modules{grid-template-columns:repeat(2,minmax(0,1fr))}.asir2-lesson{padding:14px}}

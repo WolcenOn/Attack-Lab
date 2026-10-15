@@ -17,7 +17,7 @@ El mapa siguiente se basa en los nombres y la estructura de navegación; **no es
 
 | Área | Archivos |
 | --- | --- |
-| Aprendizaje y orientación | `src/features/learning/`: `onboarding.js`, `dashboard.js`, `courses.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
+| Aprendizaje y orientación | `src/features/learning/`: `onboarding.js`, `dashboard.js`, `courses.js`, `asir2.js`, `lessons.js`, `didactics.js`, `explained.js`, `review.js`, `training.js` |
 | ATT&CK y recorridos | `subtechniques.js`, `attackchains.js`, `visualinvestigation.js` |
 | Casos y misiones | `incidents.js`, `caseacademy.js`, `investigations.js`, `missions.js`, `decisions.js`, `labs.js` |
 | Operaciones SOC | `src/features/soc/`: `siem.js`, `queries.js`, `hunting.js`, `correlation.js`, `detection.js`, `response.js` |
@@ -78,3 +78,7 @@ Se han agrupado ocho módulos educativos en `src/features/learning/` sin modific
 ## Tercera migración: operaciones SOC
 
 Se han agrupado seis módulos relacionados con SIEM, consultas, Threat Hunting, correlación, detección y respuesta a incidentes en `src/features/soc/`, manteniendo su contenido y orden original de ejecución. `index.html` actualiza exclusivamente sus rutas. El validador recursivo comprobará su sintaxis y presencia. Antes de fusionar, probar las secciones SOC y las consultas en navegador, verificar CI y GitHub Pages.
+
+## Ruta ASIR 2.º
+
+La vista `asir2View` se carga desde `src/features/learning/asir2.js` y ofrece dieciséis unidades bilingües sobre los cinco módulos técnicos 0374–0378. Sus botones de prácticas utilizan los `data-view` existentes y el progreso individual se guarda en `localStorage` (`attacklab-asir2-v1`). Véase `docs/ASIR_2.md`.
