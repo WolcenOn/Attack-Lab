@@ -7,6 +7,7 @@ Bienvenido a la documentación de ATT&CK LAB, una academia web independiente par
 | Necesito... | Leer... |
 | --- | --- |
 | Aprender a utilizar la plataforma | [Guía del alumno](GUIA_DEL_ALUMNO.md) |
+| Preparar los módulos técnicos de 2.º de ASIR | [Ruta ASIR 2.º](ASIR_2.md) |
 | Entender los archivos y el diseño técnico | [Arquitectura y mapa de módulos](ARQUITECTURA.md) |
 | Crear una lección, caso o pregunta didáctica | [Guía de contenido educativo](CONTENIDO_EDUCATIVO.md) |
 | Colaborar sin romper el proyecto | [Guía de contribución](CONTRIBUIR.md) |
