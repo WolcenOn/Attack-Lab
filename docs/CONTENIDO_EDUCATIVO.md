@@ -76,3 +76,7 @@ C. Siempre es normal.
 ## Seguridad
 
 Trabajar únicamente en laboratorios propios o autorizados. No incluir credenciales reales, datos privados, malware operativo ni indicadores que apunten a víctimas reales. Para direcciones de ejemplo preferir rangos reservados para documentación.
+
+## Estado de la biblioteca ampliada
+
+El catálogo de IDs se nutre del dataset Enterprise oficial bajo petición: no se inventan códigos ni se ofrecen como oficiales las señales sintéticas. Véase [Cobertura ATT&CK](COBERTURA_ATTCK.md). Las explicaciones generadas por táctica deben identificarse como introductorias y revisarse antes de presentarse como documentación específica.
