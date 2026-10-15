@@ -17,7 +17,7 @@ test('evidence library preserves original lessons and offers code search',async(
  await root.locator('[data-exp-mode="catalog"]').click();
  await expect(root.getByText('Busca cualquier técnica Txxxx')).toBeVisible();
  await root.locator('#expCatalogSearch').fill('T9999.999');
- await expect(root.getByText(/No está en la muestra offline/)).toBeVisible();
+ await expect(root.getByText('Sin coincidencias.')).toBeVisible();
  await root.locator('[data-exp-mode="lessons"]').click();
  await expect(root.locator('[data-exp-topic]').first()).toBeVisible();
 });
