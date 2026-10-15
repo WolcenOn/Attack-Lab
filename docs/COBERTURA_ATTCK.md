@@ -32,3 +32,13 @@ Desde ATT&CK v18 (2025), las estrategias de detección y analíticas utilizan nu
 - Generar en una fase posterior un **índice reducido y versionado** para consultar todos los IDs offline sin almacenar los 50 MB de STIX en el repositorio.
 - Incorporar DET/AN vinculados por STIX, procedencia y cobertura, sin inventar evidencias.
 - Construir pruebas de regresión de versión: total de IDs, subtécnicas, descontinuaciones, enlaces y cambios de nombre.
+
+## Sincronización automática y caché (PR #18)
+
+ATT&CK LAB intenta recuperar automáticamente el catálogo oficial MITRE Enterprise en cuanto se abre la aplicación. Se muestra la muestra local hasta que termina la descarga, sin bloquear los laboratorios. Cuando la primera descarga termina se guarda una copia de los objetos STIX relevantes (incluidas relaciones) en **IndexedDB**, que admite volúmenes mayores que localStorage.
+
+Las visitas sucesivas reutilizan inmediatamente la copia y solo comprueban si hay una actualización cuando han pasado **siete días**. Desde el explorador se puede forzar la actualización en cualquier momento. Cuando no hay conexión o falla MITRE se conserva la copia anterior; sin caché, sigue disponible la muestra local. Si el navegador tiene activado el ahorro de datos, se respeta esa preferencia y no se inicia la descarga grande en segundo plano.
+
+Se han añadido **56 títulos y resúmenes defensivos redactados en español** para códigos habituales. Para las demás técnicas siguen disponibles las explicaciones educativas por táctica; **esto no equivale a traducir todas las descripciones de MITRE**. Las descripciones de MITRE se pueden consultar en inglés, que es el texto fuente. Al pasar al inglés los nombres oficiales se muestran en inglés también en los resultados.
+
+Estas son técnicas, tácticas y referencias de ATT&CK, **no eventos reales descargados de un SIEM**. Los registros de ejemplo son sintéticos y están etiquetados.

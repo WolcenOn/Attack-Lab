@@ -3,23 +3,7 @@
 'use strict';
 const hostView=document.getElementById('explainView');
 if(!hostView)return;
-const dictionary={
- T1059:'Intérprete de comandos y scripts','T1059.001':'PowerShell','T1059.003':'Shell de comandos de Windows','T1059.004':'Shell de Unix','T1059.006':'Python',
- T1566:'Suplantación por mensajes (phishing)','T1566.001':'Adjunto de phishing','T1566.002':'Enlace de phishing','T1566.003':'Phishing mediante servicio',
- T1078:'Uso de cuentas válidas','T1078.001':'Cuentas predeterminadas','T1078.002':'Cuentas de dominio','T1078.003':'Cuentas locales','T1078.004':'Cuentas en la nube',
- T1190:'Explotación de aplicación pública',T1486:'Cifrado de datos para causar impacto',T1195:'Compromiso de la cadena de suministro','T1195.002':'Compromiso de la cadena de suministro de software',
- T1021:'Servicios remotos','T1021.001':'Escritorio remoto RDP','T1021.004':'SSH',T1053:'Tareas programadas','T1053.005':'Tarea programada de Windows',
- T1003:'Volcado de credenciales de sistema','T1003.001':'Memoria del proceso LSASS',T1110:'Fuerza bruta',T1046:'Exploración de servicios de red',
- T1047:'Instrumentación de administración de Windows',T1112:'Modificación del Registro de Windows',T1082:'Descubrimiento de información del sistema',
- T1018:'Descubrimiento de sistemas remotos',T1033:'Descubrimiento de propietario de sistema',T1136:'Creación de cuentas',
- T1105:'Transferencia de herramientas',T1071:'Protocolo de capa de aplicación','T1071.001':'Protocolos web',
- T1041:'Exfiltración por canal de mando y control',T1537:'Transferencia de datos a cuenta en la nube',
- T1098:'Manipulación de cuentas',T1547:'Arranque automático',T1210:'Explotación de servicios remotos',
- T1543:'Creación o modificación de servicios',T1505:'Componente de servidor','T1505.003':'Web shell',
- T1562:'Impedir defensas','T1562.001':'Deshabilitar o modificar herramientas de seguridad',T1070:'Eliminación de indicadores',
- T1090:'Proxy',T1552:'Credenciales no protegidas',T1204:'Ejecución por parte del usuario',T1490:'Inhibir recuperación del sistema',
- T1485:'Destrucción de datos',T1498:'Denegación de servicio de red',T1595:'Exploración activa',T1592:'Recopilar información de equipos',T1583:'Adquirir infraestructura'
-};
+const dictionary=window.AttackTranslations?.names||{};
 const tactics={
 reconnaissance:['Reconocimiento','Reconnaissance','Se intenta reunir información previa sobre una organización, sus personas o sistemas. No demuestra todavía acceso a sus activos.','The behavior gathers information about a target and does not itself prove access.','Registros de solicitudes públicas, consultas repetidas, peticiones a servicios y variaciones temporales.','Public requests, repeated lookups, service requests and their timing.','Consultar una página pública puede ser legítimo; comprueba frecuencia, objetivo y contexto.','Public browsing can be normal; check frequency, target and context.','event.kind=web.request | target=public-site | requests=58 | window=2m'],
 'resource-development':['Preparación de recursos','Resource development','Se preparan recursos que podrían emplearse en una operación. La existencia de infraestructura no atribuye por sí sola una intrusión.','Resources can be prepared for later operations; infrastructure alone is not proof of compromise.','Cambios de dominios, certificados, infraestructura y reputación contextual.','Changes to domains, certificates, infrastructure and reputation context.','Un dominio recién registrado puede ser legítimo. Contrasta titularidad y actividad.','Newly registered domains can be legitimate. Correlate ownership and behavior.','event.kind=dns.observed | domain=example.test | first_seen=recent'],
@@ -57,12 +41,12 @@ function render(){
  const max=65,shown=matches.slice(0,max);
  const loaded=data.loaded,hasMissing=q&&!matches.length;
  host.innerHTML=`<div class="section-head"><div><div class="overline">MITRE ATT&CK · ENTERPRISE</div><h2>${tr('Busca cualquier técnica Txxxx','Search any Txxxx technique')}</h2><p>${tr('Todas las técnicas activas del catálogo oficial, cuando se carga. Las fichas automáticas explican contexto defensivo; las lecciones comentadas siguen disponibles aparte.','All active techniques from the official catalog once loaded. Generated cards provide defensive context; detailed annotated lessons remain available separately.')}</p></div><span class="lesson-badge">${loaded?tr('FUENTE OFICIAL','OFFICIAL SOURCE'):tr('MODO DEMOSTRACIÓN','DEMO MODE')}</span></div>
- <div class="chain-note">${loaded?tr('Dataset MITRE Enterprise cargado. No incluye técnicas retiradas ni dominios Mobile/ICS.','MITRE Enterprise loaded. Retired techniques and Mobile/ICS are excluded.'):tr('Solo ves el subconjunto local. Para buscar todos los IDs Enterprise necesitas cargar el archivo oficial (descarga grande, requiere Internet).','This is the local subset. Load the official file to search all Enterprise IDs (large download; Internet required).')}</div>
- <div class="explained-catalog-toolbar"><label for="expCatalogSearch">${tr('Código T, nombre o táctica','T ID, name or tactic')}<input id="expCatalogSearch" type="search" autocomplete="off" placeholder="T1059.001, PowerShell…" value="${esc(query)}"></label>${!loaded?`<button type="button" class="primary-btn" data-exp-load ${loading?'disabled':''}>${loading?tr('Cargando MITRE…','Loading MITRE…'):tr('Cargar catálogo Enterprise completo','Load complete Enterprise catalog')}</button>`:''}</div>
+ <div class="chain-note">${loaded?tr('Dataset MITRE Enterprise cargado. No incluye técnicas retiradas ni dominios Mobile/ICS.','MITRE Enterprise loaded. Retired techniques and Mobile/ICS are excluded.'):tr('Se muestra una muestra local mientras se obtiene automáticamente el catálogo MITRE. Si la descarga falla, prueba «Actualizar ahora».','Showing a local sample while the MITRE catalog loads automatically. If the download fails, select Refresh.')}</div>
+ <div class="explained-catalog-toolbar"><label for="expCatalogSearch">${tr('Código T, nombre o táctica','T ID, name or tactic')}<input id="expCatalogSearch" type="search" autocomplete="off" placeholder="T1059.001, PowerShell…" value="${esc(query)}"></label>${`<button type="button" class="primary-btn" data-exp-load ${loading?'disabled':''}>${loading?tr('Actualizando MITRE…','Updating MITRE…'):loaded?tr('Actualizar MITRE ahora','Refresh MITRE now'):tr('Reintentar o actualizar ahora','Retry or refresh now')}</button>`}</div>
  ${loadError?`<p class="incident-disclaimer" role="status">${tr('No se pudo cargar el catálogo. Comprueba tu conexión e inténtalo de nuevo.','Could not load the catalog. Check your connection and try again.')}</p>`:''}
  <p class="muted" role="status">${matches.length} ${tr('códigos encontrados','matching IDs')} / ${items.length} ${tr('disponibles','available')}${matches.length>max?' · '+tr('Se muestran los primeros 65; escribe un código más específico.','Showing first 65; refine the search.'):''}</p>
- ${hasMissing?`<p class="chain-note">${loaded?tr('Ese ID no está entre las técnicas activas de Enterprise. Comprueba si es un ID retirado o pertenece a Mobile o ICS.','This ID is not among active Enterprise techniques. Check retired, Mobile or ICS datasets.'):tr('No está en la muestra offline. Carga el catálogo oficial para comprobar el ID.','Not in the offline sample. Load the official catalog to look it up.')}</p>`:''}
- <div class="academy-layout"><div class="lesson-catalog explained-tech-list">${shown.map(o=>`<button type="button" class="lesson-selector ${o.attackId===current?.attackId?'chosen':''}" data-exp-id="${esc(o.attackId)}"><span class="tech-id">${esc(o.attackId)}</span><span>${esc(dictionary[o.attackId]||o.es||(o.name||''))}${dictionary[o.attackId]||o.es?`<small class="exp-original">${esc(o.name)}</small>`:''}</span><b>${o.sub?'↳':'→'}</b></button>`).join('')||`<p class="muted">${tr('Sin coincidencias.','No matches.')}</p>`}</div>
+ ${hasMissing?`<p class="chain-note">${loaded?tr('Ese ID no está entre las técnicas activas de Enterprise. Comprueba si es un ID retirado o pertenece a Mobile o ICS.','This ID is not among active Enterprise techniques. Check retired, Mobile or ICS datasets.'):tr('Todavía no aparece en la muestra. Espera la sincronización o pulsa actualizar.','Not yet in the local sample. Wait for synchronization or select Refresh.')}</p>`:''}
+ <div class="academy-layout"><div class="lesson-catalog explained-tech-list">${shown.map(o=>`<button type="button" class="lesson-selector ${o.attackId===current?.attackId?'chosen':''}" data-exp-id="${esc(o.attackId)}"><span class="tech-id">${esc(o.attackId)}</span><span>${esc(english()?o.name:(dictionary[o.attackId]||o.es||o.name))}${!english()&&(dictionary[o.attackId]||o.es)?`<small class="exp-original">${esc(o.name)}</small>`:''}</span><b>${o.sub?'↳':'→'}</b></button>`).join('')||`<p class="muted">${tr('Sin coincidencias.','No matches.')}</p>`}</div>
  <article class="study-panel explained-full-detail">${current?detail(current,loaded):`<p>${tr('Escribe un código para consultar su ficha.','Enter an ID to view its study card.')}</p>`}</article></div>`;
 }
 function detail(o,loaded){
@@ -71,11 +55,12 @@ function detail(o,loaded){
  const spanish=dictionary[id]||o.es||'',official=loaded&&o.source==='official';
  const snippet=String(o.description||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,1150);
  const title=english()?o.name:(spanish||o.name);
+ const teaching=window.AttackTranslations?.summaries?.[id]||'';
  const additional=(o.phases||[]).slice(1).map(k=>tactics[k]?tactics[k][english()?1:0]:k).join(', ');
  return `<div class="overline">${esc(id)} · ${o.sub?tr('SUBTÉCNICA','SUB-TECHNIQUE'):tr('TÉCNICA','TECHNIQUE')}</div><h3>${esc(title)}</h3>
  ${spanish&&!english()?`<p class="muted">${tr('Nombre original MITRE','Original MITRE name')}: ${esc(o.name)}</p>`:!english()?`<p class="muted">${tr('Nombre original en inglés: traducción individual pendiente de revisión.','Original English name: individual translation under review.')}</p>`:''}
  <p class="exp-quality-note">${tr('Ficha introductoria por táctica, no traducción literal de MITRE ni evaluación específica de detección.','Tactic-based introductory card; not a literal MITRE translation or technique-specific detection assessment.')}</p>
- <h4>1 · ${tr('¿Qué significa en contexto?','What does it mean?')}</h4><p>${tr('La técnica','Technique')} <strong>${esc(id)}</strong> (${esc(o.name)}) ${tr('se relaciona con','is related to')} <strong>${esc(tactic[english()?1:0])}</strong>. ${esc(tactic[english()?3:2])}</p>
+ <h4>1 · ${tr('¿Qué significa en contexto?','What does it mean?')}</h4><p>${!english()&&teaching?esc(teaching):`${tr('La técnica','Technique')} <strong>${esc(id)}</strong> (${esc(o.name)}) ${tr('se relaciona con','is related to')} <strong>${esc(tactic[english()?1:0])}</strong>. ${esc(tactic[english()?3:2])}`}</p>
  ${additional?`<p class="muted">${tr('También relacionada con','Also associated with')}: ${esc(additional)}</p>`:''}
  ${o.parent?`<p>${tr('Técnica principal','Parent technique')}: <button type="button" class="outline-btn" data-exp-parent="${esc(o.parent)}">${esc(o.parent)} ↗</button></p>`:''}
  <h4>2 · ${tr('¿Qué evidencias buscaría un SOC?','Which evidence would an SOC look for?')}</h4><p>${esc(tactic[english()?5:4])}</p>
@@ -83,7 +68,7 @@ function detail(o,loaded){
  <h4>3 · ${tr('¿Qué NO demuestra esta señal?','What does this signal NOT prove?')}</h4><p>${esc(tactic[english()?7:6])}</p>
  <h4>4 · ${tr('¿Qué comprobar después?','What should you verify next?')}</h4><p>${tr('Reconstruye una cronología con hora, equipo y cuenta; compara con cambios autorizados y busca otra fuente independiente antes de concluir que ocurrió una intrusión.','Build a timeline using time, host and identity; compare authorized changes and seek an independent source before concluding an intrusion occurred.')}</p>
  <h4>5 · ${tr('Fuente oficial y descripción','Official source and description')}</h4>
- ${official?`<p class="exp-official-desc">${tr('Extracto del texto oficial de MITRE (en inglés, sin traducción automática):','Excerpt from MITRE’s official English description:')} ${esc(snippet||tr('Sin descripción textual en el objeto descargado.','No description in the downloaded record.'))}${String(o.description||'').length>1150?'…':''}</p>`:`<p>${tr('Este registro procede de la muestra local de la academia. Carga el catálogo oficial para ver su descripción de MITRE.','This record is from the academy’s local sample. Load the official catalog for MITRE’s original description.')}</p>`}
+ ${official?`<p class="exp-official-desc">${tr('Extracto del texto oficial de MITRE (en inglés, sin traducción automática):','Excerpt from MITRE’s official English description:')} ${esc(snippet||tr('Sin descripción textual en el objeto descargado.','No description in the downloaded record.'))}${String(o.description||'').length>1150?'…':''}</p>`:`<p>${tr('Este registro es una muestra de la academia. La descripción MITRE aparecerá después de la sincronización.','This is an academy sample. The MITRE description will appear after synchronization.')}</p>`}
  <div class="chain-actions"><a class="resource-link" target="_blank" rel="noopener noreferrer" href="${esc(officialUrl(id))}">MITRE ATT&CK · ${esc(id)} ↗</a><button type="button" class="outline-btn" data-exp-open="${esc(id)}">${tr('Ver ficha completa en explorador','Open full explorer detail')} ↗</button></div>`;
 }
 function mount(el){
@@ -111,5 +96,6 @@ function mount(el){
  render();
 }
 document.addEventListener('attacklab:catalog-updated',render);
+document.addEventListener('attacklab:catalog-sync',render);
 window.AttackExplainCatalog={mount};
 })();
