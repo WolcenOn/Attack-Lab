@@ -180,3 +180,23 @@
 .asir2-source a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}
 .asir2-module:focus-visible,.asir2-unit:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 @media(max-width:650px){.asir2-modules{grid-template-columns:repeat(2,minmax(0,1fr))}.asir2-lesson{padding:14px}}
+
+/* Complete ATT&CK evidence glossary: loaded from the official STIX collection on demand. */
+.explained-mode{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+.explained-mode button[aria-pressed="true"]{border-color:var(--cyan);background:#143c3c;color:var(--text)}
+.explained-catalog-toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:18px 0}
+.explained-catalog-toolbar label{font-size:12px;font-weight:700;flex:1 1 250px}
+.explained-catalog-toolbar input{display:block;box-sizing:border-box;width:100%;min-width:0;margin-top:7px;padding:12px;border:1px solid #3a576c;border-radius:8px;background:#0b1b2b;color:var(--text)}
+.explained-catalog-toolbar input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.explained-tech-list{max-height:700px;overflow-y:auto}
+.explained-tech-list .lesson-selector{align-items:flex-start}
+.explained-tech-list .exp-original{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:3px}
+.explained-full-detail{min-width:0}
+.explained-full-detail h4{font-size:15px;margin:20px 0 9px}
+.explained-full-detail p{line-height:1.75}
+.explained-full-detail .chain-log{white-space:pre-wrap;overflow-wrap:anywhere}
+.exp-quality-note{background:#15313d;padding:12px;border-radius:8px;border:1px solid #35576b;font-size:12px}
+.exp-official-desc{border-left:3px solid var(--cyan);padding:12px;background:#112839;overflow-wrap:anywhere}
+.exp-synthetic{font-size:12px;color:var(--muted)}
+.explained-full-detail .resource-link{display:inline-block;max-width:100%;margin:8px 8px 8px 0}
+@media(max-width:700px){.explained-tech-list{max-height:300px}.explained-catalog-toolbar button{width:100%}}

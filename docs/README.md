@@ -10,6 +10,7 @@ Bienvenido a la documentación de ATT&CK LAB, una academia web independiente par
 | Preparar los módulos técnicos de 2.º de ASIR | [Ruta ASIR 2.º](ASIR_2.md) |
 | Entender los archivos y el diseño técnico | [Arquitectura y mapa de módulos](ARQUITECTURA.md) |
 | Crear una lección, caso o pregunta didáctica | [Guía de contenido educativo](CONTENIDO_EDUCATIVO.md) |
+| Localizar un código Txxxx no incluido en las lecciones | [Cobertura de ATT&CK en Evidencias explicadas](COBERTURA_ATTCK.md) |
 | Colaborar sin romper el proyecto | [Guía de contribución](CONTRIBUIR.md) |
 
 ## Principios fundamentales
