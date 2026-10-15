@@ -17,6 +17,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 | --- | --- |
 | MITRE ATT&CK | Tácticas, técnicas, subtécnicas y explicaciones |
 | Formación | Itinerarios, microlecciones, glosario y preguntas razonadas |
+| **ASIR 2.º** | Ruta técnica complementaria: sistemas, redes, web, SGBD y seguridad/alta disponibilidad, con prácticas enlazadas |
 | Investigación | Casos históricos documentados, misiones y laboratorios simulados |
 | SOC y detección | SIEM educativo, correlación, Threat Hunting y reglas de detección |
 | Forense y respuesta | Memoria, malware, red, evidencias y decisiones de contención |
@@ -26,6 +27,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 
 - [Índice de guías](docs/README.md)
 - [Guía del alumno](docs/GUIA_DEL_ALUMNO.md)
+- [Ruta de apoyo para 2.º de ASIR](docs/ASIR_2.md)
 - [Arquitectura y mapa de módulos](docs/ARQUITECTURA.md)
 - [Cómo redactar contenido educativo](docs/CONTENIDO_EDUCATIVO.md)
 - [Cómo contribuir](docs/CONTRIBUIR.md)
