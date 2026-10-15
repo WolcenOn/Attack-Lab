@@ -50,7 +50,7 @@ test('official enterprise bundle makes technique and sub-technique IDs searchabl
  await expect(root.locator('[data-exp-id]')).toHaveCount(1);
  await expect(root.locator('.explained-full-detail')).toContainText('T1800.001');
  await expect(root.locator('.explained-full-detail')).toContainText('T1800');
- await expect(root.locator('.exp-official-desc')).toContainText('Synthetic fixture');
+ await expect(root.locator('.exp-official-desc')).toContainText('Fixture description, never published MITRE evidence.');
  await root.locator('[data-exp-open]').click();
  await expect(page.locator('#detail')).toBeVisible();
 });
