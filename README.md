@@ -16,7 +16,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 | Área | Qué encontrarás |
 | --- | --- |
 | MITRE ATT&CK | Tácticas, técnicas, subtécnicas y explicaciones |
-| Evidencias explicadas · Txxxx | Lecciones redactadas y catálogo oficial Enterprise bajo demanda, con guías defensivas introductorias |
+| Evidencias explicadas · Txxxx | Carga automática de MITRE Enterprise con caché local, glosario bilingüe y fichas introductorias |
 | Formación | Itinerarios, microlecciones, glosario y preguntas razonadas |
 | **ASIR 2.º** | Ruta técnica complementaria: sistemas, redes, web, SGBD y seguridad/alta disponibilidad, con prácticas enlazadas |
 | Investigación | Casos históricos documentados, misiones y laboratorios simulados |
