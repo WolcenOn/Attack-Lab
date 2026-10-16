@@ -16,15 +16,17 @@ La biblioteca ya incluye un catálogo **versionado** en `data/mitre/v20/`. No ne
 | C — Campañas | 61 |
 | M — Mitigaciones | 109 |
 | DS — Fuentes de datos históricas obsoletas | 42 |
-| **Entradas de búsqueda** | **5.501** |
+| G — Grupos de actividad documentados | 191 |
+| **Entradas de búsqueda** | **5.692** |
 
 Los datos proceden de archivos **aportados por el usuario**, capturas HTML del sitio MITRE ATT&CK de octubre de 2026, junto con extracciones estructuradas previas del mismo material. Los JSON **no son un feed en vivo**: conservan nombres/descripciones oficiales en inglés y relaciones explícitas; no se ha inferido qué software empleó una técnica si la página no lo documentaba.
 
 ## Disposición
 
 - `manifest.json`: colección, versión, conteos y archivos disponibles
-- `index-00.json` a `index-03.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
+- `index-00.json` a `index-05.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
 - `links.json`: enlaces explícitos desde técnicas a estrategias, software, mitigaciones, campañas y activos
+- `group-links.json`: referencias documentadas desde técnicas a grupos G
 - `techniques-*.json`, `software-*.json`, `tactics-*.json`: fichas originales
 - `detections-*.json`: estrategias DET y sus analíticas AN, con fuentes DC y parámetros de ajuste
 - `components-00.json` a `components-11.json`: 120 componentes DC con descripciones, canales de registro y vínculos DET/T
@@ -66,3 +68,13 @@ En las fichas DC se muestran hasta 24 fuentes/canales y se enlaza a MITRE para e
 ## Historial de versiones
 
 Las fichas de v20 y sus relaciones se mantienen separadas del nuevo [historial de cambios v7.2→v20.0](MITRE_HISTORIAL.md). Un cambio registrado en una versión no equivale a la situación actual de ese identificador.
+
+## Grupos G (nueva colección del archivo `groups.rar`)
+
+Se han revisado 196 páginas `Gxxxx` del archivo recibido: **191 fichas con contenido** y **5 redirecciones HTML** (`G0042`, `G0057`, `G0058`, `G0074`, `G0086`). Las cinco redirecciones no se han convertido en fichas nuevas ni se han contado como grupos actuales.
+
+La colección `groups-*.json` conserva nombre original, descripción inglesa de la página, alias, fecha y versión cuando aparecen, y las relaciones explícitas con técnicas (`Txxxx`), software (`Sxxxx`) y campañas (`Cxxxx`). `group-links.json` permite el recorrido inverso desde una técnica a los grupos que MITRE menciona. Los enlaces se han recogido de las tablas documentadas de cada ficha; **no se ha inferido autoría ni atribución independiente**. La capa Navigator de los originales no se duplica: sus técnicas quedan representadas en JSON navegable.
+
+En total se han extraído **7.373 enlaces grupo–técnica** (contando técnicas y subtécnicas tal como se documentan), además de 1.195 referencias a software y 27 a campañas; son relaciones en páginas, no observaciones independientes. Las descripciones continúan en inglés hasta que exista traducción española revisada y muestran el estado pendiente. El catálogo se puede filtrar por G y saltar de técnica a grupo, y de grupo a técnica, software o campaña.
+
+`datacomponents(1).rar` y `datasources(1).rar` se han identificado como segundas copias de las mismas 120 fichas DC y 42 fichas DS ya incorporadas en el PR #20, por lo que no se han cargado duplicados. `wiki.rar` contiene siete redirecciones antiguas de técnica sin fichas originales nuevas.

@@ -2,18 +2,18 @@
 (()=>{'use strict';
 const root=document.getElementById('mitrelocalView');if(!root)return;
 const BASE='data/mitre/v20/';
-const titles={all:['Todo','All'],techniques:['Técnicas T','Techniques T'],tactics:['Tácticas TA','Tactics TA'],software:['Software S','Software S'],detections:['Estrategias DET','Strategies DET'],analytics:['Analíticas AN','Analytics AN'],components:['Componentes DC','Components DC'],datasources:['Fuentes DS históricas','Historical DS sources'],assets:['Activos ICS A','ICS assets A'],campaigns:['Campañas C','Campaigns C'],mitigations:['Mitigaciones M','Mitigations M']};
+const titles={all:['Todo','All'],techniques:['Técnicas T','Techniques T'],tactics:['Tácticas TA','Tactics TA'],software:['Software S','Software S'],detections:['Estrategias DET','Strategies DET'],analytics:['Analíticas AN','Analytics AN'],components:['Componentes DC','Components DC'],datasources:['Fuentes DS históricas','Historical DS sources'],groups:['Grupos G','Groups G'],assets:['Activos ICS A','ICS assets A'],campaigns:['Campañas C','Campaigns C'],mitigations:['Mitigaciones M','Mitigations M']};
 const enc=()=>document.getElementById('language')?.value==='en';
 const L=(es,en)=>enc()?en:es;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&quot;',"'":'&#39;'}[c]));
-const validPath=name=>/^(?:[a-z]+-\d{2}|manifest|links)\.json$/.test(name);
+const validPath=name=>/^(?:[a-z]+-\d{2}|manifest|links|group-links)\.json$/.test(name);
 const fetchLocal=async name=>{if(!validPath(name))throw Error('Unexpected JSON path');const r=await fetch(BASE+name);if(!r.ok)throw Error('HTTP '+r.status+' · '+name);return r.json()};
-let manifest=null,items=[],links={},selected=null,filter='all',domain='all',query='',loading=null,error=null,detailsEpoch=0;
+let manifest=null,items=[],links={},groupLinks={},selected=null,filter='all',domain='all',query='',loading=null,error=null,detailsEpoch=0;
 const cache=new Map();
 const normName=r=>enc()?r.name_en:(r.name_es||r.name_en);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
 function sourceLink(r,type){
- const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',datasources:'datasources',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
+ const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',datasources:'datasources',groups:'groups',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
  const url=type==='analytics'&&r.parent?'https://attack.mitre.org/detectionstrategies/'+r.parent+'/':r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
  return /^https:\/\/attack\.mitre\.org\//.test(url)?url:'https://attack.mitre.org/';
 }
@@ -30,7 +30,8 @@ async function ensure(){
    if(shards.some(a=>!Array.isArray(a)))throw Error('Invalid index');
    const raw=shards.flat();
    const graph=await fetchLocal('links.json');
-   manifest=m;items=raw;links=graph;
+   const groupGraph=m.categories?.groups?.count?await fetchLocal('group-links.json'):{};
+   manifest=m;items=raw;links=graph;groupLinks=groupGraph;
    render();
    if(selected)await show(selected);
   }catch(e){error=e;clear(L('No se han podido leer los JSON locales. Comprueba que publicaste la carpeta data/mitre/v20 completa.','Could not read local JSON files. Check that data/mitre/v20 was published completely.')+' ('+e.message+')');root.innerHTML+='<button type="button" class="outline-btn" data-local-retry>'+L('Reintentar','Retry')+'</button>'}
@@ -52,7 +53,7 @@ function matchesDomain(r){const d=(r.domain||'').toLowerCase();return domain==='
 function renderList(){
  const el=root.querySelector('#mitrelocalList'),count=root.querySelector('#mitrelocalCount');if(!el)return;
  const term=query.trim().toLocaleLowerCase();
- const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&(!term||[r.id,r.name_en,r.name_es].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
+ const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&(!term||[r.id,r.name_en,r.name_es,...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
  count.textContent=all.length+' '+L('coincidencias','matches')+(all.length>60?' · '+L('se muestran las primeras 60; concreta la búsqueda','first 60 shown; refine your search'):'');
  el.innerHTML=all.slice(0,60).map(r=>`<button type="button" class="mitrelocal-item" data-local-id="${esc(r.id)}" data-local-type="${esc(r.type)}" data-local-domain="${esc(r.domain||'')}" aria-pressed="${selected?.id===r.id&&selected.type===r.type}"><strong>${esc(r.id)}</strong><span>${esc(normName(r))}</span><small>${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</small></button>`).join('')||'<p>'+L('No hay resultados.','No results.')+'</p>';
 }
@@ -91,11 +92,18 @@ function renderDetail(r,record){
  let extra='';
  const techs=techniqueIds(record);
  if(techs.length)extra+=listRelations(techs,L('Técnicas relacionadas','Related techniques'));
+ if(r.type==='groups'){
+  if(record.aliases?.length)extra+=plainSection(L('Otros nombres documentados','Documented aliases'),record.aliases.join(', '));
+  extra+=listRelations(record.software||[],L('Software documentado por MITRE','MITRE-documented software'));
+  extra+=listRelations(record.campaigns||[],L('Campañas relacionadas','Related campaigns'));
+ }
  if(r.type==='techniques'){
   const rel=links[r.id]||{};
   for(const type of ['detections','software','mitigations','campaigns','assets']){
    if(rel[type]?.length)extra+=listRelations(rel[type],typeName(type));
   }
+  if(groupLinks[r.id]?.length)extra+=listRelations(groupLinks[r.id],L('Grupos documentados en MITRE','MITRE-documented groups'));
+
   if(record.tactics_en?.length)extra+=plainSection(L('Tácticas MITRE','MITRE tactics'),record.tactics_en.join(', '));
  }
  if(r.type==='detections'){
