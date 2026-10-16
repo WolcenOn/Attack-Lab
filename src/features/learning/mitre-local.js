@@ -14,7 +14,7 @@ const normName=r=>enc()?r.name_en:(r.name_es||r.name_en);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
 function sourceLink(r,type){
  const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
- const url=r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
+ const url=type==='analytics'&&r.parent?'https://attack.mitre.org/detectionstrategies/'+r.parent+'/':r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
  return /^https:\/\/attack\.mitre\.org\//.test(url)?url:'https://attack.mitre.org/';
 }
 function clear(msg){root.innerHTML='<div class="section-head"><div><div class="overline">MITRE ATT&CK · v20 · '+L('CATÁLOGO LOCAL','LOCAL CATALOG')+'</div><h2>'+L('Biblioteca MITRE integrada','Integrated MITRE library')+'</h2></div></div><p class="mitrelocal-status" role="status">'+esc(msg)+'</p>'}
