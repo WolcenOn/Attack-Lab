@@ -146,6 +146,22 @@ function analyticParameters(record,langEn){
  (!langEn&&parameterNotesEs[f.field]?'<p>'+esc(parameterNotesEs[f.field])+'</p>':'')+
  (f.description_en?'<p class="muted">'+(!langEn?'MITRE (EN): ':'')+esc(f.description_en)+'</p>':'')+'</li>').join('')+'</ul></section>';
 }
+const localTelemetryNotesEs={"DC0002":["Relaciona accesos correctos y fallidos con cuenta, origen y aplicación.","Consulta Security en Windows, auditd/journal/sshd en Linux y auditoría del IdP; comprueba primero qué registros están habilitados.","Un fallo no confirma fuerza bruta y un éxito no identifica por sí solo al operador."],"DC0032":["Ofrece el proceso creado, usuario, argumentos y padre-hijo, si el sensor los recoge.","Revisa Sysmon EventCode=1 o Security 4688 configurados en Windows, y auditd EXECVE en Linux.","PowerShell y bash se usan para administración; una ejecución no prueba intrusión."],"DC0064":["Permite contextualizar comandos y scripts ejecutados, cuando hay auditoría de instrucciones.","Revisa PowerShell 4103/4104 en sistemas configurados; en Linux, reglas auditd execve según disponibilidad.","No todos los comandos quedan registrados y una cadena codificada no basta para determinar intencionalidad."],"DC0067":["Sitúa las sesiones de acceso y los metadatos disponibles de usuario, sistema y origen.","Correlaciona Security 4624, RDP o registros del IdP con accesos posteriores.","La IP puede pertenecer a un proxy o un bastión; un inicio correcto no prueba abuso."],"DC0082":["Permite identificar conexiones y destinos y relacionarlos con procesos cuando el sensor lo permite.","Consulta Sysmon EventCode=3, registros de cortafuegos, NetFlow o proxy según el despliegue.","Una conexión frecuente o inusual no prueba por sí sola mando y control."]};
+function telemetryEducation(record,langEn){
+ if(langEn)return '';
+ const n=localTelemetryNotesEs[record.id];if(!n)return '';
+ return '<section class="mitrelocal-draft mitrelocal-telemetry-education"><h4>Cómo investigar esta telemetría · borrador educativo</h4>'+
+ plainSection('Para qué sirve',n[0])+plainSection('Dónde comprobarla en un laboratorio autorizado',n[1])+
+ plainSection('Qué no demuestra',n[2])+
+ '<p class="mitrelocal-note">Guía propia de ATT&CK LAB, pendiente de revisión. Son ejemplos de fuentes, no garantía de que el sensor registre estos campos.</p></section>';
+}
+function logSourceMarkup(s){
+ const id=s.data_component_id||'';
+ const dc=id?lookup(id,'components'):null;
+ return '<li>'+(dc?chip(id,id):id?esc(id)+' · ':'')+
+ esc([s.source,s.channel].filter(Boolean).join(' · '))+'</li>';
+}
+
 function educationalGuide(r,langEn){
  if(langEn)return '';
  const guide=r.type==='detections'?window.AttackDetectionSpanishV20?.strategy(r.id):
@@ -190,20 +206,23 @@ function renderDetail(r,record){
  if(r.type==='detections'){
   const analytics=record.analytics||[];
   extra+=listRelations(analytics.map(a=>a.id).filter(Boolean),L('Analíticas','Analytics'));
+  if(!langEn&&window.AttackDetectionSpanishV20){const c=analytics.filter(a=>!!window.AttackDetectionSpanishV20.analytic(a.id)).length;if(c)extra+=plainSection('Cobertura educativa de estas analíticas (borradores)',c+' / '+analytics.length+' analíticas con explicación propia en español');}
   const first=analytics.slice(0,4);
-  extra+=first.map(a=>`<section class="mitrelocal-analytic"><h4>${esc(a.id)} · ${L('Analítica asociada','Associated analytic')}</h4><p>${esc(!langEn?(window.AttackDetectionSpanishV20?.analytic(a.id)?.summary||a.description_en||''):(a.description_en||''))}</p>${(a.log_sources||[]).length?`<strong>${L('Fuentes de registro propuestas','Suggested log sources')}</strong><ul>${a.log_sources.slice(0,6).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul>`:''}</section>`).join('');
+  extra+=first.map(a=>`<section class="mitrelocal-analytic"><h4>${esc(a.id)} · ${L('Analítica asociada','Associated analytic')}</h4><p>${esc(!langEn?(window.AttackDetectionSpanishV20?.analytic(a.id)?.summary||a.description_en||''):(a.description_en||''))}</p>${(a.log_sources||[]).length?`<strong>${L('Fuentes de registro propuestas','Suggested log sources')}</strong><ul>${a.log_sources.slice(0,6).map(logSourceMarkup).join('')}</ul>`:''}</section>`).join('');
  }
  if(r.type==='analytics'){
   if(r.parent)extra+=listRelations([r.parent],L('Estrategia de detección','Detection strategy'));
   else extra+=plainSection(L('Vinculación a estrategia DET','DET strategy association'),L('No aparece un DET vinculado en el índice aportado: no se ha supuesto esa relación.','No linked DET was provided in the supplied index; none has been inferred.'));
   const logs=record.log_sources||[];
-  if(logs.length)extra+=`<section><h4>${L('Fuentes de registro','Log sources')}</h4><ul>${logs.slice(0,12).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul></section>`;
+  if(logs.length)extra+=`<section><h4>${L('Fuentes de registro','Log sources')}</h4><ul>${logs.slice(0,12).map(logSourceMarkup).join('')}</ul></section>`;
  }
  if(r.type==='analytics')extra+=analyticParameters(record,langEn);
  if(r.type==='components'){
  extra+=listRelations(record.strategy_ids||[],L('Estrategias asociadas','Associated strategies'));
+ extra+=listRelations(record.analytic_ids||[],L('Analíticas relacionadas con el componente','Analytics linked to this component'));
  extra+=listRelations(record.technique_ids||[],L('Técnicas observables asociadas','Associated observed techniques'));
  extra+=componentEvidence(record);
+ extra+=telemetryEducation(record,langEn);
 }
 if(r.type==='datasources')extra+=deprecatedInfo();
  if(r.type==='campaigns')extra+=listRelations(record.software||[],L('Software documentado','Documented software'));
