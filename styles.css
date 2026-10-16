@@ -228,3 +228,10 @@
 .mitrelocal-attribution a{color:var(--cyan);text-decoration:underline}
 .mitrelocal-item:focus-visible,.mitrelocal-toolbar input:focus-visible,.mitrelocal-toolbar select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 @media(max-width:780px){.mitrelocal-layout{grid-template-columns:minmax(0,1fr)}.mitrelocal-list{max-height:260px}.mitrelocal-detail{padding:14px}}
+
+/* MITRE telemetry: current DC records and deprecated historic DS records */
+.mitrelocal-deprecated{background:#3a2923;color:#ffe7d5;border:1px solid #95684a;border-left:3px solid #f0b47b;border-radius:8px;padding:12px 14px;line-height:1.6}
+.mitrelocal-deprecated h4{color:inherit}
+.mitrelocal-log-sources ul{max-height:450px;overflow:auto;padding-left:23px}
+.mitrelocal-log-sources li{padding:5px 0;border-bottom:1px solid var(--border)}
+.mitrelocal-log-sources strong{color:var(--cyan)}

@@ -53,3 +53,38 @@ test('MITRE local directory: ICS assets and campaign references are local and tr
  await root.locator('[data-local-id="C0001"]').click();
  await expect(root.locator('#mitrelocalDetail')).toContainText('Frankenstein');
 });
+
+test('MITRE local catalog: current DC sources and bilingual descriptions',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await root.locator('#mitrelocalType').selectOption('components');
+ await expect(root.locator('#mitrelocalCount')).toContainText('120 coincidencias');
+ await root.locator('#mitrelocalSearch').fill('DC0002');
+ await root.locator('[data-local-id="DC0002"]').click();
+ const detail=root.locator('#mitrelocalDetail');
+ await expect(detail).toContainText('Autenticación de cuentas');
+ await expect(detail.locator('.mitrelocal-log-sources')).toContainText('auditd:AUTH');
+ await expect(detail).toContainText('Estrategias asociadas');
+ await page.locator('#language').selectOption('en');
+ await expect(detail).toContainText('User Account Authentication');
+ await expect(detail.locator('.mitrelocal-log-sources')).toContainText('Documented log sources and channels');
+ await root.locator('#mitrelocalSearch').fill('DC0119');
+ await root.locator('[data-local-id="DC0119"]').click();
+ await expect(detail).toContainText('Application Assets');
+});
+test('MITRE local catalog: deprecated DS references are marked in Spanish and English',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await root.locator('#mitrelocalType').selectOption('datasources');
+ await expect(root.locator('#mitrelocalCount')).toContainText('42 coincidencias');
+ await root.locator('#mitrelocalSearch').fill('DS0001');
+ await root.locator('[data-local-id="DS0001"]').click();
+ const detail=root.locator('#mitrelocalDetail');
+ await expect(detail.locator('.mitrelocal-deprecated')).toContainText('obsoleta');
+ await expect(detail).toContainText('Firmware');
+ await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/datasources\/DS0001/);
+ await page.locator('#language').selectOption('en');
+ await expect(detail.locator('.mitrelocal-deprecated')).toContainText('deprecated');
+ await detail.locator('[data-local-modern]').click();
+ await expect(root.locator('#mitrelocalType')).toHaveValue('components');
+});

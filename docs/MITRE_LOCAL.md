@@ -11,11 +11,12 @@ La biblioteca ya incluye un catálogo **versionado** en `data/mitre/v20/`. No ne
 | S — Software documentado | 974 (incluye entradas obsoletas/redirecciones del archivo) |
 | DET — Estrategias de detección | 933 activas en la instantánea |
 | AN — Analíticas de detección | 2.268, vinculadas a DET |
-| DC — Componentes de datos | 112 |
+| DC — Componentes de datos | 120 (8 incorporados) |
 | A — Activos industriales | 18 |
 | C — Campañas | 61 |
 | M — Mitigaciones | 109 |
-| **Entradas de búsqueda** | **5.451** |
+| DS — Fuentes de datos históricas obsoletas | 42 |
+| **Entradas de búsqueda** | **5.501** |
 
 Los datos proceden de archivos **aportados por el usuario**, capturas HTML del sitio MITRE ATT&CK de octubre de 2026, junto con extracciones estructuradas previas del mismo material. Los JSON **no son un feed en vivo**: conservan nombres/descripciones oficiales en inglés y relaciones explícitas; no se ha inferido qué software empleó una técnica si la página no lo documentaba.
 
@@ -26,7 +27,8 @@ Los datos proceden de archivos **aportados por el usuario**, capturas HTML del s
 - `links.json`: enlaces explícitos desde técnicas a estrategias, software, mitigaciones, campañas y activos
 - `techniques-*.json`, `software-*.json`, `tactics-*.json`: fichas originales
 - `detections-*.json`: estrategias DET y sus analíticas AN, con fuentes DC y parámetros de ajuste
-- `components-00.json`: componentes DC documentados
+- `components-00.json` a `components-11.json`: 120 componentes DC con descripciones, canales de registro y vínculos DET/T
+- `datasources-00.json`: 42 fuentes DS históricas, todas marcadas como obsoletas en sus páginas MITRE
 - `assets-00.json`, `campaigns-00.json`, `mitigations-00.json`: nuevas colecciones
 
 Los archivos se han dividido en fragmentos pequeños para acelerar consultas desde GitHub Pages. La interfaz **solo descarga índices al abrir la biblioteca**, y el fragmento de datos correspondiente al abrir una ficha.
@@ -52,3 +54,11 @@ Las páginas MITRE enlazadas pueden cambiar con el tiempo. Antes de incorporar o
 Información y licencia: https://attack.mitre.org/resources/terms-of-use/ 
 
 ATT&CK LAB es independiente de MITRE. Hay que mantener esta atribución al redistribuir sus datos.
+
+## Componentes DC y fuentes históricas DS (actualización v20)
+
+Los archivos `datacomponents.rar` y `datasources.rar` suministrados incorporan 120 fichas DC y 42 fichas DS, respectivamente. **Se han añadido ocho DC al índice que anteriormente solo incluía 112**, preservando los vínculos DET/AN anteriores. De los 120 componentes se han extraído **3.832 filas de fuentes y canales** y sus relaciones publicadas con técnicas y estrategias.
+
+Las **42 páginas DS incluyen el aviso «Deprecation Warning» de MITRE** y permanecen disponibles únicamente como referencia histórica. No se han supuesto equivalencias DS → DC ni se consideran fuentes vigentes. La interfaz etiqueta estos registros de manera visible en español e inglés.
+
+En las fichas DC se muestran hasta 24 fuentes/canales y se enlaza a MITRE para el conjunto completo. No son eventos de un SIEM real ni una regla lista para producción. La traducción española sigue siendo progresiva: se han añadido 15 títulos y explicaciones de DC y 11 denominaciones DS como **borradores pendientes de revisión**; los nombres y descripciones oficiales en inglés se conservan.
