@@ -20,8 +20,8 @@ async function load(){
  loadPromise=(async()=>{
   try{
    const m=await readJson('manifest.json');
-   if(!Array.isArray(m.shards)||m.shards.length<1||!Array.isArray(m.versions))throw Error('Incomplete manifest');
-   manifest=m;selection=m.versions.at(-1)?.id||'';
+   if(!Array.isArray(m.shards)||m.shards.length<1||!Array.isArray(m.releases))throw Error('Incomplete manifest');
+   manifest=m;selection=m.releases.at(-1)?.id||'';
    draw();await ensureSelected();
   }catch(e){panel(tr('No se ha podido abrir el historial. Comprueba data/mitre/history/.','Could not open history. Check data/mitre/history/.')+' '+e.message);
    root.innerHTML+='<button type="button" data-history-retry class="outline-btn">'+tr('Reintentar','Retry')+'</button>'}
@@ -51,7 +51,7 @@ function draw(){
  root.innerHTML=`<header class="section-head"><div><div class="overline">MITRE ATT&CK · ${esc(manifest.scope)} · ${tr('ARCHIVO HISTÓRICO','HISTORICAL ARCHIVE')}</div><h2>${tr('Qué cambió en MITRE','What changed in MITRE')}</h2><p>${tr('Consulta cuándo se incorporó, revisó o retiró un código entre versiones. Se basa en los changelogs archivados, no en una fuente en vivo.','Explore when an ID was added, revised or retired between releases. Based on archived changelogs, not a live feed.')}</p></div><span class="lesson-badge">${manifest.events.toLocaleString(lang()?'en':'es')} ${tr('cambios','changes')}</span></header>
  <div class="mitrehistory-note">${tr('Las versiones cambian las clasificaciones y el contenido. Un código ausente de un changelog NO significa que no existiera. Una entrada histórica tampoco determina su estado actual.','Taxonomy and content evolve. An ID missing from a changelog does NOT mean it did not exist. A historical event does not establish its current status.')}</div>
  <div class="mitrehistory-filters">
- <label>${tr('Cambio entre versiones','Release transition')}<select id="historyRelease">${manifest.versions.map(v=>`<option value="${esc(v.id)}" ${selection===v.id?'selected':''}>${esc(v.id.replace('-',' → '))} · ${v.total}</option>`).join('')}</select></label>
+ <label>${tr('Cambio entre versiones','Release transition')}<select id="historyRelease">${manifest.releases.map(v=>`<option value="${esc(v.id)}" ${selection===v.id?'selected':''}>${esc(v.id.replace('-',' → '))} · ${v.total}</option>`).join('')}</select></label>
  <label>${tr('Buscar identificador o nombre','Search ID or name')}<input id="historySearch" type="search" autocomplete="off" placeholder="T1059.001 · DET0001 · AN0001" value="${esc(query)}"></label>
  <label>${tr('Dominio','Domain')}<select id="historyDomain"><option value="all">${tr('Todos','All')}</option>${Object.entries(domains).map(([k,t])=>`<option value="${k}" ${domain===k?'selected':''}>${t[lang()?1:0]}</option>`).join('')}</select></label>
  <label>${tr('Tipo','Category')}<select id="historyCategory"><option value="all">${tr('Todos','All')}</option>${categories.map((v,i)=>`<option value="${i}" ${category===String(i)?'selected':''}>${v[lang()?1:0]}</option>`).join('')}</select></label>
