@@ -8,9 +8,12 @@ const L=(es,en)=>enc()?en:es;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&quot;',"'":'&#39;'}[c]));
 const validPath=name=>/^(?:[a-z]+-\d{2}|manifest|links|group-links|platform-matrices|study-resources|analytics-appendix)\.json$/.test(name);
 const fetchLocal=async name=>{if(!validPath(name))throw Error('Unexpected JSON path');const r=await fetch(BASE+name);if(!r.ok)throw Error('HTTP '+r.status+' · '+name);return r.json()};
-let manifest=null,items=[],links={},groupLinks={},platforms=[],guides=[],selected=null,filter='all',domain='all',platform='all',query='',loading=null,error=null,detailsEpoch=0;
+let manifest=null,items=[],links={},groupLinks={},platforms=[],guides=[],selected=null,filter='all',domain='all',platform='all',translation='all',query='',loading=null,error=null,detailsEpoch=0;
 const cache=new Map();
-const normName=r=>enc()?r.name_en:(r.name_es||r.name_en);
+// Educational Spanish drafts never overwrite the original MITRE data.
+const spanishTitle=r=>r.name_es||window.AttackSpanishV20?.translate(r.id,r.name_en,r.type)||'';
+const normName=r=>enc()?r.name_en:(spanishTitle(r)||r.name_en);
+const hasSpanishTitle=r=>!!spanishTitle(r);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
 function sourceLink(r,type){
  const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',datasources:'datasources',groups:'groups',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
@@ -71,6 +74,7 @@ function render(){
  root.innerHTML=`<header class="section-head"><div><div class="overline">MITRE ATT&CK · v20 · ${L('ARCHIVOS DEL REPOSITORIO','REPOSITORY FILES')}</div><h2>${L('Biblioteca MITRE integrada','Integrated MITRE library')}</h2><p>${L('Consulta directamente los JSON incluidos en esta web. No hay descarga del STIX completo para esta sección.','Query the JSON files shipped with this site. No full STIX download is required for this section.')}</p></div><span class="lesson-badge">${count.toLocaleString(enc()?'en':'es')} IDs</span></header>
  <p class="mitrelocal-note">${L('Fotografía del material MITRE v20 aportado. Incluye Enterprise, Mobile e ICS. Las 42 fuentes DS son históricas y obsoletas; los 120 DC son componentes actuales. Las traducciones disponibles son borradores salvo revisión.','Snapshot from user-supplied MITRE v20 material. Includes Enterprise, Mobile and ICS. All 42 DS sources are historic and deprecated; the 120 DC records describe current components. Spanish drafts are marked.')}</p>
  <div class="mitrelocal-toolbar"><label>${L('Buscar identificador o nombre','Search ID or name')}<input type="search" id="mitrelocalSearch" autocomplete="off" placeholder="T1059.001 · DET0001 · AN0001 · S0002" value="${esc(query)}"></label><label>${L('Colección','Collection')}<select id="mitrelocalType">${Object.keys(titles).map(k=>`<option value="${k}" ${filter===k?'selected':''}>${esc(typeName(k))}</option>`).join('')}</select></label><label>${L('Dominio','Domain')}<select id="mitrelocalDomain">${['all','enterprise','mobile','ics'].map(k=>`<option value="${k}" ${domain===k?'selected':''}>${k==='all'?L('Todos','All'):k==='ics'?'ICS':k[0].toUpperCase()+k.slice(1)}</option>`).join('')}</select></label></div>
+ <div class="mitrelocal-toolbar"><label>${L('Traducción española','Spanish translation')}<select id="mitrelocalTranslation"><option value="all" ${translation==='all'?'selected':''}>${L('Todas las fichas','All records')}</option><option value="es" ${translation==='es'?'selected':''}>${L('Título español disponible','Spanish title available')}</option><option value="pending" ${translation==='pending'?'selected':''}>${L('Título pendiente','Title pending')}</option></select></label><p class="muted" id="mitrelocalTranslationStats"></p></div>
  <div class="mitrelocal-toolbar mitrelocal-platform-toolbar">${platformMarkup()}</div>
  ${guidesMarkup()}
  <div class="mitrelocal-layout"><div class="mitrelocal-results"><p class="muted" id="mitrelocalCount"></p><div id="mitrelocalList" class="mitrelocal-list"></div></div><article id="mitrelocalDetail" class="mitrelocal-detail"><p>${L('Busca un código y selecciona una ficha para leerla.','Search an ID and select a record to read it.')}</p></article></div>
@@ -80,8 +84,10 @@ function render(){
 function matchesDomain(r){const d=(r.domain||'').toLowerCase();return domain==='all'||d===domain||d.includes(domain)}
 function renderList(){
  const el=root.querySelector('#mitrelocalList'),count=root.querySelector('#mitrelocalCount');if(!el)return;
+ const stats=root.querySelector('#mitrelocalTranslationStats');
+ if(stats)stats.textContent=items.filter(hasSpanishTitle).length+' / '+items.length+' '+L('títulos en español, incluidos borradores educativos','Spanish titles, including educational drafts');
  const term=query.trim().toLocaleLowerCase();
- const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(!term||[r.id,r.name_en,r.name_es,...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
+ const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(translation==='all'||(translation==='es')===hasSpanishTitle(r))&&(!term||[r.id,r.name_en,spanishTitle(r),...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
  count.textContent=all.length+' '+L('coincidencias','matches')+(all.length>60?' · '+L('se muestran las primeras 60; concreta la búsqueda','first 60 shown; refine your search'):'');
  el.innerHTML=all.slice(0,60).map(r=>`<button type="button" class="mitrelocal-item" data-local-id="${esc(r.id)}" data-local-type="${esc(r.type)}" data-local-domain="${esc(r.domain||'')}" aria-pressed="${selected?.id===r.id&&selected.type===r.type}"><strong>${esc(r.id)}</strong><span>${esc(normName(r))}</span><small>${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</small></button>`).join('')||'<p>'+L('No hay resultados.','No results.')+'</p>';
 }
@@ -111,8 +117,8 @@ function deprecatedInfo(){
 }
 function renderDetail(r,record){
  const langEn=enc(),status=record.translation_status||'pending',titleEn=record.name_en||record.title_en||record.name||r.name_en;
- const titleEs=record.name_es||record.title_es||'';
- const summary=record.summary_es||record.description_es||'';
+ const titleEs=record.name_es||record.title_es||window.AttackSpanishV20?.translate(r.id,titleEn,r.type)||'';
+ const summary=record.summary_es||record.description_es||(r.type==='techniques'?window.AttackSpanishV20?.note(r.id):null)||'';
  const translated=!!(titleEs||summary);
  const quality=translated?(status==='reviewed_es'||status==='reviewed'?L('Traducción revisada','Reviewed translation'):L('Español provisional · pendiente de revisión','Spanish draft · review pending')):L('Original en inglés · traducción pendiente','English original · translation pending');
  const description=usefulEnglish(record);
@@ -157,7 +163,7 @@ if(r.type==='datasources')extra+=deprecatedInfo();
  return `<div class="overline">${esc(r.id)} · ${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</div><h3>${esc(subtitle)}</h3>
  <p class="mitrelocal-quality">${esc(quality)}</p>
  ${!langEn&&titleEs?`<p class="muted">${L('Nombre original MITRE','MITRE original name')}: ${esc(titleEn)}</p>`:''}
- ${!langEn&&summary?plainSection(L('Explicación inicial en español','Initial Spanish explanation'),summary):''}
+ ${!langEn&&summary?plainSection(L('Resumen educativo en español (no traducción literal)','Educational Spanish summary (not literal MITRE translation)'),summary):''}
  ${description?`<section><h4>${langEn?'MITRE source text':L('Descripción original en inglés','Original English description')}</h4><p>${esc(description)}</p></section>`:''}
  ${r.type==='analytics'?plainSection(L('Analítica asociada a DET','Analytic under DET'),r.parent):''}
  ${extra}
@@ -197,7 +203,8 @@ root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType'){filter=e.t
    if(matrix){filter='techniques';domain=matrix.domain;query='';selected=null;render();return}
   }
   render();return;
- }else return;renderList()});
+  }else if(e.target.id==='mitrelocalTranslation'){translation=e.target.value;renderList();return}
+ else return;renderList()});
 root.addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button)return;
  if(button.hasAttribute('data-local-modern')){filter='components';domain='all';query='';selected=null;render();return}
