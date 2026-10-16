@@ -11,6 +11,7 @@ Bienvenido a la documentación de ATT&CK LAB, una academia web independiente par
 | Entender los archivos y el diseño técnico | [Arquitectura y mapa de módulos](ARQUITECTURA.md) |
 | Crear una lección, caso o pregunta didáctica | [Guía de contenido educativo](CONTENIDO_EDUCATIVO.md) |
 | Localizar un código Txxxx no incluido en las lecciones | [Cobertura de ATT&CK en Evidencias explicadas](COBERTURA_ATTCK.md) |
+| Consultar las colecciones MITRE descargadas (TA/S/DET/AN/DC/A/C/M) | [Biblioteca MITRE local](MITRE_LOCAL.md) |
 | Colaborar sin romper el proyecto | [Guía de contribución](CONTRIBUIR.md) |
 
 ## Principios fundamentales

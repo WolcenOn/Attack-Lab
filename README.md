@@ -16,6 +16,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 | Área | Qué encontrarás |
 | --- | --- |
 | MITRE ATT&CK | Tácticas, técnicas, subtécnicas y explicaciones |
+| Biblioteca MITRE local v20 | 5.451 entradas consultables desde el repositorio (T, S, TA, DET, AN, DC, A, C, M); enlaces de procedencia, borradores en español |
 | Evidencias explicadas · Txxxx | Carga automática de MITRE Enterprise con caché local, glosario bilingüe y fichas introductorias |
 | Formación | Itinerarios, microlecciones, glosario y preguntas razonadas |
 | **ASIR 2.º** | Ruta técnica complementaria: sistemas, redes, web, SGBD y seguridad/alta disponibilidad, con prácticas enlazadas |
@@ -24,9 +25,12 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 | Forense y respuesta | Memoria, malware, red, evidencias y decisiones de contención |
 | Modo experto | Comandos comentados y salidas ficticias para aprender a interpretarlas |
 
+La sección **Catálogos MITRE** carga sus índices y fichas desde `data/mitre/v20/` al entrar en ella; no requiere bajar el archivo STIX completo. El explorador ATT&CK tradicional mantiene su flujo independiente de sincronización oficial. Las traducciones pendientes se identifican expresamente.
+
 ## Documentación
 
 - [Índice de guías](docs/README.md)
+- [Integrar más archivos MITRE en el directorio](docs/MITRE_LOCAL.md)
 - [Guía del alumno](docs/GUIA_DEL_ALUMNO.md)
 - [Ruta de apoyo para 2.º de ASIR](docs/ASIR_2.md)
 - [Arquitectura y mapa de módulos](docs/ARQUITECTURA.md)
