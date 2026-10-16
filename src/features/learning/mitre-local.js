@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const root=document.getElementById('mitrelocalView');if(!root)return;
 const BASE='data/mitre/v20/';
-const titles={all:['Todo','All'],techniques:['Técnicas T','Techniques T'],tactics:['Tácticas TA','Tactics TA'],software:['Software S','Software S'],detections:['Estrategias DET','Strategies DET'],analytics:['Analíticas AN','Analytics AN'],components:['Componentes DC','Components DC'],assets:['Activos ICS A','ICS assets A'],campaigns:['Campañas C','Campaigns C'],mitigations:['Mitigaciones M','Mitigations M']};
+const titles={all:['Todo','All'],techniques:['Técnicas T','Techniques T'],tactics:['Tácticas TA','Tactics TA'],software:['Software S','Software S'],detections:['Estrategias DET','Strategies DET'],analytics:['Analíticas AN','Analytics AN'],components:['Componentes DC','Components DC'],datasources:['Fuentes DS históricas','Historical DS sources'],assets:['Activos ICS A','ICS assets A'],campaigns:['Campañas C','Campaigns C'],mitigations:['Mitigaciones M','Mitigations M']};
 const enc=()=>document.getElementById('language')?.value==='en';
 const L=(es,en)=>enc()?en:es;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&quot;',"'":'&#39;'}[c]));
@@ -13,7 +13,7 @@ const cache=new Map();
 const normName=r=>enc()?r.name_en:(r.name_es||r.name_en);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
 function sourceLink(r,type){
- const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
+ const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',datasources:'datasources',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
  const url=type==='analytics'&&r.parent?'https://attack.mitre.org/detectionstrategies/'+r.parent+'/':r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
  return /^https:\/\/attack\.mitre\.org\//.test(url)?url:'https://attack.mitre.org/';
 }
@@ -42,7 +42,7 @@ function render(){
  if(!manifest)return;
  const count=items.length;
  root.innerHTML=`<header class="section-head"><div><div class="overline">MITRE ATT&CK · v20 · ${L('ARCHIVOS DEL REPOSITORIO','REPOSITORY FILES')}</div><h2>${L('Biblioteca MITRE integrada','Integrated MITRE library')}</h2><p>${L('Consulta directamente los JSON incluidos en esta web. No hay descarga del STIX completo para esta sección.','Query the JSON files shipped with this site. No full STIX download is required for this section.')}</p></div><span class="lesson-badge">${count.toLocaleString(enc()?'en':'es')} IDs</span></header>
- <p class="mitrelocal-note">${L('Fotografía del material MITRE v20 aportado. Incluye Enterprise, Mobile e ICS. Algunas fichas están obsoletas; las traducciones españolas son borradores donde se indique.','Snapshot from user-supplied MITRE v20 material. Includes Enterprise, Mobile and ICS. Some entries are deprecated; Spanish drafts are marked.')}</p>
+ <p class="mitrelocal-note">${L('Fotografía del material MITRE v20 aportado. Incluye Enterprise, Mobile e ICS. Las 42 fuentes DS son históricas y obsoletas; los 120 DC son componentes actuales. Las traducciones disponibles son borradores salvo revisión.','Snapshot from user-supplied MITRE v20 material. Includes Enterprise, Mobile and ICS. All 42 DS sources are historic and deprecated; the 120 DC records describe current components. Spanish drafts are marked.')}</p>
  <div class="mitrelocal-toolbar"><label>${L('Buscar identificador o nombre','Search ID or name')}<input type="search" id="mitrelocalSearch" autocomplete="off" placeholder="T1059.001 · DET0001 · AN0001 · S0002" value="${esc(query)}"></label><label>${L('Colección','Collection')}<select id="mitrelocalType">${Object.keys(titles).map(k=>`<option value="${k}" ${filter===k?'selected':''}>${esc(typeName(k))}</option>`).join('')}</select></label><label>${L('Dominio','Domain')}<select id="mitrelocalDomain">${['all','enterprise','mobile','ics'].map(k=>`<option value="${k}" ${domain===k?'selected':''}>${k==='all'?L('Todos','All'):k==='ics'?'ICS':k[0].toUpperCase()+k.slice(1)}</option>`).join('')}</select></label></div>
  <div class="mitrelocal-layout"><div class="mitrelocal-results"><p class="muted" id="mitrelocalCount"></p><div id="mitrelocalList" class="mitrelocal-list"></div></div><article id="mitrelocalDetail" class="mitrelocal-detail"><p>${L('Busca un código y selecciona una ficha para leerla.','Search an ID and select a record to read it.')}</p></article></div>
  <p class="mitrelocal-attribution">© 2026 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation. <a href="https://attack.mitre.org/resources/terms-of-use/" target="_blank" rel="noopener noreferrer">MITRE ATT&CK · ${L('condiciones de uso','terms of use')} ↗</a></p>`;
@@ -68,6 +68,17 @@ function techniqueIds(obj){
  if(Array.isArray(rel))return [...new Set(rel.map(x=>typeof x==='string'?x:x.id).filter(Boolean))];
  if(typeof rel==='object')return [...new Set(Object.values(rel).flat().filter(x=>typeof x==='string'))];
  return [];
+}
+function componentEvidence(record){
+ const logs=record.log_sources||[];
+ const count=logs.length;
+ return `<section class="mitrelocal-log-sources"><h4>${L('Fuentes y canales de registro documentados','Documented log sources and channels')} (${count})</h4>
+ <p class="mitrelocal-note">${L('Estos canales son referencias de telemetría de MITRE, no eventos reales ni detecciones confirmadas de tu red. Comprueba si dispones de cada fuente antes de diseñar una regla.','These are MITRE telemetry references, not live events or confirmed detections from your network. Verify coverage before designing a rule.')}</p>
+ ${logs.length?`<ul>${logs.slice(0,24).map(x=>`<li><strong>${esc(x.source)}</strong> · ${esc(x.channel)}</li>`).join('')}</ul>`:`<p>${L('Esta página no enumera canales concretos.','This page does not enumerate specific log channels.')}</p>`}
+ ${count>24?`<p class="muted">${L('Mostrando 24 de','Showing 24 of')} ${count}. ${L('Consulta el enlace MITRE para ver el listado completo.','See MITRE for the full list.')}</p>`:''}</section>`;
+}
+function deprecatedInfo(){
+ return `<section class="mitrelocal-deprecated" role="status"><h4>${L('Fuente histórica obsoleta','Deprecated historical source')}</h4><p>${L('MITRE marcó esta categoría DS como obsoleta. Para diseñar detecciones actuales, explora los componentes DC y sus estrategias DET. No se supone ninguna equivalencia directa DS → DC.','MITRE marked this DS category as deprecated. For current detections, explore DC components and related DET strategies. No direct DS → DC correspondence is assumed.')}</p><button type="button" class="outline-btn" data-local-modern>${L('Explorar componentes DC','Explore DC components')} →</button></section>`;
 }
 function renderDetail(r,record){
  const langEn=enc(),status=record.translation_status||'pending',titleEn=record.name_en||record.title_en||record.name||r.name_en;
@@ -98,7 +109,12 @@ function renderDetail(r,record){
   const logs=record.log_sources||[];
   if(logs.length)extra+=`<section><h4>${L('Fuentes de registro','Log sources')}</h4><ul>${logs.slice(0,12).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul></section>`;
  }
- if(r.type==='components')extra+=listRelations(record.strategy_ids||[],L('Estrategias asociadas','Associated strategies'));
+ if(r.type==='components'){
+ extra+=listRelations(record.strategy_ids||[],L('Estrategias asociadas','Associated strategies'));
+ extra+=listRelations(record.technique_ids||[],L('Técnicas observables asociadas','Associated observed techniques'));
+ extra+=componentEvidence(record);
+}
+if(r.type==='datasources')extra+=deprecatedInfo();
  if(r.type==='campaigns')extra+=listRelations(record.software||[],L('Software documentado','Documented software'));
  const subtitle=langEn?titleEn:(titleEs||titleEn);
  return `<div class="overline">${esc(r.id)} · ${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</div><h3>${esc(subtitle)}</h3>
@@ -134,6 +150,7 @@ root.addEventListener('input',e=>{if(e.target.id==='mitrelocalSearch'){query=e.t
 root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType')filter=e.target.value;else if(e.target.id==='mitrelocalDomain')domain=e.target.value;else return;renderList()});
 root.addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button)return;
+ if(button.hasAttribute('data-local-modern')){filter='components';domain='all';query='';selected=null;render();return}
  if(button.hasAttribute('data-local-retry')){manifest=null;error=null;void ensure();return}
  if(button.dataset.localId){const record=lookup(button.dataset.localId,button.dataset.localType,button.dataset.localDomain);if(record)void show(record);return}
  if(button.dataset.localLink){const record=lookup(button.dataset.localLink);if(record){query=record.id;filter='all';domain='all';render();void show(record);}return}
