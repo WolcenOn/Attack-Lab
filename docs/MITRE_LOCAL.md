@@ -132,3 +132,22 @@ El PR posterior al #25 amplía los borradores con **48 analíticas AN** y **una 
 - **Idiomas:** los comentarios y explicaciones propias aparecen únicamente en español. Al seleccionar inglés se mantienen los nombres y descripciones originales, los campos técnicos y las fuentes MITRE. Los identificadores de logs, comandos, rutas y los vínculos de origen no se traducen ni alteran.
 
 Pruebas de regresión: el catálogo debe comprobar todos los IDs del lote contra los datos locales, las relaciones DET/AN/DC, la cobertura del glosario, búsqueda en español y el cambio ES→EN→ES en escritorio y móvil.
+
+## Traducción progresiva de todo el catálogo: lote DC, DS y activos ICS
+
+El glosario separado `src/features/learning/mitre-es-v20-catalog-extension.js` cubre con títulos españoles **los 120 componentes DC**, **las 42 fuentes históricas DS** y **los 18 activos industriales A**. Las tácticas TA ya tenían título y resumen en español para sus 41 registros. El glosario nuevo no reescribe los JSON de MITRE ni sustituye títulos españoles existentes; añade únicamente lo que faltaba a través de la interfaz.
+
+| Colección | Títulos españoles disponibles tras este lote | Resúmenes nuevos en este lote | Pendiente de desarrollar |
+| --- | ---: | ---: | --- |
+| TA — tácticas | 41 / 41 | 0 (los 41 ya existían) | Revisión y traducciones integrales de descripciones |
+| DC — componentes de datos | 120 / 120 | 0 (15 ya tenían resumen) | Redactar o traducir descripciones y ejemplos para 105 restantes |
+| DS — fuentes históricas obsoletas | 42 / 42 | 42 | Revisión humana; son fuentes históricas, no reemplazo de DC |
+| A — activos ICS | 18 / 18 | 18 | Revisión y ampliación de descripciones |
+
+Los 60 resúmenes nuevos son textos didácticos en español basados en las fichas locales, **no traducciones literales completas** del inglés MITRE. La UI preserva la descripción original en inglés, identifica los borradores pendientes de revisión, permite buscar por nombre español y restaura los nombres ingleses al seleccionar EN. En DS se mantiene siempre la advertencia de categoría obsoleta.
+
+### Itinerario hacia cobertura total
+
+La cobertura de nombres no equivale a la cobertura de todas las explicaciones. Quedan otros lotes de títulos, descripciones y guías para DET (933 estrategias), AN (2.283 analíticas indexadas), software S (974), grupos G (191), campañas C (61), además de los DC restantes sin resumen español y cualquier detalle de T/M/TA aún en inglés. En S, G y nombres propios de campañas deben conservarse nombres y alias documentados; la traducción se centrará en explicaciones técnicas, sin inventar denominaciones ni hechos.
+
+Cada lote debe validar IDs y relaciones contra la instantánea local MITRE v20, comprobar búsqueda y alternancia ES/EN, mantener derechos y atribución, y entrar mediante un PR revisable, **sin fusión automática**.
