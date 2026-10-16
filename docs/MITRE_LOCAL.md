@@ -119,3 +119,16 @@ Se incorpora un glosario separado de los originales (`src/features/learning/mitr
 - **Fuentes inalteradas:** los JSON de `data/mitre/v20/`, las asociaciones DET→AN y los eventos técnicos no se modifican.
 
 Una búsqueda que no tenga borrador español seguirá mostrando el original inglés con estado de traducción pendiente. El siguiente lote debería ampliar las analíticas de las estrategias ya tratadas, junto con DC para hacer más clara la obtención real de telemetría.
+
+## Segundo lote educativo DET/AN y relación con telemetría DC
+
+El PR posterior al #25 amplía los borradores con **48 analíticas AN** y **una nueva estrategia DET (`DET0460`)**. Completa las explicaciones educativas de las analíticas vinculadas a las 18 estrategias priorizadas en el lote anterior, más las de `DET0070`, `DET0126`, `DET0210` y `DET0460`: 22 estrategias con todas sus AN asociadas cubiertas por el glosario educativo.
+
+- **Cobertura educativa nueva del segundo lote:** +1 DET y +48 AN.
+- **Cobertura total de glosarios específicos, tras los dos lotes:** 19/933 DET (2,04 %) y 83/2.283 AN (3,64 %). Los 28 DET con títulos y resúmenes españoles presentes originalmente en JSON son adicionales: **47/933 DET (5,04 %)** con título y resumen educativos españoles en total. El conteo de AN no incluye supuestas traducciones de las descripciones inglesas originales: son explicaciones educativas propias.
+- **Precisión del estado:** los nuevos textos son borradores pendientes de revisión, no traducciones oficiales, ni detecciones verificadas ni recetas listas para SIEM. El catálogo original no se edita.
+- **Búsqueda y navegación:** desde las fuentes de log de una AN se puede abrir su componente DC, cuando está indexado. Las fichas DC permiten volver a sus analíticas relacionadas y priorizan en la lista los IDs con guía española, sin ocultar los demás. Se mantiene la navegación entre técnicas T y estrategias DET existente.
+- **Guía de telemetría para ASIR:** cinco componentes (`DC0002`, `DC0032`, `DC0064`, `DC0067`, `DC0082`) muestran propósito, ejemplos de dónde consultar registros y límites de interpretación. Estos ejemplos dependen de la configuración de auditoría y no deben confundirse con canales presentes o eventos recogidos realmente.
+- **Idiomas:** los comentarios y explicaciones propias aparecen únicamente en español. Al seleccionar inglés se mantienen los nombres y descripciones originales, los campos técnicos y las fuentes MITRE. Los identificadores de logs, comandos, rutas y los vínculos de origen no se traducen ni alteran.
+
+Pruebas de regresión: el catálogo debe comprobar todos los IDs del lote contra los datos locales, las relaciones DET/AN/DC, la cobertura del glosario, búsqueda en español y el cambio ES→EN→ES en escritorio y móvil.
