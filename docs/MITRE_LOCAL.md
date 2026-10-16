@@ -66,3 +66,13 @@ En las fichas DC se muestran hasta 24 fuentes/canales y se enlaza a MITRE para e
 ## Historial de versiones
 
 Las fichas de v20 y sus relaciones se mantienen separadas del nuevo [historial de cambios v7.2→v20.0](MITRE_HISTORIAL.md). Un cambio registrado en una versión no equivale a la situación actual de ese identificador.
+
+## Grupos G (nueva colección del archivo `groups.rar`)
+
+Se han revisado 196 páginas `Gxxxx` del archivo recibido: **191 fichas con contenido** y **5 redirecciones HTML** (`G0042`, `G0057`, `G0058`, `G0074`, `G0086`). Las cinco redirecciones no se han convertido en fichas nuevas ni se han contado como grupos actuales.
+
+La colección `groups-*.json` conserva nombre original, descripción inglesa de la página, alias, fecha y versión cuando aparecen, y las relaciones explícitas con técnicas (`Txxxx`), software (`Sxxxx`) y campañas (`Cxxxx`). `group-links.json` permite el recorrido inverso desde una técnica a los grupos que MITRE menciona. Los enlaces se han recogido de las tablas documentadas de cada ficha; **no se ha inferido autoría ni atribución independiente**. La capa Navigator de los originales no se duplica: sus técnicas quedan representadas en JSON navegable.
+
+En total se han extraído **7.373 enlaces grupo–técnica** (contando técnicas y subtécnicas tal como se documentan), además de 1.195 referencias a software y 27 a campañas; son relaciones en páginas, no observaciones independientes. Las descripciones continúan en inglés hasta que exista traducción española revisada y muestran el estado pendiente. El catálogo se puede filtrar por G y saltar de técnica a grupo, y de grupo a técnica, software o campaña.
+
+`datacomponents(1).rar` y `datasources(1).rar` se han identificado como segundas copias de las mismas 120 fichas DC y 42 fichas DS ya incorporadas en el PR #20, por lo que no se han cargado duplicados. `wiki.rar` contiene siete redirecciones antiguas de técnica sin fichas originales nuevas.
