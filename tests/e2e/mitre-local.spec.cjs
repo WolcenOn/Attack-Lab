@@ -146,7 +146,7 @@ test('MITRE local: translation coverage filter and sub-technique composition',as
  await root.locator('#mitrelocalSearch').fill('T1003.001');
  await expect(root.locator('[data-local-id="T1003.001"]')).toHaveCount(1);
  await root.locator('[data-local-id="T1003.001"]').click();
- await expect(root.locator('#mitrelocalDetail h3')).toContainText('memoria de LSASS');
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Memoria de LSASS');
  await page.locator('#language').selectOption('en');
  await expect(root.locator('#mitrelocalDetail h3')).toContainText('OS Credential Dumping: LSASS Memory');
  await root.locator('#mitrelocalTranslation').selectOption('pending');
