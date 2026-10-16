@@ -107,3 +107,15 @@ El buscador del catálogo local encuentra códigos, títulos originales, título
 ### Cobertura comprobable
 
 Se ha probado que los 706 títulos T de Enterprise, los 125 de Mobile, los 104 de ICS y los 109 M del archivo archivado tienen un borrador español disponible mediante `AttackSpanishV20.translate`. Esta cobertura se refiere **exclusivamente a los nombres**, no a las 935 descripciones originales ni a DET, AN, S o G. La exportación original inglesa no se altera. Se añade un test de regresión de cobertura que fallará si la siguiente instantánea incorpora un ID que todavía no tenga equivalente completo.
+
+## Primer lote educativo DET/AN en español (posterior al PR #24)
+
+Se incorpora un glosario separado de los originales (`src/features/learning/mitre-det-an-es-v20.js`), cargado antes de la biblioteca local. Contiene **18 estrategias DET** con título, resumen, señales, fuentes que investigar, limitaciones de interpretación y pregunta razonada; y **35 analíticas AN** con título descriptivo, explicación y orientación de comprobación para ASIR.
+
+- **Cobertura nueva de este glosario:** 18/933 estrategias DET (1,93 %) y 35/2.283 analíticas AN (1,53 %). Son fichas educativas, **no** traducciones literales completas de la documentación de MITRE ni una medición de todos los campos de la fuente. Puede haber otros títulos y resúmenes españoles anteriores guardados en los JSON.
+- **Estado:** todos los textos del glosario son propuestas pendientes de revisión humana. No deben etiquetarse como revisados u oficiales. Las fuentes, nombres de campos, IDs, expresiones y definiciones originales de parámetros continúan en inglés.
+- **Interfaz:** los títulos españoles participan en los resultados y filtros de búsqueda; los términos explicativos del glosario también son buscables. En ES se muestra la guía educativa junto al original MITRE. Al seleccionar EN se ocultan las guías propias y se mantienen el nombre y la explicación ingleses. En las analíticas se incluyen parámetros originales y, cuando existe, consejo didáctico de ajuste en español.
+- **Alcance educativo:** administración Windows/Linux, cuentas de dominio, servicios cloud, MFA, PowerShell, RDP, procesos, phishing, movimiento lateral, memoria sensible y fuerza bruta. Las estrategias y las analíticas no son reglas de SIEM listas para producción; requieren validar disponibilidad de logs, umbrales y casos legítimos.
+- **Fuentes inalteradas:** los JSON de `data/mitre/v20/`, las asociaciones DET→AN y los eventos técnicos no se modifican.
+
+Una búsqueda que no tenga borrador español seguirá mostrando el original inglés con estado de traducción pendiente. El siguiente lote debería ampliar las analíticas de las estrategias ya tratadas, junto con DC para hacer más clara la obtención real de telemetría.
