@@ -33,7 +33,7 @@ if manifest['categories'].get('groups'):
  assert len(groups)==manifest['categories']['groups']['count']
  assert len(groups)==len(set(groups))
  reverse=json.loads((root/'group-links.json').read_text())
- assert all(re.fullmatch(r'T\\d{4}(?:\\.\\d{3})?',k) for k in reverse)
+ assert all(re.fullmatch(r'T\d{4}(?:\.\d{3})?',k) for k in reverse)
  for technique,group_ids in reverse.items():
   for group_id in group_ids:
    assert group_id in groups,(technique,group_id)
