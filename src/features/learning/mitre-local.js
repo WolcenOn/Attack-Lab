@@ -219,7 +219,10 @@ function renderDetail(r,record){
  if(r.type==='analytics')extra+=analyticParameters(record,langEn);
  if(r.type==='components'){
  extra+=listRelations(record.strategy_ids||[],L('Estrategias asociadas','Associated strategies'));
- extra+=listRelations(record.analytic_ids||[],L('Analíticas relacionadas con el componente','Analytics linked to this component'));
+ const componentAnalytics=record.analytic_ids||[];
+ const withDraft=componentAnalytics.filter(id=>!!window.AttackDetectionSpanishV20?.analytic(id));
+ const withoutDraft=componentAnalytics.filter(id=>!window.AttackDetectionSpanishV20?.analytic(id));
+ extra+=listRelations([...withDraft,...withoutDraft],L('Analíticas relacionadas con el componente (borradores primero)','Analytics linked to this component (drafts first)'));
  extra+=listRelations(record.technique_ids||[],L('Técnicas observables asociadas','Associated observed techniques'));
  extra+=componentEvidence(record);
  extra+=telemetryEducation(record,langEn);
