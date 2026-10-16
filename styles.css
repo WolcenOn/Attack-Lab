@@ -235,3 +235,20 @@
 .mitrelocal-log-sources ul{max-height:450px;overflow:auto;padding-left:23px}
 .mitrelocal-log-sources li{padding:5px 0;border-bottom:1px solid var(--border)}
 .mitrelocal-log-sources strong{color:var(--cyan)}
+
+/* Local MITRE changelog history — independent of the v20 object catalog */
+.mitrehistory-note{border:1px solid var(--border);background:var(--panel);padding:14px;border-radius:10px;margin:14px 0;line-height:1.7;color:var(--muted)}
+.mitrehistory-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0}
+.mitrehistory-filters label{font-size:12px;font-weight:750;display:flex;flex-direction:column;gap:7px;color:var(--muted)}
+.mitrehistory-filters select,.mitrehistory-filters input{width:100%;min-width:0;padding:11px 10px;box-sizing:border-box;border-radius:8px;background:#112536;color:var(--text);border:1px solid #466077}
+.mitrehistory-scopes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.mitrehistory-scopes button[aria-pressed="true"]{border-color:var(--cyan);background:#18433f}
+.mitrehistory-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px;margin:15px 0}
+.mitrehistory-item{border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:14px;overflow-wrap:anywhere}
+.mitrehistory-item h4{font-size:15px;line-height:1.5;margin:10px 0 5px}
+.mitrehistory-item p{font-size:12px;line-height:1.6;color:var(--muted)}
+.mitrehistory-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;font-size:12px}
+.mitrehistory-row strong{color:var(--cyan)}
+.mitrehistory-change{border:1px solid #455f6f;border-radius:6px;padding:3px 7px}
+.mitrehistory-item button{white-space:normal}
+@media(max-width:640px){.mitrehistory-filters{grid-template-columns:1fr}.mitrehistory-results{grid-template-columns:1fr}}
