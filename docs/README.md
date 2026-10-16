@@ -12,6 +12,7 @@ Bienvenido a la documentación de ATT&CK LAB, una academia web independiente par
 | Crear una lección, caso o pregunta didáctica | [Guía de contenido educativo](CONTENIDO_EDUCATIVO.md) |
 | Localizar un código Txxxx no incluido en las lecciones | [Cobertura de ATT&CK en Evidencias explicadas](COBERTURA_ATTCK.md) |
 | Consultar las colecciones MITRE descargadas (TA/S/DET/AN/DC/A/C/M) | [Biblioteca MITRE local](MITRE_LOCAL.md) |
+| Consultar modificaciones por versión, ID, dominio o tipo | [Historial de cambios MITRE](MITRE_HISTORIAL.md) |
 | Colaborar sin romper el proyecto | [Guía de contribución](CONTRIBUIR.md) |
 
 ## Principios fundamentales

@@ -6,6 +6,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 
 ## Empezar
 
+- **Historial MITRE:** consulta 28 transiciones entre versiones desde la sección Aprendizaje → Historial MITRE. [Metodología](docs/MITRE_HISTORIAL.md).
 - **Web publicada (si GitHub Pages está habilitado):** https://wolcenon.github.io/Attack-Lab/
 - **En local:** descarga el repositorio, mantén los archivos juntos y abre `index.html`.
 - Si el navegador limita peticiones desde archivos locales, inicia un servidor estático con `python -m http.server 8000` y abre http://localhost:8000.
