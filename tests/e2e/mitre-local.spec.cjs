@@ -119,3 +119,37 @@ test('MITRE local groups: correct manifest counts and preserved DS/DC catalogs',
  expect(m.index_shards).toContain('index-05.json');
  expect(m.group_link_shard).toBe('group-links.json');
 });
+
+test('MITRE local: Spanish draft translations improve T/M names while preserving English',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await root.locator('#mitrelocalSearch').fill('T1059');
+ await root.locator('[data-local-id="T1059"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Intérprete de comandos y scripts');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Resumen educativo en español');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Español provisional');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Descripción original en inglés');
+ await root.locator('#mitrelocalSearch').fill('Detención de servicios');
+ await expect(root.locator('[data-local-id="T1489"]')).toHaveCount(1);
+ await root.locator('#mitrelocalSearch').fill('M1030');
+ await root.locator('[data-local-id="M1030"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Segmentación de red');
+ await page.locator('#language').selectOption('en');
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Network Segmentation');
+});
+test('MITRE local: translation coverage filter and sub-technique composition',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('títulos en español');
+ await root.locator('#mitrelocalType').selectOption('techniques');
+ await root.locator('#mitrelocalTranslation').selectOption('es');
+ await root.locator('#mitrelocalSearch').fill('T1003.001');
+ await expect(root.locator('[data-local-id="T1003.001"]')).toHaveCount(1);
+ await root.locator('[data-local-id="T1003.001"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('memoria de LSASS');
+ await page.locator('#language').selectOption('en');
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('OS Credential Dumping: LSASS Memory');
+ await root.locator('#mitrelocalTranslation').selectOption('pending');
+ await root.locator('#mitrelocalSearch').fill('T1003.001');
+ await expect(root.locator('[data-local-id="T1003.001"]')).toHaveCount(0);
+});
