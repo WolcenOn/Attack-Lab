@@ -88,3 +88,34 @@ test('MITRE local catalog: deprecated DS references are marked in Spanish and En
  await detail.locator('[data-local-modern]').click();
  await expect(root.locator('#mitrelocalType')).toHaveValue('components');
 });
+
+test('MITRE local groups: aliases, T-G-T navigation and bilingual names',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await root.locator('#mitrelocalType').selectOption('groups');
+ await expect(root.locator('#mitrelocalCount')).toContainText('191 coincidencias');
+ await root.locator('#mitrelocalSearch').fill('COLDRIVER');
+ await expect(root.locator('[data-local-id="G1033"]')).toHaveCount(1);
+ await root.locator('[data-local-id="G1033"]').click();
+ const detail=root.locator('#mitrelocalDetail');
+ await expect(detail).toContainText('Star Blizzard');
+ await expect(detail).toContainText('Otros nombres documentados');
+ await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/groups\/G1033/);
+ await detail.locator('[data-local-link="T1550.004"]').click();
+ await expect(detail).toContainText('T1550.004');
+ await expect(detail).toContainText('Grupos documentados en MITRE');
+ await detail.locator('[data-local-link="G1033"]').click();
+ await expect(detail).toContainText('Star Blizzard');
+ await page.locator('#language').selectOption('en');
+ await expect(detail).toContainText('Documented aliases');
+ await expect(root.locator('#mitrelocalType')).toHaveValue('all');
+});
+test('MITRE local groups: correct manifest counts and preserved DS/DC catalogs',async({page})=>{
+ await enter(page);
+ const m=await page.evaluate(async()=>{const r=await fetch('data/mitre/v20/manifest.json');return r.json()});
+ expect(m.categories.groups.count).toBe(191);
+ expect(m.categories.components.count).toBe(120);
+ expect(m.categories.datasources.count).toBe(42);
+ expect(m.index_shards).toContain('index-05.json');
+ expect(m.group_link_shard).toBe('group-links.json');
+});

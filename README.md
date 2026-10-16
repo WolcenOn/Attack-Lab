@@ -26,7 +26,7 @@ ATT&CK LAB es un proyecto educativo independiente: combina lecciones, misiones e
 | Forense y respuesta | Memoria, malware, red, evidencias y decisiones de contención |
 | Modo experto | Comandos comentados y salidas ficticias para aprender a interpretarlas |
 
-La sección **Catálogos MITRE** carga sus índices y fichas desde `data/mitre/v20/` al entrar en ella; no requiere bajar el archivo STIX completo. El explorador ATT&CK tradicional mantiene su flujo independiente de sincronización oficial. Las traducciones pendientes se identifican expresamente.
+La sección **Catálogos MITRE** incorpora también **191 grupos Gxxxx** con vínculos documentados a T/S/C, búsquedas por alias y navegación bidireccional. La sección **Catálogos MITRE** carga sus índices y fichas desde `data/mitre/v20/` al entrar en ella; no requiere bajar el archivo STIX completo. El explorador ATT&CK tradicional mantiene su flujo independiente de sincronización oficial. Las traducciones pendientes se identifican expresamente.
 
 ## Documentación
 
