@@ -11,7 +11,7 @@ const fetchLocal=async name=>{if(!validPath(name))throw Error('Unexpected JSON p
 let manifest=null,items=[],links={},groupLinks={},platforms=[],guides=[],selected=null,filter='all',domain='all',platform='all',translation='all',query='',loading=null,error=null,detailsEpoch=0;
 const cache=new Map();
 // Educational Spanish drafts never overwrite the original MITRE data.
-const spanishTitle=r=>r.name_es||window.AttackSpanishV20?.translate(r.id,r.name_en,r.type)||'';
+const spanishTitle=r=>r.name_es||window.AttackSpanishV20?.translate(r.id,r.name_en,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||'';
 const normName=r=>enc()?r.name_en:(spanishTitle(r)||r.name_en);
 const hasSpanishTitle=r=>!!spanishTitle(r);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
@@ -85,9 +85,9 @@ function matchesDomain(r){const d=(r.domain||'').toLowerCase();return domain==='
 function renderList(){
  const el=root.querySelector('#mitrelocalList'),count=root.querySelector('#mitrelocalCount');if(!el)return;
  const stats=root.querySelector('#mitrelocalTranslationStats');
- if(stats)stats.textContent=items.filter(hasSpanishTitle).length+' / '+items.length+' '+L('títulos en español, incluidos borradores educativos','Spanish titles, including educational drafts');
+ if(stats){const coverage=window.AttackDetectionSpanishV20?.coverage;stats.textContent=items.filter(hasSpanishTitle).length+' / '+items.length+' '+L('títulos en español, incluidos borradores educativos','Spanish titles, including educational drafts')+(coverage?' · DET '+coverage.detections+'/'+items.filter(r=>r.type==='detections').length+' · AN '+coverage.analytics+'/'+items.filter(r=>r.type==='analytics').length+' '+L('fichas educativas nuevas en borrador','new educational drafts'):'');}
  const term=query.trim().toLocaleLowerCase();
- const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(translation==='all'||(translation==='es')===hasSpanishTitle(r))&&(!term||[r.id,r.name_en,spanishTitle(r),...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
+ const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(translation==='all'||(translation==='es')===hasSpanishTitle(r))&&(!term||[r.id,r.name_en,spanishTitle(r),window.AttackDetectionSpanishV20?.searchText(r.id,r.type),...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
  count.textContent=all.length+' '+L('coincidencias','matches')+(all.length>60?' · '+L('se muestran las primeras 60; concreta la búsqueda','first 60 shown; refine your search'):'');
  el.innerHTML=all.slice(0,60).map(r=>`<button type="button" class="mitrelocal-item" data-local-id="${esc(r.id)}" data-local-type="${esc(r.type)}" data-local-domain="${esc(r.domain||'')}" aria-pressed="${selected?.id===r.id&&selected.type===r.type}"><strong>${esc(r.id)}</strong><span>${esc(normName(r))}</span><small>${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</small></button>`).join('')||'<p>'+L('No hay resultados.','No results.')+'</p>';
 }
@@ -115,10 +115,57 @@ function componentEvidence(record){
 function deprecatedInfo(){
  return `<section class="mitrelocal-deprecated" role="status"><h4>${L('Fuente histórica obsoleta','Deprecated historical source')}</h4><p>${L('MITRE marcó esta categoría DS como obsoleta. Para diseñar detecciones actuales, explora los componentes DC y sus estrategias DET. No se supone ninguna equivalencia directa DS → DC.','MITRE marked this DS category as deprecated. For current detections, explore DC components and related DET strategies. No direct DS → DC correspondence is assumed.')}</p><button type="button" class="outline-btn" data-local-modern>${L('Explorar componentes DC','Explore DC components')} →</button></section>`;
 }
+
+/* MITRE field identifiers and English definitions are immutable; these notes are pedagogical tuning suggestions. */
+const parameterNotesEs={
+ TimeWindow:'Ajusta la ventana temporal a la operación normal y al volumen real de eventos.',
+ UserContext:'Contrasta cuentas de servicio, administradores y usuarios finales por separado.',
+ ParentProcessName:'Considera los procesos padres esperados en despliegues y administración.',
+ ParentImage:'Valida qué aplicación o servicio inició el proceso.',
+ ProcessList:'Lista de procesos que se considerarán relevantes tras el acceso.',
+ FailureThreshold:'Calibra el umbral de fallos con una línea base por origen y cuenta.',
+ GeoAnomaly:'La geolocalización por IP no equivale a ubicación exacta del usuario.',
+ CommandLinePattern:'Examina el patrón de argumentos sin tratar una coincidencia como prueba concluyente.',
+ CommandLineRegex:'Comprueba también cadenas codificadas y el contexto del intérprete.',
+ MonitoredPaths:'Limita la supervisión a rutas relevantes, evitando accesos normales.',
+ ProfilePathList:'Incluye los perfiles de PowerShell realmente usados por la organización.',
+ TimeWindowThreshold:'Revisa la duración para no perder actividad espaciada.',
+ SourceIPScope:'Agrupa por IP o red según el uso de VPN, NAT y proxies.',
+ UserGroup:'Distingue las identidades privilegiadas y los accesos de mantenimiento.',
+ LoginSource:'Diferencia accesos SSH, consola y servicios automatizados.',
+ IPWhitelist:'Documenta exclusiones justificadas; no ignores todo el tráfico de una red.',
+ MFAProvider:'Comprueba la plataforma que emite los retos y el resultado de cada uno.',
+ ProcessNameExclusions:'Excluye solo procesos cuyo uso legítimo esté documentado.'
+};
+function analyticParameters(record,langEn){
+ const fields=record.mutable_elements||[];
+ if(!fields.length)return '';
+ return '<section class="mitrelocal-params"><h4>'+L('Parámetros de ajuste de la analítica','Analytic tuning parameters')+'</h4>'+
+ '<p class="mitrelocal-note">'+L('Los identificadores y las definiciones originales de MITRE permanecen en inglés; cuando existe, la orientación española es educativa y requiere validación antes de desplegar una regla.','Field IDs and original MITRE definitions remain unchanged; validate parameters before deploying detection logic.')+'</p>'+
+ '<ul>'+fields.slice(0,16).map(f=>'<li><code>'+esc(f.field)+'</code>'+
+ (!langEn&&parameterNotesEs[f.field]?'<p>'+esc(parameterNotesEs[f.field])+'</p>':'')+
+ (f.description_en?'<p class="muted">'+(!langEn?'MITRE (EN): ':'')+esc(f.description_en)+'</p>':'')+'</li>').join('')+'</ul></section>';
+}
+function educationalGuide(r,langEn){
+ if(langEn)return '';
+ const guide=r.type==='detections'?window.AttackDetectionSpanishV20?.strategy(r.id):
+  r.type==='analytics'?window.AttackDetectionSpanishV20?.analytic(r.id):null;
+ if(!guide)return '';
+ if(r.type==='analytics')return '<section class="mitrelocal-draft"><h4>Orientación defensiva educativa (borrador)</h4>'+
+  plainSection('Qué comprobar en la práctica',guide.verify)+
+  '<p class="mitrelocal-note">Interpretación elaborada por ATT&CK LAB, pendiente de revisión humana. No constituye detección verificada ni regla SIEM de producción.</p></section>';
+ return '<section class="mitrelocal-draft"><h4>Guía de investigación para ASIR · borrador</h4>'+
+  plainSection('Señales que investigar',guide.signals)+
+  plainSection('Telemetría y comprobaciones',guide.telemetry)+
+  plainSection('Qué NO demuestra una señal aislada',guide.limitations)+
+  plainSection('Pregunta razonada',guide.question)+
+  '<p class="mitrelocal-note">Explicación propia propuesta a partir de la estrategia MITRE v20; no es una traducción oficial ni un incidente observado.</p></section>';
+}
+
 function renderDetail(r,record){
  const langEn=enc(),status=record.translation_status||'pending',titleEn=record.name_en||record.title_en||record.name||r.name_en;
- const titleEs=record.name_es||record.title_es||window.AttackSpanishV20?.translate(r.id,titleEn,r.type)||'';
- const summary=record.summary_es||record.description_es||(r.type==='techniques'?window.AttackSpanishV20?.note(r.id):null)||'';
+ const titleEs=record.name_es||record.title_es||window.AttackSpanishV20?.translate(r.id,titleEn,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||'';
+ const summary=record.summary_es||record.description_es||(r.type==='techniques'?window.AttackSpanishV20?.note(r.id):null)||window.AttackDetectionSpanishV20?.summary(r.id,r.type)||'';
  const translated=!!(titleEs||summary);
  const quality=translated?(status==='reviewed_es'||status==='reviewed'?L('Traducción revisada','Reviewed translation'):L('Español provisional · pendiente de revisión','Spanish draft · review pending')):L('Original en inglés · traducción pendiente','English original · translation pending');
  const description=usefulEnglish(record);
@@ -144,7 +191,7 @@ function renderDetail(r,record){
   const analytics=record.analytics||[];
   extra+=listRelations(analytics.map(a=>a.id).filter(Boolean),L('Analíticas','Analytics'));
   const first=analytics.slice(0,4);
-  extra+=first.map(a=>`<section class="mitrelocal-analytic"><h4>${esc(a.id)} · ${L('Analítica asociada','Associated analytic')}</h4><p>${esc(a.description_en||'')}</p>${(a.log_sources||[]).length?`<strong>${L('Fuentes de registro propuestas','Suggested log sources')}</strong><ul>${a.log_sources.slice(0,6).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul>`:''}</section>`).join('');
+  extra+=first.map(a=>`<section class="mitrelocal-analytic"><h4>${esc(a.id)} · ${L('Analítica asociada','Associated analytic')}</h4><p>${esc(!langEn?(window.AttackDetectionSpanishV20?.analytic(a.id)?.summary||a.description_en||''):(a.description_en||''))}</p>${(a.log_sources||[]).length?`<strong>${L('Fuentes de registro propuestas','Suggested log sources')}</strong><ul>${a.log_sources.slice(0,6).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul>`:''}</section>`).join('');
  }
  if(r.type==='analytics'){
   if(r.parent)extra+=listRelations([r.parent],L('Estrategia de detección','Detection strategy'));
@@ -152,6 +199,7 @@ function renderDetail(r,record){
   const logs=record.log_sources||[];
   if(logs.length)extra+=`<section><h4>${L('Fuentes de registro','Log sources')}</h4><ul>${logs.slice(0,12).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul></section>`;
  }
+ if(r.type==='analytics')extra+=analyticParameters(record,langEn);
  if(r.type==='components'){
  extra+=listRelations(record.strategy_ids||[],L('Estrategias asociadas','Associated strategies'));
  extra+=listRelations(record.technique_ids||[],L('Técnicas observables asociadas','Associated observed techniques'));
@@ -159,6 +207,7 @@ function renderDetail(r,record){
 }
 if(r.type==='datasources')extra+=deprecatedInfo();
  if(r.type==='campaigns')extra+=listRelations(record.software||[],L('Software documentado','Documented software'));
+ extra+=educationalGuide(r,langEn);
  const subtitle=langEn?titleEn:(titleEs||titleEn);
  return `<div class="overline">${esc(r.id)} · ${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</div><h3>${esc(subtitle)}</h3>
  <p class="mitrelocal-quality">${esc(quality)}</p>
