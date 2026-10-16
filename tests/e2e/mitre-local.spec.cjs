@@ -119,3 +119,57 @@ test('MITRE local groups: correct manifest counts and preserved DS/DC catalogs',
  expect(m.index_shards).toContain('index-05.json');
  expect(m.group_link_shard).toBe('group-links.json');
 });
+
+test('MITRE local: Spanish draft translations improve T/M names while preserving English',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await root.locator('#mitrelocalSearch').fill('T1059');
+ await root.locator('[data-local-id="T1059"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Intérprete de comandos y scripts');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Resumen educativo en español');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Español provisional');
+ await expect(root.locator('#mitrelocalDetail')).toContainText('Descripción original en inglés');
+ await root.locator('#mitrelocalSearch').fill('Detención de servicios');
+ await expect(root.locator('[data-local-id="T1489"]')).toHaveCount(1);
+ await root.locator('#mitrelocalSearch').fill('M1030');
+ await root.locator('[data-local-id="M1030"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Segmentación de red');
+ await page.locator('#language').selectOption('en');
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Network Segmentation');
+});
+test('MITRE local: translation coverage filter and sub-technique composition',async({page})=>{
+ await enter(page);
+ const root=page.locator('#mitrelocalView');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('títulos en español');
+ await root.locator('#mitrelocalType').selectOption('techniques');
+ await root.locator('#mitrelocalTranslation').selectOption('es');
+ await root.locator('#mitrelocalSearch').fill('T1003.001');
+ await expect(root.locator('[data-local-id="T1003.001"]')).toHaveCount(1);
+ await root.locator('[data-local-id="T1003.001"]').click();
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('Memoria de LSASS');
+ await page.locator('#language').selectOption('en');
+ await expect(root.locator('#mitrelocalDetail h3')).toContainText('OS Credential Dumping: LSASS Memory');
+ await root.locator('#mitrelocalTranslation').selectOption('pending');
+ await root.locator('#mitrelocalSearch').fill('T1003.001');
+ await expect(root.locator('[data-local-id="T1003.001"]')).toHaveCount(0);
+});
+
+test('MITRE v20: all archived T and M identifiers have Spanish draft titles',async({page})=>{
+ await page.goto('/');
+ const count=await page.evaluate(async()=>{
+  const names=[...Array.from({length:6},(_,i)=>'techniques-'+String(i).padStart(2,'0')+'.json'),'mitigations-00.json'];
+  const sets=await Promise.all(names.map(async file=>{
+   const res=await fetch('data/mitre/v20/'+file);
+   if(!res.ok)throw Error('Missing MITRE shard: '+file);
+   return await res.json();
+  }));
+  const T=sets.slice(0,6).flat(),M=sets[6];
+  const translate=window.AttackSpanishV20.translate;
+  const untranslated=[...T.map(r=>({id:r.id,name:r.name_en,type:'techniques'})),...M.map(r=>({id:r.id,name:r.name_en,type:'mitigations'}))]
+    .filter(r=>!translate(r.id,r.name,r.type)).map(r=>r.id);
+  return {techniques:T.length,mitigations:M.length,untranslated};
+ });
+ expect(count.techniques).toBe(935);
+ expect(count.mitigations).toBe(109);
+ expect(count.untranslated).toEqual([]);
+});
