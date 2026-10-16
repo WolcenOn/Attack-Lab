@@ -188,7 +188,8 @@ async function show(r){
  }catch(e){if(epoch===detailsEpoch)box.innerHTML='<p role="status">'+L('No se pudo leer el archivo de esta ficha.','Could not read this record file.')+' '+esc(e.message)+'</p>'}
 }
 root.addEventListener('input',e=>{if(e.target.id==='mitrelocalSearch'){query=e.target.value;renderList()}});
-root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType')filter=e.target.value;else if(e.target.id==='mitrelocalDomain')domain=e.target.value;
+root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType'){filter=e.target.value;if(filter!=='techniques')platform='all';render();return}
+ else if(e.target.id==='mitrelocalDomain'){domain=e.target.value;if(platform!=='all'&&platforms.find(x=>x.id===platform)?.domain!==domain)platform='all';render();return}
  else if(e.target.id==='mitrelocalPlatform'){
   platform=e.target.value;
   if(platform!=='all'){
