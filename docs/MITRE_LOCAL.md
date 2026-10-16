@@ -96,10 +96,14 @@ Las fuentes y matrices son una instantánea v20, no garantizan que los datos sig
 
 ## Capa de traducción española v20 — lote 1
 
-El fichero `src/features/learning/mitre-es-v20.js` añade un glosario **independiente** de los JSON de MITRE, que se preservan intactos. Incluye **383 equivalencias por código de técnica principal**, **114 términos completos de subtécnica** para componer traducciones únicamente cuando ambas partes tienen equivalente, **71 términos de mitigación**, y **34 resúmenes defensivos originales en español**. También reutiliza resúmenes redactados previamente en `AttackTranslations` cuando procede.
+El fichero `src/features/learning/mitre-es-v20.js` añade un glosario **independiente** de los JSON de MITRE, que se preservan intactos. Incluye **383 equivalencias por código de técnica principal** y un glosario de **509 entradas de términos de subtécnicas** (con algunas repetidas entre lotes), suficientes para ofrecer un borrador español de los **935 nombres Txxxx/Txxxx.xxx** presentes en esta captura v20; **71 términos de mitigación** que cubren los **109 títulos Mxxxx**, y **34 resúmenes defensivos originales en español**. También reutiliza resúmenes redactados previamente en `AttackTranslations` cuando procede.
 
 **Importante:** los títulos y resúmenes nuevos son **borradores educativos pendientes de revisión**; no traducciones oficiales ni una traducción literal y completa de las descripciones de MITRE. La interfaz distingue esta situación de las fichas con traducción revisada, conserva siempre el texto fuente en inglés y lo restaura al cambiar a ese idioma. Las fichas con traducciones existentes en los JSON mantienen prioridad y su estado original.
 
 El buscador del catálogo local encuentra códigos, títulos originales, títulos españoles disponibles y alias. Se ha añadido un filtro de cobertura («Todas», «Título español disponible», «Título pendiente»), con contador sobre los índices v20. Una subtécnica sin sufijo conocido sigue mostrando el título inglés completo: **nunca se completa a medias con una traducción inventada**.
 
 **Próximos lotes:** traducir más subtécnicas exactas, mitigaciones y componentes, priorizar descripciones oficiales revisadas y estrategias DET/AN. Un resumen educativo redactado a partir del conocimiento técnico no debe etiquetarse como traducción literal del párrafo MITRE.
+
+### Cobertura comprobable
+
+Se ha probado que los 706 títulos T de Enterprise, los 125 de Mobile, los 104 de ICS y los 109 M del archivo archivado tienen un borrador español disponible mediante `AttackSpanishV20.translate`. Esta cobertura se refiere **exclusivamente a los nombres**, no a las 935 descripciones originales ni a DET, AN, S o G. La exportación original inglesa no se altera. Se añade un test de regresión de cobertura que fallará si la siguiente instantánea incorpora un ID que todavía no tenga equivalente completo.
