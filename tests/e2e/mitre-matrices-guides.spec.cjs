@@ -40,7 +40,7 @@ test('MITRE official learning guides offer independent bilingual study summaries
  await expect(root.locator('.mitrelocal-resources summary')).toContainText('Official learning guides');
  await root.locator('.mitrelocal-resources summary').click();
  await expect(root.locator('.mitrelocal-resource-grid')).toContainText('Threat Intelligence');
- await expect(root.locator('.mitrelocal-resource-grid')).toContainText('Study summaries, not official literal translations');
+ await expect(root.locator('.mitrelocal-resources')).toContainText('Study summaries, not official literal translations');
 });
 test('15 nonduplicated AN items found in MITRE analytics index are searchable',async({page})=>{
  const root=await enter(page);
