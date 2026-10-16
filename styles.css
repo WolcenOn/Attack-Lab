@@ -200,3 +200,31 @@
 .exp-synthetic{font-size:12px;color:var(--muted)}
 .explained-full-detail .resource-link{display:inline-block;max-width:100%;margin:8px 8px 8px 0}
 @media(max-width:700px){.explained-tech-list{max-height:300px}.explained-catalog-toolbar button{width:100%}}
+
+/* Versioned, locally served MITRE ATT&CK library */
+.mitrelocal-status,.mitrelocal-note,.mitrelocal-attribution{color:var(--muted);line-height:1.75;padding:12px 0}
+.mitrelocal-note{padding:12px 14px;border:1px solid var(--border);border-radius:9px;background:var(--panel)}
+.mitrelocal-toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
+.mitrelocal-toolbar label{font-weight:700;font-size:12px;display:flex;flex-direction:column;gap:7px;flex:1 1 160px}
+.mitrelocal-toolbar label:first-child{flex:3 1 230px}
+.mitrelocal-toolbar input,.mitrelocal-toolbar select{width:100%;padding:12px;background:#0c1c2c;border:1px solid #345064;border-radius:9px;color:var(--text);font:inherit}
+.mitrelocal-layout{display:grid;grid-template-columns:minmax(255px,1fr) minmax(0,1.85fr);gap:16px;align-items:start}
+.mitrelocal-results,.mitrelocal-detail{padding:17px;border:1px solid var(--border);border-radius:12px;background:var(--panel);min-width:0}
+.mitrelocal-list{max-height:600px;overflow:auto;display:grid;gap:7px}
+.mitrelocal-item{display:grid;gap:5px;width:100%;padding:12px;text-align:left;border:1px solid #324a5b;border-radius:8px;background:#112538;color:var(--text);font:inherit}
+.mitrelocal-item strong{font-size:12px;color:var(--cyan)}
+.mitrelocal-item span{font-size:12px;font-weight:700}
+.mitrelocal-item small{color:var(--muted)}
+.mitrelocal-item[aria-pressed="true"]{border-color:var(--cyan);background:#19363c}
+.mitrelocal-detail h3{font:700 24px 'Space Grotesk',sans-serif;line-height:1.35;margin:10px 0}
+.mitrelocal-detail h4{margin:12px 0 8px;font-size:15px}
+.mitrelocal-detail p,.mitrelocal-detail li{line-height:1.75;overflow-wrap:anywhere}
+.mitrelocal-detail section{padding:10px 0;border-top:1px solid var(--border)}
+.mitrelocal-quality{font-size:12px;border-left:3px solid var(--cyan);padding:10px;background:#183343}
+.mitrelocal-chips{display:flex;flex-wrap:wrap;gap:7px}
+.mitrelocal-chip{font-size:12px!important;padding:7px 9px!important;white-space:normal}
+.mitrelocal-analytic{border-top:1px solid var(--border);margin-top:10px}
+.mitrelocal-attribution{font-size:11px}
+.mitrelocal-attribution a{color:var(--cyan);text-decoration:underline}
+.mitrelocal-item:focus-visible,.mitrelocal-toolbar input:focus-visible,.mitrelocal-toolbar select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+@media(max-width:780px){.mitrelocal-layout{grid-template-columns:minmax(0,1fr)}.mitrelocal-list{max-height:260px}.mitrelocal-detail{padding:14px}}

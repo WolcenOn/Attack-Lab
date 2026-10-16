@@ -82,3 +82,7 @@ Se han agrupado seis módulos relacionados con SIEM, consultas, Threat Hunting, 
 ## Ruta ASIR 2.º
 
 La vista `asir2View` se carga desde `src/features/learning/asir2.js` y ofrece dieciséis unidades bilingües sobre los cinco módulos técnicos 0374–0378. Sus botones de prácticas utilizan los `data-view` existentes y el progreso individual se guarda en `localStorage` (`attacklab-asir2-v1`). Véase `docs/ASIR_2.md`.
+
+## Biblioteca MITRE local v20
+
+El módulo `src/features/learning/mitre-local.js` carga `data/mitre/v20/manifest.json`, cuatro índices de búsqueda y una tabla de relaciones explícitas `links.json`. Al seleccionar un registro solicita solo el JSON fragmentado que lo contiene. No reemplaza ni modifica el explorador STIX en `app.js`. `scripts/validate_mitre_v20.py` comprueba conteos, integridad y referencias en CI. Véase `docs/MITRE_LOCAL.md`.

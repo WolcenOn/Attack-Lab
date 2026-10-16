@@ -21,3 +21,5 @@ jobs:
           python-version: '3.12'
       - name: Comprobar rutas y sintaxis JavaScript
         run: python3 scripts/check_project.py
+      - name: Validar archivos e índices MITRE v20
+        run: python3 scripts/validate_mitre_v20.py
