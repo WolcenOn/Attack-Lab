@@ -54,10 +54,10 @@ test('DET: Spanish search, PowerShell educational guide, English original and re
  await expect(detail).toContainText('Qué NO demuestra una señal aislada');
  await expect(detail).toContainText('Pregunta razonada');
  await expect(detail).toContainText('Español provisional');
- await expect(detail).toContainText('Descripción original en inglés');
+ await expect(detail).toContainText('Nombre original MITRE: Abuse of PowerShell for Arbitrary Execution');
  await page.locator('#language').selectOption('en');
  await expect(detail.locator('h3')).toContainText('Abuse of PowerShell for Arbitrary Execution');
- await expect(detail).toContainText('MITRE source text');
+ await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/detectionstrategies\/DET0455/);
  await expect(detail).not.toContainText('Guía de investigación para ASIR');
  await page.locator('#language').selectOption('es');
  await expect(detail).toContainText('Telemetría y comprobaciones');
@@ -75,7 +75,7 @@ test('AN: translated title and summary retain original log IDs and mutable field
  await expect(detail.locator('.mitrelocal-params')).toContainText('ParentProcessName');
  await expect(detail.locator('.mitrelocal-params')).toContainText('MITRE (EN):');
  await page.locator('#language').selectOption('en');
- await expect(detail.locator('h3')).toContainText('Analytic AN1252');
+ await expect(detail.locator('h3')).toContainText('AN1252');
  await expect(detail).toContainText('Detects behavioral chains where PowerShell');
  await expect(detail.locator('.mitrelocal-params')).toContainText('Analytic tuning parameters');
  await expect(detail).not.toContainText('Qué comprobar en la práctica');
@@ -93,7 +93,7 @@ test('DET to AN navigation, domain accounts and bilingual evidence interpretatio
  await expect(detail.locator('h3')).toContainText('Alta de usuario de dominio');
  await expect(detail).toContainText('EventCode=4720');
  await page.locator('#language').selectOption('en');
- await expect(detail.locator('h3')).toContainText('Analytic AN0006');
+ await expect(detail.locator('h3')).toContainText('AN0006');
  await expect(detail).toContainText('Adversary uses built-in tools');
 });
 
