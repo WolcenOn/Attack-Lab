@@ -78,3 +78,18 @@ La colección `groups-*.json` conserva nombre original, descripción inglesa de 
 En total se han extraído **7.373 enlaces grupo–técnica** (contando técnicas y subtécnicas tal como se documentan), además de 1.195 referencias a software y 27 a campañas; son relaciones en páginas, no observaciones independientes. Las descripciones continúan en inglés hasta que exista traducción española revisada y muestran el estado pendiente. El catálogo se puede filtrar por G y saltar de técnica a grupo, y de grupo a técnica, software o campaña.
 
 `datacomponents(1).rar` y `datasources(1).rar` se han identificado como segundas copias de las mismas 120 fichas DC y 42 fichas DS ya incorporadas en el PR #20, por lo que no se han cargado duplicados. `wiki.rar` contiene siete redirecciones antiguas de técnica sin fichas originales nuevas.
+
+## Última captura `attack.mitre.org.rar`: matrices y formación
+
+El archivo aportado contiene 370 elementos (páginas HTML y recursos visuales), pero la mayor parte son recursos duplicados del sitio. Se han integrado **18 matrices de plataforma** y **12 guías oficiales de aprendizaje** como índices pequeños, sin copiar imágenes, tipografías ni páginas HTML completas al repositorio.
+
+- `platform-matrices.json`: tecnologías y plataformas Enterprise, Mobile e ICS, con códigos de técnicas que aparecen en la matriz v20. Se ofrecen filtros de Windows, Linux, macOS, ESXi, contenedores, dispositivos de red, nube, Android, iOS y sistemas ICS. Los números son **identificadores distintos en la matriz**, no estadísticas de incidentes.
+- `study-resources.json`: enlaces a guías oficiales MITRE sobre CTI, detección, ingeniería defensiva, emulación autorizada, fundamentos, hunting, SOC, formatos de datos y notas de versión. Incluye resúmenes didácticos propios en español/inglés, **no traducciones oficiales literales**.
+
+### Auditoría de analíticas (2283 frente a 2268)
+
+La página `analytics/index.html` de la captura registra **2.283 analíticas AN únicas**; las fichas de estrategias DET ya importadas reunían **2.268 AN únicas**. La diferencia se guarda en `analytics-appendix.json` y se indexa mediante `index-06.json`, sin duplicar las analíticas existentes.
+
+**AN0667–AN0670** aparecen vinculadas a DET0239 y **AN0886–AN0894** a DET0317. Las dos entradas **AN2070** y **AN2074** no tienen una asociación DET en la página de índice aportada y se muestran con aviso: no se ha supuesto cuál debería ser. Ninguna de estas 15 analíticas lleva traducción española revisada todavía.
+
+Las fuentes y matrices son una instantánea v20, no garantizan que los datos sigan iguales en la web oficial. La academia muestra siempre enlaces a la página de origen para contraste.
