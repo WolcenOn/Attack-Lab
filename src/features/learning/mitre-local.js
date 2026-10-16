@@ -6,15 +6,15 @@ const titles={all:['Todo','All'],techniques:['Técnicas T','Techniques T'],tacti
 const enc=()=>document.getElementById('language')?.value==='en';
 const L=(es,en)=>enc()?en:es;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&quot;',"'":'&#39;'}[c]));
-const validPath=name=>/^(?:[a-z]+-\d{2}|manifest|links|group-links)\.json$/.test(name);
+const validPath=name=>/^(?:[a-z]+-\d{2}|manifest|links|group-links|platform-matrices|study-resources|analytics-appendix)\.json$/.test(name);
 const fetchLocal=async name=>{if(!validPath(name))throw Error('Unexpected JSON path');const r=await fetch(BASE+name);if(!r.ok)throw Error('HTTP '+r.status+' · '+name);return r.json()};
-let manifest=null,items=[],links={},groupLinks={},selected=null,filter='all',domain='all',query='',loading=null,error=null,detailsEpoch=0;
+let manifest=null,items=[],links={},groupLinks={},platforms=[],guides=[],selected=null,filter='all',domain='all',platform='all',query='',loading=null,error=null,detailsEpoch=0;
 const cache=new Map();
 const normName=r=>enc()?r.name_en:(r.name_es||r.name_en);
 const typeName=type=>titles[type]?.[enc()?1:0]||type;
 function sourceLink(r,type){
  const paths={techniques:'techniques',tactics:'tactics',software:'software',detections:'detectionstrategies',analytics:'detectionstrategies',components:'datacomponents',datasources:'datasources',groups:'groups',campaigns:'campaigns',assets:'assets',mitigations:'mitigations'};
- const url=type==='analytics'&&r.parent?'https://attack.mitre.org/detectionstrategies/'+r.parent+'/':r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
+ const url=type==='analytics'&&!r.parent?'https://attack.mitre.org/analytics/':type==='analytics'&&r.parent?'https://attack.mitre.org/detectionstrategies/'+r.parent+'/':r.source_versioned_url||r.source?.version_url||r.url||'https://attack.mitre.org/'+(paths[type]||'techniques')+'/'+String(r.id||'').replace('.','/')+'/';
  return /^https:\/\/attack\.mitre\.org\//.test(url)?url:'https://attack.mitre.org/';
 }
 function clear(msg){root.innerHTML='<div class="section-head"><div><div class="overline">MITRE ATT&CK · v20 · '+L('CATÁLOGO LOCAL','LOCAL CATALOG')+'</div><h2>'+L('Biblioteca MITRE integrada','Integrated MITRE library')+'</h2></div></div><p class="mitrelocal-status" role="status">'+esc(msg)+'</p>'}
@@ -31,7 +31,10 @@ async function ensure(){
    const raw=shards.flat();
    const graph=await fetchLocal('links.json');
    const groupGraph=m.categories?.groups?.count?await fetchLocal('group-links.json'):{};
-   manifest=m;items=raw;links=graph;groupLinks=groupGraph;
+   const matrixData=await fetchLocal('platform-matrices.json');
+   const guideData=await fetchLocal('study-resources.json');
+   if(!Array.isArray(matrixData.matrices)||!Array.isArray(guideData.items))throw Error('Invalid matrix or resources index');
+   manifest=m;items=raw;links=graph;groupLinks=groupGraph;platforms=matrixData.matrices;guides=guideData.items;
    render();
    if(selected)await show(selected);
   }catch(e){error=e;clear(L('No se han podido leer los JSON locales. Comprueba que publicaste la carpeta data/mitre/v20 completa.','Could not read local JSON files. Check that data/mitre/v20 was published completely.')+' ('+e.message+')');root.innerHTML+='<button type="button" class="outline-btn" data-local-retry>'+L('Reintentar','Retry')+'</button>'}
@@ -39,12 +42,37 @@ async function ensure(){
  })();
  return loading;
 }
+
+function platformMarkup(){
+ const chosen=platforms.find(x=>x.id===platform);
+ const options=platforms.map(x=>'<option value="'+esc(x.id)+'" '+(platform===x.id?'selected':'')+'>'+esc(enc()?x.name_en:x.name_es)+' · '+x.technique_ids.length+'</option>').join('');
+ const link=chosen&&/^https:\/\/attack\.mitre\.org\/matrices\//.test(chosen.source_url)?
+  ' <a href="'+esc(chosen.source_url)+'" target="_blank" rel="noopener noreferrer">'+L('Matriz MITRE original','Original MITRE matrix')+' ↗</a>':'';
+ return '<label>'+L('Plataforma (técnicas T)','Platform (T techniques)')+'<select id="mitrelocalPlatform"><option value="all">'+L('Todas las plataformas','All platforms')+'</option>'+options+'</select></label>'+
+ (chosen?'<p class="mitrelocal-platform-note">'+L('Filtro por matriz de plataforma de la copia MITRE v20.','Platform matrix filter from the archived MITRE v20 snapshot.')+link+'</p>':'');
+}
+function guidesMarkup(){
+ if(!guides.length)return '';
+ return '<details class="mitrelocal-resources"><summary>'+L('Guías oficiales de estudio','Official learning guides')+' · '+guides.length+' <span class="muted">'+L('Resúmenes educativos en español','Spanish study summaries')+'</span></summary>'+
+ '<div class="mitrelocal-resource-grid">'+guides.map(g=>{
+  const url=/^https:\/\/attack\.mitre\.org\/resources\//.test(g.url)?g.url:'https://attack.mitre.org/resources/';
+  return '<article><strong>'+esc(enc()?g.title_en:g.title_es)+'</strong><p>'+esc(enc()?g.summary_en:g.summary_es)+'</p><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+L('Abrir fuente oficial (inglés)','Official source (English)')+' ↗</a></article>';
+ }).join('')+'</div><p class="mitrelocal-note">'+L('Resúmenes redactados para estudiar; no son traducciones oficiales literales.','Study summaries, not official literal translations.')+'</p></details>';
+}
+function matchesPlatform(r){
+ if(platform==='all')return true;
+ const matrix=platforms.find(x=>x.id===platform);
+ return r.type==='techniques'&&!!matrix&&matrix.technique_ids.includes(r.id);
+}
+
 function render(){
  if(!manifest)return;
  const count=items.length;
  root.innerHTML=`<header class="section-head"><div><div class="overline">MITRE ATT&CK · v20 · ${L('ARCHIVOS DEL REPOSITORIO','REPOSITORY FILES')}</div><h2>${L('Biblioteca MITRE integrada','Integrated MITRE library')}</h2><p>${L('Consulta directamente los JSON incluidos en esta web. No hay descarga del STIX completo para esta sección.','Query the JSON files shipped with this site. No full STIX download is required for this section.')}</p></div><span class="lesson-badge">${count.toLocaleString(enc()?'en':'es')} IDs</span></header>
  <p class="mitrelocal-note">${L('Fotografía del material MITRE v20 aportado. Incluye Enterprise, Mobile e ICS. Las 42 fuentes DS son históricas y obsoletas; los 120 DC son componentes actuales. Las traducciones disponibles son borradores salvo revisión.','Snapshot from user-supplied MITRE v20 material. Includes Enterprise, Mobile and ICS. All 42 DS sources are historic and deprecated; the 120 DC records describe current components. Spanish drafts are marked.')}</p>
  <div class="mitrelocal-toolbar"><label>${L('Buscar identificador o nombre','Search ID or name')}<input type="search" id="mitrelocalSearch" autocomplete="off" placeholder="T1059.001 · DET0001 · AN0001 · S0002" value="${esc(query)}"></label><label>${L('Colección','Collection')}<select id="mitrelocalType">${Object.keys(titles).map(k=>`<option value="${k}" ${filter===k?'selected':''}>${esc(typeName(k))}</option>`).join('')}</select></label><label>${L('Dominio','Domain')}<select id="mitrelocalDomain">${['all','enterprise','mobile','ics'].map(k=>`<option value="${k}" ${domain===k?'selected':''}>${k==='all'?L('Todos','All'):k==='ics'?'ICS':k[0].toUpperCase()+k.slice(1)}</option>`).join('')}</select></label></div>
+ <div class="mitrelocal-toolbar mitrelocal-platform-toolbar">${platformMarkup()}</div>
+ ${guidesMarkup()}
  <div class="mitrelocal-layout"><div class="mitrelocal-results"><p class="muted" id="mitrelocalCount"></p><div id="mitrelocalList" class="mitrelocal-list"></div></div><article id="mitrelocalDetail" class="mitrelocal-detail"><p>${L('Busca un código y selecciona una ficha para leerla.','Search an ID and select a record to read it.')}</p></article></div>
  <p class="mitrelocal-attribution">© 2026 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation. <a href="https://attack.mitre.org/resources/terms-of-use/" target="_blank" rel="noopener noreferrer">MITRE ATT&CK · ${L('condiciones de uso','terms of use')} ↗</a></p>`;
  renderList();
@@ -53,7 +81,7 @@ function matchesDomain(r){const d=(r.domain||'').toLowerCase();return domain==='
 function renderList(){
  const el=root.querySelector('#mitrelocalList'),count=root.querySelector('#mitrelocalCount');if(!el)return;
  const term=query.trim().toLocaleLowerCase();
- const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&(!term||[r.id,r.name_en,r.name_es,...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
+ const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(!term||[r.id,r.name_en,r.name_es,...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
  count.textContent=all.length+' '+L('coincidencias','matches')+(all.length>60?' · '+L('se muestran las primeras 60; concreta la búsqueda','first 60 shown; refine your search'):'');
  el.innerHTML=all.slice(0,60).map(r=>`<button type="button" class="mitrelocal-item" data-local-id="${esc(r.id)}" data-local-type="${esc(r.type)}" data-local-domain="${esc(r.domain||'')}" aria-pressed="${selected?.id===r.id&&selected.type===r.type}"><strong>${esc(r.id)}</strong><span>${esc(normName(r))}</span><small>${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</small></button>`).join('')||'<p>'+L('No hay resultados.','No results.')+'</p>';
 }
@@ -113,7 +141,8 @@ function renderDetail(r,record){
   extra+=first.map(a=>`<section class="mitrelocal-analytic"><h4>${esc(a.id)} · ${L('Analítica asociada','Associated analytic')}</h4><p>${esc(a.description_en||'')}</p>${(a.log_sources||[]).length?`<strong>${L('Fuentes de registro propuestas','Suggested log sources')}</strong><ul>${a.log_sources.slice(0,6).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul>`:''}</section>`).join('');
  }
  if(r.type==='analytics'){
-  extra+=listRelations([r.parent],L('Estrategia de detección','Detection strategy'));
+  if(r.parent)extra+=listRelations([r.parent],L('Estrategia de detección','Detection strategy'));
+  else extra+=plainSection(L('Vinculación a estrategia DET','DET strategy association'),L('No aparece un DET vinculado en el índice aportado: no se ha supuesto esa relación.','No linked DET was provided in the supplied index; none has been inferred.'));
   const logs=record.log_sources||[];
   if(logs.length)extra+=`<section><h4>${L('Fuentes de registro','Log sources')}</h4><ul>${logs.slice(0,12).map(s=>`<li>${esc([s.data_component_id,s.source,s.channel].filter(Boolean).join(' · '))}</li>`).join('')}</ul></section>`;
  }
@@ -144,18 +173,30 @@ async function show(r){
   let data=cache.get(r.shard);
   if(!data){data=await fetchLocal(r.shard);if(!Array.isArray(data))throw Error('Invalid JSON array');cache.set(r.shard,data)}
   if(epoch!==detailsEpoch)return;
-  let record=data.find(x=>x.id===(r.parent||r.id));
+  let record=data.find(x=>x.id===(r.shard==='analytics-appendix.json'?r.id:(r.parent||r.id)));
   if(!record)throw Error('Missing ID');
   if(r.type==='analytics'){
-   const analytic=(record.analytics||[]).find(x=>x.id===r.id);
-   if(!analytic)throw Error('Missing analytic');
-   record={...analytic,id:r.id,name_en:r.name_en,description_en:analytic.description_en||'',translation_status:'pending'};
+   if(r.shard==='analytics-appendix.json'){
+    record={...record,name_en:r.name_en,description_en:record.description_en||'',translation_status:'pending'};
+   }else{
+    const analytic=(record.analytics||[]).find(x=>x.id===r.id);
+    if(!analytic)throw Error('Missing analytic');
+    record={...analytic,id:r.id,name_en:r.name_en,description_en:analytic.description_en||'',translation_status:'pending'};
+   }
   }
   box.innerHTML=renderDetail(r,record);
  }catch(e){if(epoch===detailsEpoch)box.innerHTML='<p role="status">'+L('No se pudo leer el archivo de esta ficha.','Could not read this record file.')+' '+esc(e.message)+'</p>'}
 }
 root.addEventListener('input',e=>{if(e.target.id==='mitrelocalSearch'){query=e.target.value;renderList()}});
-root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType')filter=e.target.value;else if(e.target.id==='mitrelocalDomain')domain=e.target.value;else return;renderList()});
+root.addEventListener('change',e=>{if(e.target.id==='mitrelocalType')filter=e.target.value;else if(e.target.id==='mitrelocalDomain')domain=e.target.value;
+ else if(e.target.id==='mitrelocalPlatform'){
+  platform=e.target.value;
+  if(platform!=='all'){
+   const matrix=platforms.find(x=>x.id===platform);
+   if(matrix){filter='techniques';domain=matrix.domain;query='';selected=null;render();return}
+  }
+  render();return;
+ }else return;renderList()});
 root.addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button)return;
  if(button.hasAttribute('data-local-modern')){filter='components';domain='all';query='';selected=null;render();return}
