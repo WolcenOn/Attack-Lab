@@ -16,15 +16,17 @@ La biblioteca ya incluye un catálogo **versionado** en `data/mitre/v20/`. No ne
 | C — Campañas | 61 |
 | M — Mitigaciones | 109 |
 | DS — Fuentes de datos históricas obsoletas | 42 |
-| **Entradas de búsqueda** | **5.501** |
+| G — Grupos de actividad documentados | 191 |
+| **Entradas de búsqueda** | **5.692** |
 
 Los datos proceden de archivos **aportados por el usuario**, capturas HTML del sitio MITRE ATT&CK de octubre de 2026, junto con extracciones estructuradas previas del mismo material. Los JSON **no son un feed en vivo**: conservan nombres/descripciones oficiales en inglés y relaciones explícitas; no se ha inferido qué software empleó una técnica si la página no lo documentaba.
 
 ## Disposición
 
 - `manifest.json`: colección, versión, conteos y archivos disponibles
-- `index-00.json` a `index-03.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
+- `index-00.json` a `index-05.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
 - `links.json`: enlaces explícitos desde técnicas a estrategias, software, mitigaciones, campañas y activos
+- `group-links.json`: referencias documentadas desde técnicas a grupos G
 - `techniques-*.json`, `software-*.json`, `tactics-*.json`: fichas originales
 - `detections-*.json`: estrategias DET y sus analíticas AN, con fuentes DC y parámetros de ajuste
 - `components-00.json` a `components-11.json`: 120 componentes DC con descripciones, canales de registro y vínculos DET/T
