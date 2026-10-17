@@ -55,7 +55,7 @@ test('metadata API DET0001: Spanish-only search, guide and EN fallback',async({p
  await expect(root.locator('[data-local-id="DET0001"]')).toHaveCount(1);
  await root.locator('[data-local-id="DET0001"]').click();
  const detail=root.locator('#mitrelocalDetail');
- await expect(detail.locator('h3')).toHaveText('Acceso sospechoso a metadatos de instancias cloud');
+ await expect(detail.locator('h3')).toHaveText('Detección de acceso a metadatos de instancias cloud');
  await expect(detail).toContainText('169.254.169.254');
  await expect(detail).toContainText('Qué NO demuestra una señal aislada');
  await expect(detail).toContainText('Guía de investigación para ASIR');
@@ -64,7 +64,7 @@ test('metadata API DET0001: Spanish-only search, guide and EN fallback',async({p
  await expect(detail.locator('h3')).toHaveText('Detect Access to Cloud Instance Metadata API (IaaS)');
  await expect(detail).not.toContainText('Guía de investigación para ASIR');
  await page.locator('#language').selectOption('es');
- await expect(detail.locator('h3')).toHaveText('Acceso sospechoso a metadatos de instancias cloud');
+ await expect(detail.locator('h3')).toHaveText('Detección de acceso a metadatos de instancias cloud');
 });
 
 test('AN0002: process and MQTT evidence retains Sysmon sources and original English',async({page})=>{
