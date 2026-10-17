@@ -210,6 +210,19 @@ Se conserva el texto MITRE EN completo y desplegable en el modo ES, y se muestra
 **Alcance y limitaciones:** Estos son resúmenes docentes específicos, **no traducciones literales completas ni oficiales de MITRE**, y requieren revisión humana antes de su publicación como contenido consolidado. Quedan **711 registros T sin ficha en este módulo** y descripciones en inglés pendientes en T, DET, AN, software S, grupos G, campañas C y mitigaciones M. Los originales MITRE, relaciones y citas no se modifican.
 
 
+## Estrategias DET y analíticas AN en español — segundo lote (32 DET + 57 AN)
+
+Esta entrega continúa la localización de **detecciones y telemetría**, complementando los tres lotes recientes de subtécnicas T. Amplía `src/features/learning/mitre-det-an-es-v20.js` con **32 estrategias DET** y **57 analíticas AN** adicionales, pasando de **19 a 51 estrategias DET** y de **83 a 140 analíticas AN** con borradores educativos propios en español. Los denominadores del archivo v20 son 933 DET y 2283 AN indexadas (incluidas las entradas AN adicionales del índice).
+
+Las estrategias nuevas proceden de registros reales de `detections-00.json` y abarcan metadatos IaaS, pub/sub, PATH, utilidades renombradas, relaciones de confianza de dominio, cadena de suministro, disparadores de ejecución, ofuscación de red, VBA Stomping, datos de navegador, preparación de archivos, inventario de defensas, shims, bibliotecas compartidas, símbolos eliminados, perfiles de shell, autenticación forzada, empaquetado, cachés Kerberos, Electron, procesadores de impresión, comunicaciones web, acceso condicional, firmas digitales, archivos ocultos, accesibilidad, servicios web bidireccionales, alta de dispositivos, credenciales de navegador, permisos de instaladores, resolución dinámica y retirada de persistencia.
+
+Cada **DET** tiene un título y resumen educativo propio, una señal que merece investigación, fuentes de telemetría o comprobación posibles, una advertencia sobre limitaciones y falsos positivos, y una pregunta para alumnado ASIR. Cada **AN** añade un título, resumen y orientación de comprobación adaptados al registro fuente y su plataforma. La interfaz española utiliza esos textos para la búsqueda y fichas relacionadas; el inglés MITRE permanece consultable, se recupera al cambiar a EN y **no se modifica** la instantánea `data/mitre/v20/`, sus códigos, parámetros, orígenes ni relaciones.
+
+**Estado:** todos los nuevos textos son borradores originales `draft_needs_review`, **no traducciones literales completas ni oficiales**, ni reglas SIEM listas para producción. Se recomienda revisión humana y contraste con la telemetría real antes de incorporar un ejemplo a laboratorios evaluables. El avance no implica que todas las 933 DET o 2283 AN estén traducidas.
+
+**Verificación del lote:** los 32 códigos DET y 57 códigos AN se han cotejado con las asociaciones de `detections-00.json`; no existen IDs nuevos inventados, duplicados ni sustitución de los 19/83 registros previos. Se actualizan las regresiones y se añaden pruebas Playwright de cobertura, búsqueda española, navegación DET→AN, lectura de las fuentes inglesas, parámetros de ajuste, alternancia ES/EN y tratamiento transparente de fichas aún pendientes, tanto en escritorio como en móvil.
+
+
 ## Procedimiento común para traducciones **íntegras** de todas las categorías
 
 Se documenta el procedimiento y los criterios de salida en [MITRE_TRANSLATION_STANDARD.md](MITRE_TRANSLATION_STANDARD.md). Todas las colecciones T, TA, DET, AN, DC, DS, A, S, G, C y M seguirán ese mismo contrato de traducción del campo fuente completo, preservación del inglés, metadatos, comprobación de IDs, búsquedas ES/EN, revisión humana y pruebas Playwright. Una nota didáctica o título traducido **no representa una traducción completa**.
