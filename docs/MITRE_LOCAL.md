@@ -160,3 +160,17 @@ En la interfaz ES, una ficha con resumen español presenta **primero el resumen*
 
 La búsqueda encuentra ahora palabras contenidas en los resúmenes educativos DC, A y DS además de los identificadores y títulos. La línea de estadísticas separa la disponibilidad de **títulos DC 120/120** de la de **resúmenes DC 120/120**, para evitar confundir un nombre traducido con una explicación completa. Las pruebas Playwright cubren los 105 IDs añadidos, los 15 existentes, la ausencia de solapamientos, la apertura del original, la búsqueda en español, el cambio de idioma y las fichas sin traducción. **La traducción literal completa de las descripciones MITRE sigue pendiente** y no se reclama como finalizada.
 
+
+## Subtécnicas T con explicaciones españolas — lote 1 (74 fichas)
+
+Tras los lotes #25–#28, las familias de títulos DC, DS y A ya estaban localizadas y los 120 componentes DC tenían resúmenes educativos, pero seguían muchas descripciones inglesas. Este lote añade **74 explicaciones educativas originales en español de subtécnicas T Enterprise**, cada una con nombre específico, resumen técnico y **orientación de comprobación defensiva**. Los textos corresponden a estrategias de acceso a credenciales (LSASS, SAM, NTDS, DCSync), intérpretes PowerShell y shells, cuentas válidas, modificación de cuentas, servicios remotos, tareas, Kerberos, phishing, credenciales desprotegidas y suplantación de red.
+
+- Nuevos borradores en `src/features/learning/mitre-subtechniques-es-v20.js`, sin modificar ningún archivo en `data/mitre/v20/` ni sustituir descripciones MITRE originales.
+- Todos los 74 códigos fueron contrastados con la instantánea v20 local y tienen contenido diferente, específico para la técnica y acciones de verificación defensiva; el estado es **`draft_needs_review`**.
+- La vista ES muestra el resumen de la técnica y la comprobación sugerida; conserva el texto inglés oficial en un desplegable. Al cambiar a EN se recuperan nombres, descripción y tácticas originales, sin el contenido añadido en español.
+- Las tácticas T asociadas ya se muestran con sus nombres españoles de las 41 tácticas TA indexadas, respetando dominio y sin alterar la relación de origen.
+- La búsqueda en español contempla los nombres y las explicaciones nuevas. Se muestra `T 74/935` para las explicaciones **de este lote**, que no representa la cantidad total de títulos T traducidos previamente ni una traducción integral.
+
+**Alcance medido:** 74/935 entradas T tienen una nueva explicación especializada en este módulo (7,91 % de las técnicas/subtécnicas indexadas). El resto conserva el original inglés, aunque algunos registros ya disponían de títulos y notas didácticas más breves procedentes de lotes anteriores. Las descripciones inglesas MITRE son más extensas: estas 74 fichas son **resúmenes educativos**, no traducciones literales completas ni detecciones listas para desplegar. Siguen pendientes otras T y múltiples familias DET/AN/S/G/C/M.
+
+Las pruebas Playwright en escritorio y móvil verifican cobertura y unicidad de los 74 IDs, independencia del inglés de MITRE, búsquedas en español, guía defensiva, nombres localizados de tácticas, modo EN y vuelta a ES.

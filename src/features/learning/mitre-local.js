@@ -11,7 +11,7 @@ const fetchLocal=async name=>{if(!validPath(name))throw Error('Unexpected JSON p
 let manifest=null,items=[],links={},groupLinks={},platforms=[],guides=[],selected=null,filter='all',domain='all',platform='all',translation='all',query='',loading=null,error=null,detailsEpoch=0;
 const cache=new Map();
 // Educational Spanish drafts never overwrite the original MITRE data.
-const spanishTitle=r=>r.name_es||window.AttackSpanishV20?.translate(r.id,r.name_en,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||window.AttackCatalogSpanishV20?.title(r.id,r.name_en,r.type)||'';
+const spanishTitle=r=>r.name_es||(r.type==='techniques'?window.AttackSubtechniqueSpanishV20?.title(r.id):'')||window.AttackSpanishV20?.translate(r.id,r.name_en,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||window.AttackCatalogSpanishV20?.title(r.id,r.name_en,r.type)||'';
 const normName=r=>enc()?r.name_en:(spanishTitle(r)||r.name_en);
 const hasSpanishTitle=r=>!!spanishTitle(r);
 // A Spanish heading alone is not a translated description; count summaries separately.
@@ -88,9 +88,9 @@ function renderList(){
  const el=root.querySelector('#mitrelocalList'),count=root.querySelector('#mitrelocalCount');if(!el)return;
  const stats=root.querySelector('#mitrelocalTranslationStats');
  if(stats){const coverage=window.AttackDetectionSpanishV20?.coverage;const more=window.AttackCatalogSpanishV20?.coverage;stats.textContent=items.filter(hasSpanishTitle).length+' / '+items.length+' '+L('títulos en español, incluidos borradores educativos','Spanish titles, including educational drafts')+(coverage?' · DET '+coverage.detections+'/'+items.filter(r=>r.type==='detections').length+' · AN '+coverage.analytics+'/'+items.filter(r=>r.type==='analytics').length+' '+L('fichas educativas nuevas en borrador','new educational drafts'):'')+(more?' · DC '+items.filter(r=>r.type==='components'&&hasSpanishTitle(r)).length+'/120 · DS '+items.filter(r=>r.type==='datasources'&&hasSpanishTitle(r)).length+'/42 · A '+items.filter(r=>r.type==='assets'&&hasSpanishTitle(r)).length+'/18 '+L('títulos localizados','localized titles'):'');}
- if(stats){const complete=15+items.filter(hasSpanishDCSummary).length;stats.textContent+=' · '+L('DC con resumen español','DC with Spanish summaries')+' '+complete+'/120';}
+ if(stats){const complete=15+items.filter(hasSpanishDCSummary).length;stats.textContent+=' · '+L('DC con resumen español','DC with Spanish summaries')+' '+complete+'/120';const covered=window.AttackSubtechniqueSpanishV20?.coverage.subtechniques;if(covered)stats.textContent+=' · T '+covered+'/935 '+L('subtécnicas con explicación educativa nueva','sub-techniques with new educational explanations');}
  const term=query.trim().toLocaleLowerCase();
- const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(translation==='all'||(translation==='es')===hasSpanishTitle(r))&&(!term||[r.id,r.name_en,spanishTitle(r),window.AttackDetectionSpanishV20?.searchText(r.id,r.type),window.AttackComponentSpanishV20?.searchText(r.id),window.AttackCatalogSpanishV20?.summary(r.id,r.name_en,r.type),...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
+ const all=items.filter(r=>(filter==='all'||r.type===filter)&&matchesDomain(r)&&matchesPlatform(r)&&(translation==='all'||(translation==='es')===hasSpanishTitle(r))&&(!term||[r.id,r.name_en,spanishTitle(r),window.AttackDetectionSpanishV20?.searchText(r.id,r.type),window.AttackComponentSpanishV20?.searchText(r.id),window.AttackCatalogSpanishV20?.summary(r.id,r.name_en,r.type),window.AttackSubtechniqueSpanishV20?.searchText(r.id),...(r.aliases||[])].some(s=>String(s||'').toLocaleLowerCase().includes(term))));
  count.textContent=all.length+' '+L('coincidencias','matches')+(all.length>60?' · '+L('se muestran las primeras 60; concreta la búsqueda','first 60 shown; refine your search'):'');
  el.innerHTML=all.slice(0,60).map(r=>`<button type="button" class="mitrelocal-item" data-local-id="${esc(r.id)}" data-local-type="${esc(r.type)}" data-local-domain="${esc(r.domain||'')}" aria-pressed="${selected?.id===r.id&&selected.type===r.type}"><strong>${esc(r.id)}</strong><span>${esc(normName(r))}</span><small>${esc(typeName(r.type))}${r.domain?' · '+esc(r.domain):''}</small></button>`).join('')||'<p>'+L('No hay resultados.','No results.')+'</p>';
 }
@@ -183,8 +183,8 @@ function educationalGuide(r,langEn){
 
 function renderDetail(r,record){
  const langEn=enc(),status=record.translation_status||'pending',titleEn=record.name_en||record.title_en||record.name||r.name_en;
- const titleEs=record.name_es||record.title_es||window.AttackSpanishV20?.translate(r.id,titleEn,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||window.AttackCatalogSpanishV20?.title(r.id,titleEn,r.type)||'';
- const summary=record.summary_es||record.description_es||(r.type==='techniques'?window.AttackSpanishV20?.note(r.id):null)||window.AttackDetectionSpanishV20?.summary(r.id,r.type)||window.AttackCatalogSpanishV20?.summary(r.id,titleEn,r.type)||window.AttackComponentSpanishV20?.summary(r.id)||'';
+ const titleEs=record.name_es||record.title_es||(r.type==='techniques'?window.AttackSubtechniqueSpanishV20?.title(r.id):'')||window.AttackSpanishV20?.translate(r.id,titleEn,r.type)||window.AttackDetectionSpanishV20?.title(r.id,r.type)||window.AttackCatalogSpanishV20?.title(r.id,titleEn,r.type)||'';
+ const summary=record.summary_es||record.description_es||(r.type==='techniques'?window.AttackSubtechniqueSpanishV20?.summary(r.id)||window.AttackSpanishV20?.note(r.id):null)||window.AttackDetectionSpanishV20?.summary(r.id,r.type)||window.AttackCatalogSpanishV20?.summary(r.id,titleEn,r.type)||window.AttackComponentSpanishV20?.summary(r.id)||'';
  const translated=!!(titleEs||summary);
  const quality=translated?(status==='reviewed_es'||status==='reviewed'?L('Traducción revisada','Reviewed translation'):L('Español provisional · pendiente de revisión','Spanish draft · review pending')):L('Original en inglés · traducción pendiente','English original · translation pending');
  const description=usefulEnglish(record);
@@ -198,13 +198,14 @@ function renderDetail(r,record){
   extra+=listRelations(record.campaigns||[],L('Campañas relacionadas','Related campaigns'));
  }
  if(r.type==='techniques'){
+  if(!langEn){const v=window.AttackSubtechniqueSpanishV20?.verify(r.id);if(v)extra+=plainSection('Comprobación defensiva sugerida · borrador educativo',v);}
   const rel=links[r.id]||{};
   for(const type of ['detections','software','mitigations','campaigns','assets']){
    if(rel[type]?.length)extra+=listRelations(rel[type],typeName(type));
   }
   if(groupLinks[r.id]?.length)extra+=listRelations(groupLinks[r.id],L('Grupos documentados en MITRE','MITRE-documented groups'));
 
-  if(record.tactics_en?.length)extra+=plainSection(L('Tácticas MITRE','MITRE tactics'),record.tactics_en.join(', '));
+  if(record.tactics_en?.length){const tactical=record.tactics_en.map(t=>{if(langEn)return t;const match=items.find(x=>x.type==='tactics'&&x.name_en===t&&x.domain===r.domain)||items.find(x=>x.type==='tactics'&&x.name_en===t);return match?.name_es||t;});extra+=plainSection(L('Tácticas MITRE','MITRE tactics'),tactical.join(', '));}
  }
  if(r.type==='detections'){
   const analytics=record.analytics||[];
