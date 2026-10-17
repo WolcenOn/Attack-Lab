@@ -59,23 +59,23 @@ test('DC: Spanish title is searchable and original English is preserved',async({
  await expect(detail.locator('h3')).toHaveText('Creación de procesos');
 });
 
-test('DS: historical source translations are summaries and still clearly deprecated',async({page})=>{
+test('DS: full historical source translation remains clearly deprecated',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalType').selectOption('datasources');
  await root.locator('#mitrelocalSearch').fill('DS0029');
  await root.locator('[data-local-id="DS0029"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail.locator('h3')).toHaveText('Tráfico de red');
- await expect(detail).toContainText('Resumen educativo en español');
+ await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).toContainText('Fuente histórica obsoleta');
  await expect(detail).toContainText('Network Traffic');
  await page.locator('#language').selectOption('en');
  await expect(detail.locator('h3')).toHaveText('Network Traffic');
- await expect(detail).not.toContainText('Resumen educativo en español');
+ await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).toContainText('Deprecated historical source');
 });
 
-test('ICS A: educational summary and English source remain separately available',async({page})=>{
+test('ICS A: full translation and English source remain separately available',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalType').selectOption('assets');
  await root.locator('#mitrelocalDomain').selectOption('ics');
@@ -83,12 +83,12 @@ test('ICS A: educational summary and English source remain separately available'
  await root.locator('[data-local-id="A0003"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail.locator('h3')).toHaveText('Controlador lógico programable (PLC)');
- await expect(detail).toContainText('Resumen educativo en español');
- await expect(detail).toContainText('modos de operación');
+ await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
+ await expect(detail).toContainText('modos de funcionamiento diferenciados');
  await expect(detail).toContainText('Programmable Logic Controller (PLC)');
  await page.locator('#language').selectOption('en');
  await expect(detail.locator('h3')).toHaveText('Programmable Logic Controller (PLC)');
- await expect(detail).not.toContainText('Resumen educativo en español');
+ await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
 });
 
 test('translation filter includes newly localized titles without claiming reviewed quality',async({page})=>{
