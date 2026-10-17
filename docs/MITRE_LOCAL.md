@@ -186,3 +186,25 @@ Se añaden resúmenes específicos y comprobaciones defensivas de estas familias
 **Verificación:** Se ha contrastado que los 78 IDs nuevos existen en los JSON v20, que no se repiten entre sí ni con los 74 del lote anterior y que no reemplazan notas españolas anteriores. Se actualizan las pruebas de regresión a 152/935 y se añaden cinco escenarios Playwright de búsqueda española, suplantación, ejecución mediante utilidades conocidas, persistencia WMI, identidades, controles de confianza y alternancia ES/EN en escritorio y móvil.
 
 **Siguiente cobertura pendiente:** las 783 entradas T sin ficha específica de este módulo, además de DET, AN, software S, grupos G, campañas C y mitigaciones M que aún muestran detalles ingleses. La cifra 152/935 cuantifica las nuevas explicaciones de este módulo; **no es una medición de nombres españoles existentes en otras capas**.
+
+
+## Subtécnicas T con explicaciones españolas — lote 3 (72 fichas nuevas)
+
+Con el tercer lote, `src/features/learning/mitre-subtechniques-es-v20.js` pasa de **152 a 224 subtécnicas T con resumen específico y comprobación defensiva en español**. Se incorporan **72 fichas nuevas** del catálogo v20; representan un **23,96 % de las 935 entradas T** si se usa como referencia el conjunto de técnicas y subtécnicas, aunque la numeración de este módulo solo incluye subtécnicas, no las técnicas raíz. No confundir esta cifra con el total de títulos T localizados por otros glosarios.
+
+| Familia | Nuevas fichas | Área de investigación defensiva |
+| --- | ---: | --- |
+| T1027 — Ofuscación de archivos e información | 18 | Codificación, empaquetado, archivos HTML/SVG, Unicode y almacenamiento |
+| T1055 — Inyección de procesos | 12 | Memoria de procesos, hilos, DLL, ptrace y vaciado de procesos |
+| T1548 — Mecanismos de elevación | 6 | UAC, sudo, setuid, TCC y roles temporales cloud |
+| T1574 — Secuestro del flujo de ejecución | 12 | Bibliotecas, búsqueda de rutas, permisos y carga de .NET |
+| T1564 — Ocultación de artefactos | 14 | Archivos, cuentas, correo, atributos, montajes y ventanas |
+| T1204 — Ejecución por el usuario | 5 | Enlaces, archivos, imágenes, copia y pegado, bibliotecas |
+| T1071 — Protocolos de aplicación | 5 | Tráfico web, transferencia de archivos, correo, DNS y pub/sub |
+| **Total del lote** | **72** | |
+
+Cada ficha incorpora (a) un **título específico en español**, (b) un resumen educativo redactado para ASIR y (c) una indicación sobre **qué comprobar y qué no demuestra por sí sola una señal**. Todos los códigos se han contrastado contra `data/mitre/v20/techniques-*.json`, sin identificadores inexistentes, duplicados ni sustitución de descripciones originales. Las fichas quedan etiquetadas como `draft_needs_review`.
+
+Se conserva el texto MITRE EN completo y desplegable en el modo ES, y se muestra normalmente cuando se cambia a EN. La búsqueda indexa las nuevas explicaciones y recomendaciones en español. Se han ampliado las pruebas Playwright de regresión a **224/935**, con nuevos casos para T1027.006, T1055.012, T1574.009, T1564.008, T1204.004, T1548.003 y T1071.004; se prueban navegación, búsqueda y alternancia de idioma en escritorio y móvil.
+
+**Alcance y limitaciones:** Estos son resúmenes docentes específicos, **no traducciones literales completas ni oficiales de MITRE**, y requieren revisión humana antes de su publicación como contenido consolidado. Quedan **711 registros T sin ficha en este módulo** y descripciones en inglés pendientes en T, DET, AN, software S, grupos G, campañas C y mitigaciones M. Los originales MITRE, relaciones y citas no se modifican.
