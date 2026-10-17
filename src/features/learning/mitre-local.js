@@ -205,7 +205,7 @@ function renderDetail(r,record){
   }
   if(groupLinks[r.id]?.length)extra+=listRelations(groupLinks[r.id],L('Grupos documentados en MITRE','MITRE-documented groups'));
 
-  if(record.tactics_en?.length)extra+=plainSection(L('Tácticas MITRE','MITRE tactics'),record.tactics_en.join(', '));
+  if(record.tactics_en?.length){const tactical=record.tactics_en.map(t=>{if(langEn)return t;const match=items.find(x=>x.type==='tactics'&&x.name_en===t&&x.domain===r.domain)||items.find(x=>x.type==='tactics'&&x.name_en===t);return match?.name_es||t;});extra+=plainSection(L('Tácticas MITRE','MITRE tactics'),tactical.join(', '));}
  }
  if(r.type==='detections'){
   const analytics=record.analytics||[];
