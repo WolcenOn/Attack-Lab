@@ -221,3 +221,12 @@ Cada **DET** tiene un título y resumen educativo propio, una señal que merece 
 **Estado:** todos los nuevos textos son borradores originales `draft_needs_review`, **no traducciones literales completas ni oficiales**, ni reglas SIEM listas para producción. Se recomienda revisión humana y contraste con la telemetría real antes de incorporar un ejemplo a laboratorios evaluables. El avance no implica que todas las 933 DET o 2283 AN estén traducidas.
 
 **Verificación del lote:** los 32 códigos DET y 57 códigos AN se han cotejado con las asociaciones de `detections-00.json`; no existen IDs nuevos inventados, duplicados ni sustitución de los 19/83 registros previos. Se actualizan las regresiones y se añaden pruebas Playwright de cobertura, búsqueda española, navegación DET→AN, lectura de las fuentes inglesas, parámetros de ajuste, alternancia ES/EN y tratamiento transparente de fichas aún pendientes, tanto en escritorio como en móvil.
+
+
+## Procedimiento común para traducciones **íntegras** de todas las categorías
+
+Se documenta el procedimiento y los criterios de salida en [MITRE_TRANSLATION_STANDARD.md](MITRE_TRANSLATION_STANDARD.md). Todas las colecciones T, TA, DET, AN, DC, DS, A, S, G, C y M seguirán ese mismo contrato de traducción del campo fuente completo, preservación del inglés, metadatos, comprobación de IDs, búsquedas ES/EN, revisión humana y pruebas Playwright. Una nota didáctica o título traducido **no representa una traducción completa**.
+
+Este primer lote de traducciones íntegras cubre **42/42 descripciones de fuentes DS históricas (obsoletas)** y **18/18 descripciones de activos industriales A**, con sus textos completos en `src/features/learning/mitre-full-descriptions-es-v20.js`. Todos están en borrador pendiente de revisión. La biblioteca muestra **«Descripción íntegra ... (borrador)»** en lugar de «Resumen educativo», mantiene el inglés original desplegable, permite consultar el original al seleccionar EN y busca dentro de las nuevas traducciones. El estado y la cobertura de las demás categorías no se inflan por este avance.
+
+Los lotes siguientes deben traducir además todos los **campos narrativos anidados** visibles de cada colección cuando corresponda (especialmente las descripciones de elementos de configuración AN), no solo `description_en`.
