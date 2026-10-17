@@ -19,8 +19,10 @@ test('32 DET strategies and 57 AN annotations are real, related MITRE v20 record
  const result=await page.evaluate(async()=>{
   const api=window.AttackDetectionSpanishV20;
   const source=await(await fetch('data/mitre/v20/detections-00.json')).json();
-  const det=source.filter(r=>api.strategy(r.id));
-  const an=source.flatMap(d=>d.analytics.map(a=>({...a,parent:d.id}))).filter(a=>api.analytic(a.id));
+  const addedDET=new Set(["DET0001","DET0002","DET0004","DET0005","DET0007","DET0009","DET0010","DET0011","DET0012","DET0013","DET0014","DET0016","DET0017","DET0018","DET0019","DET0020","DET0022","DET0023","DET0024","DET0025","DET0026","DET0027","DET0030","DET0031","DET0032","DET0033","DET0035","DET0036","DET0037","DET0038","DET0039","DET0040"]);
+  const addedAN=new Set(["AN0001","AN0002","AN0003","AN0009","AN0010","AN0012","AN0013","AN0016","AN0021","AN0022","AN0024","AN0025","AN0030","AN0031","AN0034","AN0035","AN0037","AN0038","AN0040","AN0041","AN0048","AN0049","AN0051","AN0052","AN0053","AN0055","AN0056","AN0059","AN0060","AN0065","AN0066","AN0067","AN0069","AN0070","AN0071","AN0072","AN0074","AN0075","AN0076","AN0087","AN0088","AN0089","AN0090","AN0091","AN0092","AN0094","AN0100","AN0101","AN0103","AN0104","AN0105","AN0106","AN0108","AN0109","AN0110","AN0113","AN0114"]);
+  const det=source.filter(r=>addedDET.has(r.id)&&api.strategy(r.id));
+  const an=source.flatMap(d=>d.analytics.map(a=>({...a,parent:d.id}))).filter(a=>addedAN.has(a.id)&&api.analytic(a.id));
   const mislinked=an.filter(a=>!api.strategy(a.parent)).map(a=>a.id);
   const invalidDet=det.filter(d=>api.strategy(d.id).status!=='draft_needs_review'||
    !api.strategy(d.id).signals||!api.strategy(d.id).telemetry||!api.strategy(d.id).limitations||!api.strategy(d.id).question).map(d=>d.id);
