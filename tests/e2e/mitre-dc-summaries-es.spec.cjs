@@ -81,8 +81,8 @@ test('search also recognizes words present only in the Spanish DC summary',async
 test('untranslated DET stays transparent about missing Spanish content',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalType').selectOption('detections');
- await root.locator('#mitrelocalSearch').fill('DET0002');
- await root.locator('[data-local-id="DET0002"]').click();
+ await root.locator('#mitrelocalSearch').fill('DET0041');
+ await root.locator('[data-local-id="DET0041"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).toContainText('Original en inglés');
  await expect(detail.locator('.mitrelocal-source-collapsed')).toHaveCount(0);

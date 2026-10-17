@@ -28,11 +28,11 @@ test('DET/AN: educational draft IDs and coverage are specific to MITRE v20',asyn
    coverage:api.coverage,detCount:det.length,anCount:an.length,
    missing:sampleDET.filter(id=>!det.some(d=>d.id===id)||!api.strategy(id)),
    missingAN:sampleAN.filter(id=>!an.some(a=>a.id===id)||!api.analytic(id)),
-   unrelated:api.strategy('DET0002'),unrelatedAN:api.analytic('AN2070'),
+   unrelated:api.strategy('DET9999'),unrelatedAN:api.analytic('AN2070'),
    status:api.analytic('AN1252').status
   };
  });
- expect(result.coverage).toEqual({detections:19,analytics:83});
+ expect(result.coverage).toEqual({detections:51,analytics:140});
  expect(result.detCount).toBe(933);
  expect(result.anCount).toBe(2283);
  expect(result.missing).toEqual([]);
@@ -99,13 +99,13 @@ test('DET to AN navigation, domain accounts and bilingual evidence interpretatio
 
 test('DET/AN untranslated entries retain English originals and do not claim review',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('DET 19/933');
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('AN 83/2283');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('DET 51/933');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('AN 140/2283');
  await root.locator('#mitrelocalType').selectOption('detections');
- await root.locator('#mitrelocalSearch').fill('DET0002');
- await root.locator('[data-local-id="DET0002"]').click();
+ await root.locator('#mitrelocalSearch').fill('DET0041');
+ await root.locator('[data-local-id="DET0041"]').click();
  const detail=root.locator('#mitrelocalDetail');
- await expect(detail.locator('h3')).toContainText('Behavioral Detection of Publish/Subscribe');
+ await expect(detail.locator('h3')).toContainText('Detection of Lifecycle Policy Modifications');
  await expect(detail).toContainText('Original en inglés');
  await expect(detail).not.toContainText('Guía de investigación para ASIR');
  await root.locator('#mitrelocalSearch').fill('DET0463');
