@@ -14,7 +14,7 @@ async function enter(page){
  return root;
 }
 
-test('152 technique summaries and checks reference unique real MITRE v20 IDs',async({page})=>{
+test('224 technique summaries and checks reference unique real MITRE v20 IDs',async({page})=>{
  await page.goto('/');
  const result=await page.evaluate(async()=>{
   const api=window.AttackSubtechniqueSpanishV20;
@@ -29,10 +29,10 @@ test('152 technique summaries and checks reference unique real MITRE v20 IDs',as
    total:all.length,selected:selected.length,orphan,malformed,
    outside:api.entry('T9999.999'),noParent:api.entry('T1003')};
  });
- expect(result.coverage).toEqual({subtechniques:152});
+ expect(result.coverage).toEqual({subtechniques:224});
  expect(result.source).toBe('draft_needs_review');
  expect(result.total).toBe(935);
- expect(result.selected).toBe(152);
+ expect(result.selected).toBe(224);
  expect(result.orphan).toEqual([]);
  expect(result.malformed).toEqual([]);
  expect(result.outside).toBeNull();
@@ -68,7 +68,7 @@ test('T1003.006 DCSync: Spanish verification is searchable, original English sta
 
 test('T1059.001: PowerShell explanations and audit hints respect language switch',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('T 152/935');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('T 224/935');
  await root.locator('#mitrelocalType').selectOption('techniques');
  await root.locator('#mitrelocalSearch').fill('T1059.001');
  await root.locator('[data-local-id="T1059.001"]').click();
