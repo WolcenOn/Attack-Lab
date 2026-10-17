@@ -31,17 +31,17 @@ test('new 78 sub-techniques correspond to MITRE v20 records and preserve old 74 
    malformed:problematic,unique:new Set(ids).size,
    examples:['T1003.006','T1036.007','T1218.011','T1546.003','T1553.005'].map(id=>!!api.entry(id))};
  });
- expect(result.count).toBe(152);
+ expect(result.count).toBe(224);
  expect(result.source).toBe('draft_needs_review');
- expect(result.selected).toBe(152);
- expect(result.unique).toBe(152);
+ expect(result.selected).toBe(224);
+ expect(result.unique).toBe(224);
  expect(result.malformed).toEqual([]);
  expect(result.examples).toEqual([true,true,true,true,true]);
 });
 
 test('masquerading: double extension can be searched by Spanish educational summary',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('T 152/935');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('T 224/935');
  await root.locator('#mitrelocalSearch').fill('documento.txt.exe');
  await expect(root.locator('[data-local-id="T1036.007"]')).toHaveCount(1);
  await root.locator('[data-local-id="T1036.007"]').click();
