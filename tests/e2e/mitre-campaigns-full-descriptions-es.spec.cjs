@@ -19,7 +19,7 @@ async function enter(page){
  return root;
 }
 
-test('20 campaign IDs match original MITRE v20 source, footnotes and unified 228-description count',async({page})=>{
+test('first 20 campaign IDs remain valid while the campaign family reaches 61/61 and 269 full descriptions',async({page})=>{
  await page.goto('/');
  const audit=await page.evaluate(async ids=>{
   const original=await(await fetch('data/mitre/v20/campaigns-00.json')).json();
@@ -34,24 +34,24 @@ test('20 campaign IDs match original MITRE v20 source, footnotes and unified 228
     es.description===r.description_en||footnotes(es.description)!==footnotes(r.description_en)||
     c.searchText(r.id)!==es.description;
   }).map(r=>r.id);
-  const unexpected=original.filter(r=>!ids.includes(r.id)&&!!all.entry(r.id)).map(r=>r.id);
+  const missing=original.filter(r=>!all.entry(r.id)).map(r=>r.id);
   return {total:original.length,sourceCovered:covered.length,
-   overlayIds:c.ids.length,unique:new Set(c.ids).size,invalid,unexpected,
+   overlayIds:c.ids.length,unique:new Set(c.ids).size,invalid,missing,
    campaignCoverage:c.coverage,globalCoverage:all.coverage,
    firstNameUnchanged:original.find(r=>r.id==='C0001').name_en==='Frankenstein',
-   pendingC0025:all.entry('C0025')};
+   translatedC0025:all.entry('C0025')?.scope};
  },batchIds);
  expect(audit).toEqual({
-  total:61,sourceCovered:20,overlayIds:20,unique:20,invalid:[],unexpected:[],
-  campaignCoverage:{campaigns:20,totalCampaigns:61},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:20,fullDescriptions:228},
-  firstNameUnchanged:true,pendingC0025:null
+  total:61,sourceCovered:20,overlayIds:61,unique:61,invalid:[],missing:[],
+  campaignCoverage:{campaigns:61,totalCampaigns:61},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,fullDescriptions:269},
+  firstNameUnchanged:true,translatedC0025:'full_description'
  });
 });
 
 test('C0024 SolarWinds translates full details, multiple attributions and English source reversibly',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('C 20/61');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('C 61/61');
  await root.locator('#mitrelocalSearch').fill('C0024');
  await root.locator('[data-local-id="C0024"]').click();
  const detail=root.locator('#mitrelocalDetail');
@@ -115,7 +115,7 @@ test('C0007 tentative Chinese attribution and C0022 Lazarus caveat remain qualif
  }
 });
 
-test('C0020 ICS incident retains 2000 and 800,000 liters, pending C0025 not falsely translated',async({page})=>{
+test('C0020 ICS incident retains 2000 and 800,000 liters; C0025 is now fully translated',async({page})=>{
  const root=await enter(page);
  const detail=root.locator('#mitrelocalDetail');
  await root.locator('#mitrelocalSearch').fill('C0020');
@@ -124,9 +124,9 @@ test('C0020 ICS incident retains 2000 and 800,000 liters, pending C0025 not fals
  await expect(detail).toContainText('incidente de 2000');
  await root.locator('#mitrelocalSearch').fill('C0025');
  await root.locator('[data-local-id="C0025"]').click();
- await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
- await expect(detail).not.toContainText('Descripción íntegra traducida');
- expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('C0025'))).toBeNull();
+ await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
+ await expect(detail).toContainText('Descripción íntegra traducida');
+ expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('C0025')?.scope)).toBe('full_description');
 });
 
 test('existing M, TA, DS and A translations remain available',async({page})=>{
