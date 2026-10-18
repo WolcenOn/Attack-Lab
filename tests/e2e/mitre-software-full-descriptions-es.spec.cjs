@@ -34,21 +34,21 @@ test('60 software descriptions faithfully correspond to the first source shard, 
   return {
    sourceShard:source.length,selected:selected.length,first60:ids.length,unique:new Set(s.ids).size,
    ids:s.ids.slice(0,60),invalid,softwareCoverage:s.coverage,fullCoverage:all.coverage,
-   s0424:all.entry('S0424'),sourceS0039:source.find(x=>x.id==='S0039').description_en.includes('net1.exe'),
+   s0486:all.entry('S0486'),sourceS0039:source.find(x=>x.id==='S0039').description_en.includes('net1.exe'),
    oldCampaign:all.entry('C0066')?.scope
   };
  },first60);
  expect(audit).toEqual({
-  sourceShard:359,selected:60,first60:60,unique:420,
-  ids:first60,invalid:[],softwareCoverage:{software:420,totalSoftware:974},
-  fullCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:420,fullDescriptions:689},
-  s0424:null,sourceS0039:true,oldCampaign:'full_description'
+  sourceShard:359,selected:60,first60:60,unique:480,
+  ids:first60,invalid:[],softwareCoverage:{software:480,totalSoftware:974},
+  fullCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:480,fullDescriptions:749},
+  s0486:null,sourceS0039:true,oldCampaign:'full_description'
  });
 });
 
 test('Mimikatz S0002 displays full Spanish draft, original references and ES to EN to ES',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 420/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 480/974');
  await root.locator('#mitrelocalSearch').fill('contraseñas de cuentas Windows en texto claro');
  await expect(root.locator('[data-local-id="S0002"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0002"]').click();
@@ -120,18 +120,18 @@ test('S0029 describes PsExec as a dual-use Microsoft tool, not inherently malici
  }
 });
 
-test('S0424 remains untranslated and earlier families preserve full-description status',async({page})=>{
+test('S0486 remains untranslated and earlier families preserve full-description status',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('S0424');
- await root.locator('[data-local-id="S0424"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0486');
+ await root.locator('[data-local-id="S0486"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
  const result=await page.evaluate(()=>Object.fromEntries(
-  ['S0424','DS0001','A0003','TA0112','M1055','C0066'].map(id=>[id,window.AttackFullSpanishV20.entry(id)?.scope||null])
+  ['S0486','DS0001','A0003','TA0112','M1055','C0066'].map(id=>[id,window.AttackFullSpanishV20.entry(id)?.scope||null])
  ));
  expect(result).toEqual({
-  S0424:null,DS0001:'full_description',A0003:'full_description',
+  S0486:null,DS0001:'full_description',A0003:'full_description',
   TA0112:'full_description',M1055:'full_description',C0066:'full_description'
  });
 });
