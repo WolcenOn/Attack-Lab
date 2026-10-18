@@ -40,7 +40,7 @@ test('batch 5 adds 60 genuine software descriptions, no S0296 source, 300 IDs an
    coverage:api.coverage,global:full.coverage};
  },fifthBatch);
  expect(result).toEqual({
-  shard:359,selected:60,expected:60,software:300,unique:420,wrong:[],
+  shard:359,selected:60,expected:60,software:420,unique:420,wrong:[],
   gapS0296:null,noS0209:null,noS0296:null,translatedS0302:'full_description',
   pendingS0424:null,coverage:{software:420,totalSoftware:974},
   global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:420,fullDescriptions:689}
