@@ -34,7 +34,7 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 - **DS:** son **fuentes de datos históricas u obsoletas** en la instantánea v20. Traducirlas no las convierte en fuentes actuales ni elimina sus avisos.
 - **Nombres propios y atribuciones:** no traducir arbitrariamente nombres de campañas, software o grupos; conservar las reservas y los grados de certeza del texto original.
 
-## Cobertura de descripciones íntegras en el contrato v20 (DS/A, TA, M y C)
+## Cobertura de descripciones íntegras en el contrato v20 (DS/A, TA, M, C y S)
 
 | Familia | Descripciones completas ES en este contrato | Total original |
 | --- | ---: | ---: |
@@ -45,9 +45,10 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 | M — Mitigaciones Mobile | **13** | **13** |
 | M — Mitigaciones Enterprise | **43** | **43** (0 pendientes) |
 | C — Campañas | **61** | **61** (0 pendientes) |
-| T, DET, AN, DC, S, G | **0 contabilizadas como íntegras por este contrato** | Pendiente de auditoría |
+| S — Software y malware | **60** | **974** (914 pendientes) |
+| T, DET, AN, DC, G | **0 contabilizadas como íntegras por este contrato** | Pendiente de auditoría |
 
-Se conservan las **60 traducciones DS/A** en `mitre-full-descriptions-es-v20.js`, las **39 TA** en `mitre-tactics-descriptions-es-v20.js` y las **109 M** (53 ICS + 13 Mobile + 43 Enterprise) en `mitre-mitigations-descriptions-es-v20.js` y las **61 C** en `mitre-campaigns-descriptions-es-v20.js`. Los cuatro módulos se consultan a través de `window.AttackFullSpanishV20`; su contador suma **269 traducciones del campo completo `description_en`**, todas con `scope: 'full_description'` y `status: 'draft_needs_review'`. No han recibido revisión humana y no son traducciones oficiales MITRE.
+Se conservan las **60 traducciones DS/A** en `mitre-full-descriptions-es-v20.js`, las **39 TA** en `mitre-tactics-descriptions-es-v20.js` y las **109 M** (53 ICS + 13 Mobile + 43 Enterprise) en `mitre-mitigations-descriptions-es-v20.js` y las **61 C** en `mitre-campaigns-descriptions-es-v20.js`, así como **60 S** en `mitre-software-descriptions-es-v20.js`. Los cinco módulos se consultan a través de `window.AttackFullSpanishV20`; su contador suma **329 traducciones del campo completo `description_en`**, todas con `scope: 'full_description'` y `status: 'draft_needs_review'`. No han recibido revisión humana y no son traducciones oficiales MITRE.
 
 De 41 tácticas, las dos Mobile **TA0038 y TA0039** carecen de `description_en` y `short_en` en el original; mantienen sus resúmenes didácticos, sin contarse como traducciones íntegras. Las otras 39 tácticas con descripción inglesa sí están traducidas.
 
@@ -64,5 +65,7 @@ Las 109 mitigaciones M tienen `description_en`. En este lote quedan cubiertas to
 **Lote final de campañas C (41 nuevas fichas, 61/61):** traducidas las descripciones `description_en` de C0025, C0026, C0027, C0028, C0029, C0030, C0031, C0032, C0033, C0034, C0035, C0036, C0037, C0038, C0039, C0040, C0041, C0042, C0043, C0044, C0045, C0046, C0047, C0048, C0049, C0050, C0051, C0052, C0053, C0054, C0055, C0056, C0057, C0058, C0059, C0060, C0061, C0062, C0063, C0064 y C0066. El catálogo contiene **61 campañas**, y todas sus descripciones inglesas tienen ahora un borrador completo en español bajo el mismo contrato. Las referencias `[n]` —incluidas repeticiones—, nombres propios, fechas, herramientas y detalles técnicos se cotejan con la instantánea archivada. No se deducen ni inventan relaciones adicionales.
 
 **Reservas importantes de la fuente:** C0043 afirma expresamente que no hay prueba de acceso al entorno OT; C0045 conserva la controversia del proveedor sobre CVE-2023-48022 en la instantánea, no una evaluación actual independiente. C0059 advierte que los solapamientos con «The Com» no implican necesariamente relación operativa directa. C0063 conserva dos atribuciones publicadas diferentes (FSB/Dragonfly frente a GRU/ELECTRUM). C0064 advierte que los informes públicos no permiten una descripción exhaustiva; C0066 indica que las intrusiones de Minnesota no tienen una atribución específica confirmada. No se transforma ninguna de estas reservas en certeza. La cifra **61/61 mide la cobertura del campo narrativo `description_en` en borrador**, no traducción revisada ni traducción de todos los campos y relaciones estructuradas.
+
+**Primer lote de software S (60/974):** se traducen íntegramente las descripciones originales `description_en` de S0001 a S0060, con nombres de herramientas y malware sin traducir arbitrariamente (Mimikatz, PsExec, Uroburos, Net, Taidoor, etc.). Este conjunto incluye herramientas legítimas de uso dual y malware: su presencia en ATT&CK no implica que toda ejecución sea maliciosa. En S0022 se conserva la asociación documental de Uroburos con unidades del FSB y Turla tal como la formula la fuente. En S0039 se conserva la distinción entre `net.exe`, `net1.exe`, `net use` y `net1 user`; en S0029 se explicita que PsExec sirve tanto a administradores como a atacantes. Los campos `name`, `kind_en`, `platforms`, `domains`, `techniques`, `url` y el JSON de MITRE no se modifican. Las 60 descripciones se han cotejado con sus IDs y referencias `[n]`. Se contabilizan solo 60 traducciones completas, no los otros **914 registros S** que permanecen pendientes. Como en las demás familias, se requiere revisión humana bilingüe y no se certifican las atribuciones o capacidades técnicas mediante comprobación independiente.
 
 **Advertencia de alcance:** «0» en la última fila mide solamente las traducciones completas amparadas por el contrato, no los títulos, equivalencias o resúmenes educativos españoles existentes. No está completamente traducido el catálogo MITRE v20, ni la revisión automática sustituye a la revisión humana bilingüe.
