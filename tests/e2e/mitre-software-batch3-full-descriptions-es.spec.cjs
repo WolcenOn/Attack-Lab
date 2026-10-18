@@ -52,7 +52,7 @@ test('S0140 Shamoon retains incident chronology, artifacts and name ambiguity in
  await root.locator('[data-local-id="S0140"]').click();
  const detail=root.locator('#mitrelocalDetail');
  for(const phrase of ['Descripción íntegra traducida','2012','Shamoon 2 y Shamoon 3',
-  '2016 y 2018','RawDisk','Filerase','Kwampirs','el propio malware','[2] [3] [4] [5]']){
+  '2016 y 2018','RawDisk','Filerase','Kwampirs','al propio malware','[2] [3] [4] [5]']){
   await expect(detail).toContainText(phrase);
  }
  await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/software\/S0140\//);
