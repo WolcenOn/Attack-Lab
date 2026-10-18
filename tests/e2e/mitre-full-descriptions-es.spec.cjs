@@ -106,7 +106,7 @@ test('other categories do not falsely claim a complete translation',async({page}
  await root.locator('#mitrelocalSearch').fill('M1015');
  await root.locator('[data-local-id="M1015"]').click();
  const detail=root.locator('#mitrelocalDetail');
- await expect(detail).toContainText('Application Isolation and Sandboxing');
+ await expect(detail).toContainText('Active Directory Configuration');
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
