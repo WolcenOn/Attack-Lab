@@ -39,7 +39,7 @@ test('TA source coverage is exactly 39/41; missing English TA0038 and TA0039 rem
   sourceCount:41,sourceEnglish:39,translatedCount:39,unique:39,
   missing:['TA0038','TA0039'],invalid:[],unexpected:[],
   taCoverage:{tactics:39,totalTactics:41,sourceDescriptions:39},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:90,fullDescriptions:189},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,fullDescriptions:208},
   missingEntries:[null,null],englishUnmodified:true
  });
 });
@@ -116,11 +116,11 @@ test('TA integration keeps DS/A full-description coverage and original English',
  const v=await page.evaluate(()=>{
   const full=window.AttackFullSpanishV20;
   return {ds:full.entry('DS0021'),ics:full.entry('A0003'),
-   tactics:full.entry('TA0112'),nonTactic:full.entry('M1033')};
+   tactics:full.entry('TA0112'),mitigation:full.entry('M1033')};
  });
  expect(v.ds?.description).toContain('Perfil malicioso en línea');
  expect(v.ds?.scope).toBe('full_description');
  expect(v.ics?.description).toContain('IEC 61131 [1]');
  expect(v.tactics?.description).toContain('sistemas defensivos');
- expect(v.nonTactic).toBeNull();
+ expect(v.mitigation?.scope).toBe('full_description');
 });
