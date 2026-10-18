@@ -39,7 +39,7 @@ test('TA source coverage is exactly 39/41; missing English TA0038 and TA0039 rem
   sourceCount:41,sourceEnglish:39,translatedCount:39,unique:39,
   missing:['TA0038','TA0039'],invalid:[],unexpected:[],
   taCoverage:{tactics:39,totalTactics:41,sourceDescriptions:39},
-  globalCoverage:{datasources:42,assets:18,tactics:39,fullDescriptions:99},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:66,fullDescriptions:165},
   missingEntries:[null,null],englishUnmodified:true
  });
 });
@@ -116,7 +116,7 @@ test('TA integration keeps DS/A full-description coverage and original English',
  const v=await page.evaluate(()=>{
   const full=window.AttackFullSpanishV20;
   return {ds:full.entry('DS0021'),ics:full.entry('A0003'),
-   tactics:full.entry('TA0112'),nonTactic:full.entry('M0800')};
+   tactics:full.entry('TA0112'),nonTactic:full.entry('M1015')};
  });
  expect(v.ds?.description).toContain('Perfil malicioso en línea');
  expect(v.ds?.scope).toBe('full_description');
