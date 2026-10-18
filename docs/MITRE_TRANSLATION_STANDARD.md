@@ -34,14 +34,15 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 - **DS:** son **fuentes de datos históricas u obsoletas** en la instantánea v20. Traducirlas no las convierte en fuentes actuales ni elimina sus avisos.
 - **Nombres propios y atribuciones:** no traducir arbitrariamente nombres de campañas, software o grupos; conservar las reservas y los grados de certeza del texto original.
 
-## Estado real después de este primer lote de traducciones íntegras
+## Estado real tras los lotes DS/A y TA de traducciones íntegras
 
 | Familia | Descripciones completas ES en este contrato | Total original |
 | --- | ---: | ---: |
 | DS — Fuentes de datos históricas | **42** | **42** |
 | A — Activos industriales ICS | **18** | **18** |
-| T, TA, DET, AN, DC, S, G, C, M | **0 contabilizadas como completas por este contrato** | Pendiente de auditoría por familia |
+| TA — Tácticas Enterprise, Mobile e ICS | **39** | **41** (solo 39 tienen `description_en`) |
+| T, DET, AN, DC, S, G, C, M | **0 contabilizadas como completas por este contrato** | Pendiente de auditoría por familia |
 
-Las **60 descripciones completas** de DS y A están redactadas en `mitre-full-descriptions-es-v20.js`; son borradores pendientes de revisión humana, aunque todos los registros de ambas categorías tienen una traducción de su descripción original. Se conserva la capa antigua de *resúmenes educativos* para las familias que todavía no tienen traducción íntegra, incluidos los avances realizados en PR previos.
+Las **60 descripciones completas** de DS y A están redactadas en `mitre-full-descriptions-es-v20.js` y otras **39** descripciones TA en `mitre-tactics-descriptions-es-v20.js`, integradas mediante `window.AttackFullSpanishV20`. Total: **99 traducciones íntegras de `description_en`**, todas en borrador pendiente de revisión humana. En TA hay 41 fichas, pero las tácticas Mobile **TA0038 y TA0039 carecen de `description_en` y `short_en`** en el archivo original, de modo que solo 39 permiten una traducción fiel de ese campo. Las otras dos mantienen sus resúmenes educativos españoles y no se contabilizan como traducción íntegra. Las 39 tácticas con descripción original sí están cubiertas. Se conserva la capa antigua de *resúmenes educativos* para las familias que todavía no tienen traducción íntegra, incluidos los avances realizados en PR previos.
 
-**Advertencia de alcance:** la cifra cero en la última fila mide *exclusivamente este nuevo contrato de traducción íntegra*, **no niega** los títulos o resúmenes en español ya existentes. La prioridad de los lotes siguientes será trasladar paulatinamente todas las familias al mismo contrato, atendiendo además a campos narrativos anidados. No está traducido al completo el catálogo MITRE v20.
+**Advertencia de alcance:** la cifra cero en la última fila mide *exclusivamente este nuevo contrato de traducción íntegra*, **no niega** los títulos o resúmenes en español ya existentes. La prioridad de los lotes siguientes será trasladar paulatinamente las familias restantes al mismo contrato, atendiendo además a campos narrativos anidados. No está traducido al completo el catálogo MITRE v20.
