@@ -34,15 +34,15 @@ test('60 software descriptions faithfully correspond to the first source shard, 
   return {
    sourceShard:source.length,selected:selected.length,first60:ids.length,unique:new Set(s.ids).size,
    ids:s.ids.slice(0,60),invalid,softwareCoverage:s.coverage,fullCoverage:all.coverage,
-   s0121:all.entry('S0181'),sourceS0039:source.find(x=>x.id==='S0039').description_en.includes('net1.exe'),
+   s0181:all.entry('S0181'),sourceS0039:source.find(x=>x.id==='S0039').description_en.includes('net1.exe'),
    oldCampaign:all.entry('C0066')?.scope
   };
  },first60);
  expect(audit).toEqual({
   sourceShard:359,selected:60,first60:60,unique:180,
-  ids:first60,invalid:[],softwareCoverage:{software:120,totalSoftware:974},
+  ids:first60,invalid:[],softwareCoverage:{software:180,totalSoftware:974},
   fullCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:180,fullDescriptions:449},
-  s0121:null,sourceS0039:true,oldCampaign:'full_description'
+  s0181:null,sourceS0039:true,oldCampaign:'full_description'
  });
 });
 
