@@ -91,7 +91,7 @@ test('Enterprise TA0042 retains resource examples and original MITRE URL',async(
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).toContainText('dominios comprados');
  await expect(detail).toContainText('certificados de firma de código robados');
- await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/tactics\\/TA0042/);
+ await expect(detail.locator('a.resource-link')).toHaveAttribute('href',/tactics\/TA0042/);
  await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
 });
 
