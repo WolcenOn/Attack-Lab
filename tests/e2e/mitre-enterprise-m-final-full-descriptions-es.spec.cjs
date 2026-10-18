@@ -51,7 +51,7 @@ test('all 109 MITRE v20 mitigation descriptions have full Spanish drafts, with o
   total:109,overlayIds:109,unique:109,invalid:[],pending:[],
   finalBatch:19,finalBatchUnique:19,categories:[53,13,43],
   mitigationCoverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43},
-  fullCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,fullDescriptions:208},
+  fullCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:20,fullDescriptions:228},
   sourceM1057:true,sourceM1055:true
  });
 });
