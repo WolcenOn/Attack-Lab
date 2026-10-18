@@ -34,15 +34,22 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 - **DS:** son **fuentes de datos históricas u obsoletas** en la instantánea v20. Traducirlas no las convierte en fuentes actuales ni elimina sus avisos.
 - **Nombres propios y atribuciones:** no traducir arbitrariamente nombres de campañas, software o grupos; conservar las reservas y los grados de certeza del texto original.
 
-## Estado real tras los lotes DS/A y TA de traducciones íntegras
+## Cobertura de descripciones íntegras en el contrato v20 (DS/A, TA y M)
 
 | Familia | Descripciones completas ES en este contrato | Total original |
 | --- | ---: | ---: |
-| DS — Fuentes de datos históricas | **42** | **42** |
+| DS — Fuentes históricas obsoletas | **42** | **42** |
 | A — Activos industriales ICS | **18** | **18** |
-| TA — Tácticas Enterprise, Mobile e ICS | **39** | **41** (solo 39 tienen `description_en`) |
-| T, DET, AN, DC, S, G, C, M | **0 contabilizadas como completas por este contrato** | Pendiente de auditoría por familia |
+| TA — Tácticas Enterprise, Mobile e ICS | **39** | **41** (39 con `description_en`) |
+| M — Mitigaciones ICS | **53** | **53** |
+| M — Mitigaciones Mobile | **13** | **13** |
+| M — Mitigaciones Enterprise | **0** | **43**, pendientes |
+| T, DET, AN, DC, S, G, C | **0 contabilizadas como íntegras por este contrato** | Pendiente de auditoría |
 
-Las **60 descripciones completas** de DS y A están redactadas en `mitre-full-descriptions-es-v20.js` y otras **39** descripciones TA en `mitre-tactics-descriptions-es-v20.js`, integradas mediante `window.AttackFullSpanishV20`. Total: **99 traducciones íntegras de `description_en`**, todas en borrador pendiente de revisión humana. En TA hay 41 fichas, pero las tácticas Mobile **TA0038 y TA0039 carecen de `description_en` y `short_en`** en el archivo original, de modo que solo 39 permiten una traducción fiel de ese campo. Las otras dos mantienen sus resúmenes educativos españoles y no se contabilizan como traducción íntegra. Las 39 tácticas con descripción original sí están cubiertas. Se conserva la capa antigua de *resúmenes educativos* para las familias que todavía no tienen traducción íntegra, incluidos los avances realizados en PR previos.
+Se conservan las **60 traducciones DS/A** en `mitre-full-descriptions-es-v20.js`, las **39 TA** en `mitre-tactics-descriptions-es-v20.js` y las **66 M** (53 ICS + 13 Mobile) en `mitre-mitigations-descriptions-es-v20.js`. Los tres módulos se consultan a través de `window.AttackFullSpanishV20`; su contador suma **165 traducciones del campo completo `description_en`**, todas con `scope: 'full_description'` y `status: 'draft_needs_review'`. No han recibido revisión humana y no son traducciones oficiales MITRE.
 
-**Advertencia de alcance:** la cifra cero en la última fila mide *exclusivamente este nuevo contrato de traducción íntegra*, **no niega** los títulos o resúmenes en español ya existentes. La prioridad de los lotes siguientes será trasladar paulatinamente las familias restantes al mismo contrato, atendiendo además a campos narrativos anidados. No está traducido al completo el catálogo MITRE v20.
+De 41 tácticas, las dos Mobile **TA0038 y TA0039** carecen de `description_en` y `short_en` en el original; mantienen sus resúmenes didácticos, sin contarse como traducciones íntegras. Las otras 39 tácticas con descripción inglesa sí están traducidas.
+
+Las 109 mitigaciones M tienen `description_en`. En este lote quedan cubiertas todas las **53 ICS** y **13 Mobile**; las **43 Enterprise** siguen pendientes. Las fichas M mantienen sus relaciones documentadas con técnicas, la descripción inglesa y los enlaces de versión. Se han comprobado los IDs y referencias `[n]` contra el JSON local. El texto histórico de M1009 acerca de la intención de Apple de exigir App Transport Security se reproduce como aparece en la instantánea v20; no se actualiza silenciosamente con datos externos. La anomalía inglesa «release values» en M0805 también se señala sin sustituirla silenciosamente por otro término. En las mitigaciones M, el archivo fuente no incorpora otros campos narrativos anidados; sus `techniques` son relaciones estructuradas y no se traducen.
+
+**Advertencia de alcance:** «0» en la última fila mide solamente las traducciones completas amparadas por el contrato, no los títulos, equivalencias o resúmenes educativos españoles existentes. No está completamente traducido el catálogo MITRE v20, ni la revisión automática sustituye a la revisión humana bilingüe.

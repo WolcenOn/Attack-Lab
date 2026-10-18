@@ -17,14 +17,14 @@ La biblioteca ya incluye un catálogo **versionado** en `data/mitre/v20/`. No ne
 | M — Mitigaciones | 109 |
 | DS — Fuentes de datos históricas obsoletas | 42 |
 | G — Grupos de actividad documentados | 191 |
-| **Entradas de búsqueda** | **5.692** |
+| **Entradas de búsqueda** | **5.707** (2.268 AN vinculadas a DET + 15 adicionales) |
 
 Los datos proceden de archivos **aportados por el usuario**, capturas HTML del sitio MITRE ATT&CK de octubre de 2026, junto con extracciones estructuradas previas del mismo material. Los JSON **no son un feed en vivo**: conservan nombres/descripciones oficiales en inglés y relaciones explícitas; no se ha inferido qué software empleó una técnica si la página no lo documentaba.
 
 ## Disposición
 
 - `manifest.json`: colección, versión, conteos y archivos disponibles
-- `index-00.json` a `index-05.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
+- `index-00.json` a `index-06.json`: búsqueda rápida de IDs con referencia al archivo que contiene su ficha
 - `links.json`: enlaces explícitos desde técnicas a estrategias, software, mitigaciones, campañas y activos
 - `group-links.json`: referencias documentadas desde técnicas a grupos G
 - `techniques-*.json`, `software-*.json`, `tactics-*.json`: fichas originales
@@ -241,3 +241,13 @@ Se incorporan al contrato común **39 descripciones españolas íntegras** de t�
 **Precaución de fidelidad:** la descripción inglesa de TA0105 (ICS Impact) menciona dos veces `Impair Process Control` al describir métodos de impacto y obstaculización de salvaguardas. El borrador conserva esa repetición de la instantánea local; no se ha atribuido al original una mención distinta que no contiene. Requiere cotejo humano bilingüe, como las restantes traducciones. No se han alterado nombres de herramientas, dominios, identificadores ni enlaces.
 
 **Integración y comprobación:** los textos TA aparecen como traducciones íntegras en borrador cuando se consulta la ficha en español, con el original inglés accesible en el desplegable. En inglés se mantiene exclusivamente la fuente. La búsqueda indexa el contenido español y la estadística separa descripciones íntegras de guías educativas. La suite Playwright comprueba cobertura y unicidad de 39 IDs, dos descripciones ausentes, preservación de fuentes, traducciones ICS y Mobile largas, búsquedas, fallback sin atribución falsa, cambio ES→EN→ES y regresión de DS/A. Los resultados efectivos de GitHub Actions deben consultarse en el PR, sin atribuir revisión humana a una batería de tests.
+
+## Mitigaciones M — traducciones íntegras ICS y Mobile (66/109)
+
+Se han traducido íntegramente los campos `description_en` de las **53 mitigaciones ICS** y las **13 mitigaciones Mobile** presentes en `data/mitre/v20/mitigations-00.json`. Ninguna de estas 66 fichas carece de descripción en el origen. Las **43 mitigaciones Enterprise** todavía esperan traducción íntegra: sus posibles títulos o resúmenes en español siguen siendo educativos y no cuentan como traducciones completas.
+
+Los 66 borradores separados de MITRE residen en `src/features/learning/mitre-mitigations-descriptions-es-v20.js`, con `scope: 'full_description'` y `status: 'draft_needs_review'`. Se incluyen mediante `window.AttackMitigationFullSpanishV20` en el contrato unificado `window.AttackFullSpanishV20`. La búsqueda encuentra palabras de las descripciones completas en español; el modo EN presenta la descripción original íntegra, y en ES se puede desplegar igualmente el inglés. Se preservan los identificadores, la vinculación de mitigaciones con técnicas y los enlaces MITRE.
+
+Se han contrastado los **66 IDs únicos**, la disponibilidad del texto inglés y la correspondencia exacta de las marcas de referencia `[1]`/`[2]` entre la fuente y los borradores. Para textos largos como M1013 (Mobile, orientación para desarrolladores) se conservan todos los casos de uso y herramientas mencionados en el original. El inglés de M1009 habla de una obligación futura de Apple y se ha traducido sin actualizar retrospectivamente la fuente. En M0805 se explicita la anomalía `release values` presente en inglés.
+
+La cobertura global del contrato pasa de **99 a 165 descripciones íntegras en español**: **DS 42/42 · A 18/18 · TA 39/41 · M 66/109**. Estas cantidades no acreditan una traducción completa de las 5.707 entradas ni una revisión bilingüe; las 165 traducciones siguen en estado de borrador. Véase `docs/MITRE_TRANSLATION_STANDARD.md` para el procedimiento y las limitaciones.
