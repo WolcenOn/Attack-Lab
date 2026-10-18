@@ -37,15 +37,15 @@ test('batch 2 adds exactly 12 distinct full translations, preserving originals a
    mitigationCoverage:window.AttackMitigationFullSpanishV20.coverage};
  },batch2);
  expect(audit).toEqual({
-  found:12,distinct:12,invalid:[],enterpriseCovered:24,enterpriseStillPending:19,
-  coverage:{datasources:42,assets:18,tactics:39,mitigations:90,fullDescriptions:189},
-  mitigationCoverage:{mitigations:90,totalMitigations:109,ics:53,mobile:13,enterprise:24}
+  found:12,distinct:12,invalid:[],enterpriseCovered:43,enterpriseStillPending:0,
+  coverage:{datasources:42,assets:18,tactics:39,mitigations:109,fullDescriptions:208},
+  mitigationCoverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43}
  });
 });
 
 test('M1015 preserves Active Directory cases, authentication silos, and ES/EN/ES',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 90/109');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 109/109');
  await root.locator('#mitrelocalSearch').fill('silos de autenticación');
  await expect(root.locator('[data-local-id="M1015"]')).toHaveCount(1);
  await root.locator('[data-local-id="M1015"]').click();
@@ -133,18 +133,17 @@ test('M1030 and M1032 cover network boundaries, MFA tools and conditional access
   'YubiKey','RSA SecurID','Thales SafeNet','RADIUS/NPS','TOTP'])await expect(detail).toContainText(phrase);
 });
 
-test('Enterprise M1033 stays pending, prior DS/A/TA drafts unaffected',async({page})=>{
+test('M1033 graduated to full translation; DS/A/TA still available',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalSearch').fill('M1033');
  await root.locator('[data-local-id="M1033"]').click();
  const detail=root.locator('#mitrelocalDetail');
- await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
- await expect(detail).not.toContainText('Descripción íntegra traducida');
+ await expect(detail).toContainText('Descripción íntegra traducida');
  const full=await page.evaluate(()=>({
-  untranslated:window.AttackFullSpanishV20.entry('M1033'),
+  m:window.AttackFullSpanishV20.entry('M1033')?.scope,
   ds:window.AttackFullSpanishV20.entry('DS0001')?.scope,
   asset:window.AttackFullSpanishV20.entry('A0003')?.scope,
   ta:window.AttackFullSpanishV20.entry('TA0112')?.scope
  }));
- expect(full).toEqual({untranslated:null,ds:'full_description',asset:'full_description',ta:'full_description'});
+ expect(full).toEqual({m:'full_description',ds:'full_description',asset:'full_description',ta:'full_description'});
 });
