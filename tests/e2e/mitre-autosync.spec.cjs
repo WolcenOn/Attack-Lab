@@ -16,8 +16,16 @@ function fixture(){
  return {type:'bundle',objects};
 }
 async function toCatalog(page){
- const welcome=page.locator('.welcome-overlay:not([hidden])');
- if(await welcome.isVisible())await welcome.locator('[data-welcome="skip"]').click();
+ // Onboarding appears 180 ms after load. An immediate isVisible() races that timer,
+ // leaving its modal over the navigation (especially on mobile / slower CI).
+ // Wait for the first-visit dialog and dismiss it before using the sidebar.
+ const welcome=page.locator('.welcome-overlay');
+ const firstVisit=await page.evaluate(()=>localStorage.getItem('attacklab-welcome-v10')!=='seen');
+ if(firstVisit){
+  await expect(welcome).toBeVisible({timeout:10000});
+  await welcome.locator('[data-welcome="skip"]').click();
+ }
+ await expect(welcome).toBeHidden();
  const nav=page.locator('#sidebar [data-view="explain"]');
  await nav.locator('xpath=ancestor::details').evaluate(el=>{el.open=true});
  if(await page.locator('#menuButton').isVisible())await page.locator('#menuButton').click();
