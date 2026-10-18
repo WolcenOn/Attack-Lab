@@ -42,7 +42,7 @@ test('all 43 Enterprise mitigation descriptions have exact IDs, full-draft statu
  expect(found).toEqual({
   enterpriseTotal:43,enterpriseTranslated:43,idsCount:43,unique:43,invalid:[],
   coverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:20,fullDescriptions:228},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,fullDescriptions:269},
   englishPreserved:true
  });
 });
