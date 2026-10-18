@@ -59,12 +59,12 @@ test('all 109 MITRE v20 mitigation descriptions have full Spanish drafts, with o
 test('M1033 installation restrictions searchable in Spanish and reversible ES to EN to ES',async({page})=>{
  const root=await enter(page);
  await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 109/109');
- await root.locator('#mitrelocalSearch').fill('instalar software no autorizado');
+ await root.locator('#mitrelocalSearch').fill('instalen software no autorizado');
  await expect(root.locator('[data-local-id="M1033"]')).toHaveCount(1);
  await root.locator('[data-local-id="M1033"]').click();
  const detail=root.locator('#mitrelocalDetail');
  for(const text of ['Descripción íntegra traducida','AppLocker','%AppData%','%Temp%',
-  'ID 4688','11707','SCCM','OSQuery','Wazuh']){
+  'identificador de evento de Windows 4688','11707','SCCM','OSQuery','Wazuh']){
   await expect(detail).toContainText(text);
  }
  const original=detail.locator('details.mitrelocal-source-collapsed');
@@ -73,9 +73,9 @@ test('M1033 installation restrictions searchable in Spanish and reversible ES to
  await expect(original).toContainText('Prevent users or groups from installing unauthorized');
  await page.locator('#language').selectOption('en');
  await expect(detail).toContainText('Software Restriction Policies (SRP)');
- await expect(detail).not.toContainText('instalar software no autorizado');
+ await expect(detail).not.toContainText('instalen software no autorizado');
  await page.locator('#language').selectOption('es');
- await expect(detail).toContainText('instalar software no autorizado');
+ await expect(detail).toContainText('instalen software no autorizado');
 });
 
 test('M1036 account usage retains concrete lockouts, schedules, expired accounts and historical rotation',async({page})=>{
