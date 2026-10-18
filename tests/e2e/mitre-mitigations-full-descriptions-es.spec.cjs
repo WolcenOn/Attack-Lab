@@ -15,14 +15,14 @@ async function enter(page){
  return root;
 }
 
-test('M full-description coverage matches all 53 ICS and 13 Mobile originals, with 43 Enterprise still pending',async({page})=>{
+test('M full-description coverage includes all ICS/Mobile plus 12 Enterprise; 31 Enterprise pending',async({page})=>{
  await page.goto('/');
  const result=await page.evaluate(async()=>{
   const original=await(await fetch('data/mitre/v20/mitigations-00.json')).json();
   const m=window.AttackMitigationFullSpanishV20;
   const full=window.AttackFullSpanishV20;
-  const translated=original.filter(r=>r.domain!=='enterprise');
-  const pending=original.filter(r=>r.domain==='enterprise');
+  const translated=original.filter(r=>r.domain!=='enterprise'||m.entry(r.id));
+  const pending=original.filter(r=>r.domain==='enterprise'&&!m.entry(r.id));
   const invalid=translated.filter(r=>{
    const entry=full.entry(r.id);
    return !r.description_en?.trim()||!entry||entry.status!=='draft_needs_review'||
@@ -34,7 +34,7 @@ test('M full-description coverage matches all 53 ICS and 13 Mobile originals, wi
    unique:new Set(m.ids).size,byDomain:{
     ics:translated.filter(r=>r.domain==='ics').length,
     mobile:translated.filter(r=>r.domain==='mobile').length,
-    enterprise:pending.length},
+    enterprise:translated.filter(r=>r.domain==='enterprise').length,enterprisePending:pending.length},
    invalid,unexpectedPending:pending.filter(r=>full.entry(r.id)).map(r=>r.id),
    localCoverage:m.coverage,globalCoverage:full.coverage,
    sourceTextRetained:original.find(r=>r.id==='M0800').description_en.startsWith('The device or system should restrict') &&
@@ -42,18 +42,18 @@ test('M full-description coverage matches all 53 ICS and 13 Mobile originals, wi
   };
  });
  expect(result).toEqual({
-  total:109,translated:66,ids:66,unique:66,
-  byDomain:{ics:53,mobile:13,enterprise:43},
+  total:109,translated:78,ids:78,unique:78,
+  byDomain:{ics:53,mobile:13,enterprise:12,enterprisePending:31},
   invalid:[],unexpectedPending:[],
-  localCoverage:{mitigations:66,totalMitigations:109,ics:53,mobile:13,enterprise:0},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:66,fullDescriptions:165},
+  localCoverage:{mitigations:78,totalMitigations:109,ics:53,mobile:13,enterprise:12},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:78,fullDescriptions:177},
   sourceTextRetained:true
  });
 });
 
 test('ICS M0930: complete network segmentation draft, English source, relationships and MITRE link',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 66/109');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 78/109');
  await root.locator('#mitrelocalSearch').fill('M0930');
  await root.locator('[data-local-id="M0930"]').click();
  const detail=root.locator('#mitrelocalDetail');
