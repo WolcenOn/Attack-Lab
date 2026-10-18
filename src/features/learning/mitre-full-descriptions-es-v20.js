@@ -11,12 +11,14 @@ for(const [id,description] of rows){
  spanish[id]=Object.freeze({description,status:'draft_needs_review',scope:'full_description'});
 }
 const entries=Object.freeze(spanish);
+const tacticEntry=id=>window.AttackTacticFullSpanishV20?.entry(id)||null;
+const tacticCount=window.AttackTacticFullSpanishV20?.coverage.tactics||0;
 window.AttackFullSpanishV20=Object.freeze({
- entry:id=>entries[id]||null,
- description:id=>entries[id]?.description||'',
+ entry:id=>entries[id]||tacticEntry(id),
+ description:id=>entries[id]?.description||tacticEntry(id)?.description||'',
  title:id=>id==='DS0021'?'Perfil ficticio en línea':'',
- searchText:id=>entries[id]?.description||'',
- coverage:Object.freeze({datasources:42,assets:18,fullDescriptions:rows.length}),
+ searchText:id=>entries[id]?.description||tacticEntry(id)?.description||'',
+ coverage:Object.freeze({datasources:42,assets:18,tactics:tacticCount,fullDescriptions:rows.length+tacticCount}),
  source:'draft_needs_review'
 });
 })();
