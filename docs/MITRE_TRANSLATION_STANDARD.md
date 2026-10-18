@@ -34,7 +34,7 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 - **DS:** son **fuentes de datos históricas u obsoletas** en la instantánea v20. Traducirlas no las convierte en fuentes actuales ni elimina sus avisos.
 - **Nombres propios y atribuciones:** no traducir arbitrariamente nombres de campañas, software o grupos; conservar las reservas y los grados de certeza del texto original.
 
-## Cobertura de descripciones íntegras en el contrato v20 (DS/A, TA y M)
+## Cobertura de descripciones íntegras en el contrato v20 (DS/A, TA, M y C)
 
 | Familia | Descripciones completas ES en este contrato | Total original |
 | --- | ---: | ---: |
@@ -44,9 +44,10 @@ Para acreditar la **traducción de una ficha completa**, no basta necesariamente
 | M — Mitigaciones ICS | **53** | **53** |
 | M — Mitigaciones Mobile | **13** | **13** |
 | M — Mitigaciones Enterprise | **43** | **43** (0 pendientes) |
-| T, DET, AN, DC, S, G, C | **0 contabilizadas como íntegras por este contrato** | Pendiente de auditoría |
+| C — Campañas | **20** | **61** (41 pendientes) |
+| T, DET, AN, DC, S, G | **0 contabilizadas como íntegras por este contrato** | Pendiente de auditoría |
 
-Se conservan las **60 traducciones DS/A** en `mitre-full-descriptions-es-v20.js`, las **39 TA** en `mitre-tactics-descriptions-es-v20.js` y las **109 M** (53 ICS + 13 Mobile + 43 Enterprise) en `mitre-mitigations-descriptions-es-v20.js`. Los tres módulos se consultan a través de `window.AttackFullSpanishV20`; su contador suma **208 traducciones del campo completo `description_en`**, todas con `scope: 'full_description'` y `status: 'draft_needs_review'`. No han recibido revisión humana y no son traducciones oficiales MITRE.
+Se conservan las **60 traducciones DS/A** en `mitre-full-descriptions-es-v20.js`, las **39 TA** en `mitre-tactics-descriptions-es-v20.js` y las **109 M** (53 ICS + 13 Mobile + 43 Enterprise) en `mitre-mitigations-descriptions-es-v20.js` y las **20 C** en `mitre-campaigns-descriptions-es-v20.js`. Los cuatro módulos se consultan a través de `window.AttackFullSpanishV20`; su contador suma **228 traducciones del campo completo `description_en`**, todas con `scope: 'full_description'` y `status: 'draft_needs_review'`. No han recibido revisión humana y no son traducciones oficiales MITRE.
 
 De 41 tácticas, las dos Mobile **TA0038 y TA0039** carecen de `description_en` y `short_en` en el original; mantienen sus resúmenes didácticos, sin contarse como traducciones íntegras. Las otras 39 tácticas con descripción inglesa sí están traducidas.
 
@@ -57,5 +58,7 @@ Las 109 mitigaciones M tienen `description_en`. En este lote quedan cubiertas to
 **Segundo lote Enterprise (12 nuevas fichas):** M1015, M1016, M1018, M1019, M1022, M1024, M1025, M1026, M1027, M1028, M1030 y M1032. Se han traducido las descripciones inglesas íntegras, incluidos casos de uso, recomendaciones, referencias a productos, comandos y rutas. Se preserva la terminología original cuando es un identificador técnico (`RunAsPPL`, `CVE-XXXX-XXXX`, `HKLM:\\...\\Run`, `icacls`). Los ejemplos de comandos y parámetros proceden de la fotografía v20 y **no se han verificado como procedimientos seguros de ejecución**. En particular, **M1027** atribuye a `pwunconv` la desactivación de la reutilización de contraseñas y **M1018** recomienda una caducidad de 90 días: se preservan fielmente como contenido de la fuente, sin presentarlos como consejo actualizado o validado. La comprobación bilingüe humana y la validación técnica específica siguen pendientes.
 
 **Lote final Enterprise (19 nuevas fichas):** M1033, M1034, M1035, M1036, M1038, M1040, M1043, M1044, M1045, M1046, M1047, M1048, M1049, M1050, M1051, M1052, M1054, M1055 y M1057. En este contrato queda cubierta la totalidad de las **109 descripciones de mitigación**: 53 ICS, 13 Mobile y 43 Enterprise. Se han conservado las medidas individuales, casos de uso, nombres de herramientas, comandos, advertencias y referencias `[n]` del original. La categoría **M1055 (Do Not Mitigate)** se traduce sin convertirla en una recomendación de mitigación preventiva. El campo inglés `description_en` y los datos estructurados permanecen intactos. La revisión de traducciones y recomendaciones técnicas por una persona bilingüe sigue siendo necesaria; **«109/109» mide cobertura de borradores completos, no calidad revisada ni equivalencia con traducciones oficiales MITRE**.
+
+**Primer lote de campañas C (20/61):** se han traducido íntegramente `description_en` de C0001, C0002, C0004, C0005, C0006, C0007, C0010, C0011, C0012, C0013, C0014, C0015, C0016, C0017, C0018, C0020, C0021, C0022, C0023 y C0024. Las **41 campañas restantes** continúan pendientes; sus nombres originales o cualquier nota educativa disponible no son traducciones íntegras. Se preservan literalmente los nombres propios de campañas, grupos, herramientas y siglas, así como el sentido de la atribución (`suspected`, `likely`, `assessed`, `possible`, `unknown`) y las referencias `[n]`. En C0005 no se identifica indebidamente Operation Spalax con APT-C-36; en C0017 se indica que sus objetivos eran desconocidos, y en C0024 se distingue el análisis de investigadores de la atribución pública gubernamental de abril de 2021. Los campos estructurados de nombres, relaciones y fechas `first_seen`/`last_seen` permanecen sin alterar; el alcance acreditado es **descripción íntegra**, no una localización exhaustiva de todos los campos de una campaña. No se afirman atribuciones independientes a partir de los vínculos documentales.
 
 **Advertencia de alcance:** «0» en la última fila mide solamente las traducciones completas amparadas por el contrato, no los títulos, equivalencias o resúmenes educativos españoles existentes. No está completamente traducido el catálogo MITRE v20, ni la revisión automática sustituye a la revisión humana bilingüe.
