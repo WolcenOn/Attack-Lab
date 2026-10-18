@@ -15,12 +15,14 @@ const tacticEntry=id=>window.AttackTacticFullSpanishV20?.entry(id)||null;
 const tacticCount=window.AttackTacticFullSpanishV20?.coverage.tactics||0;
 const mitigationEntry=id=>window.AttackMitigationFullSpanishV20?.entry(id)||null;
 const mitigationCount=window.AttackMitigationFullSpanishV20?.coverage.mitigations||0;
+const campaignEntry=id=>window.AttackCampaignFullSpanishV20?.entry(id)||null;
+const campaignCount=window.AttackCampaignFullSpanishV20?.coverage.campaigns||0;
 window.AttackFullSpanishV20=Object.freeze({
- entry:id=>entries[id]||tacticEntry(id)||mitigationEntry(id),
- description:id=>entries[id]?.description||tacticEntry(id)?.description||mitigationEntry(id)?.description||'',
+ entry:id=>entries[id]||tacticEntry(id)||mitigationEntry(id)||campaignEntry(id),
+ description:id=>entries[id]?.description||tacticEntry(id)?.description||mitigationEntry(id)?.description||campaignEntry(id)?.description||'',
  title:id=>id==='DS0021'?'Perfil ficticio en línea':'',
- searchText:id=>entries[id]?.description||tacticEntry(id)?.description||mitigationEntry(id)?.description||'',
- coverage:Object.freeze({datasources:42,assets:18,tactics:tacticCount,mitigations:mitigationCount,fullDescriptions:rows.length+tacticCount+mitigationCount}),
+ searchText:id=>entries[id]?.description||tacticEntry(id)?.description||mitigationEntry(id)?.description||campaignEntry(id)?.description||'',
+ coverage:Object.freeze({datasources:42,assets:18,tactics:tacticCount,mitigations:mitigationCount,campaigns:campaignCount,fullDescriptions:rows.length+tacticCount+mitigationCount+campaignCount}),
  source:'draft_needs_review'
 });
 })();
