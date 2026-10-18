@@ -2,7 +2,9 @@ const {test,expect}=require('@playwright/test');
 
 const enterpriseDraftIds=[
  'M1031','M1060','M1021','M1029','M1041','M1020',
- 'M1039','M1056','M1053','M1042','M1037','M1017'
+ 'M1039','M1056','M1053','M1042','M1037','M1017',
+ 'M1015','M1016','M1018','M1019','M1022','M1024',
+ 'M1025','M1026','M1027','M1028','M1030','M1032'
 ];
 
 async function enter(page){
@@ -20,7 +22,7 @@ async function enter(page){
  return root;
 }
 
-test('the first 12 Enterprise mitigation descriptions have exact IDs, full-draft status and preserved references',async({page})=>{
+test('the first 24 Enterprise mitigation descriptions have exact IDs, full-draft status and preserved references',async({page})=>{
  await page.goto('/');
  const found=await page.evaluate(async ids=>{
   const original=await(await fetch('data/mitre/v20/mitigations-00.json')).json();
@@ -43,16 +45,16 @@ test('the first 12 Enterprise mitigation descriptions have exact IDs, full-draft
    original.find(r=>r.id==='M1029').description_en.includes('nc <remote-log-server> 514')};
  },enterpriseDraftIds);
  expect(found).toEqual({
-  enterpriseTotal:43,enterpriseTranslated:12,idsCount:12,unique:12,invalid:[],
-  coverage:{mitigations:78,totalMitigations:109,ics:53,mobile:13,enterprise:12},
-  global:{datasources:42,assets:18,tactics:39,mitigations:78,fullDescriptions:177},
+  enterpriseTotal:43,enterpriseTranslated:24,idsCount:24,unique:24,invalid:[],
+  coverage:{mitigations:90,totalMitigations:109,ics:53,mobile:13,enterprise:24},
+  global:{datasources:42,assets:18,tactics:39,mitigations:90,fullDescriptions:189},
   englishPreserved:true
  });
 });
 
 test('M1029 keeps full remote-log examples and incomplete source sample; ES to EN to ES',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 78/109');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 90/109');
  await root.locator('#mitrelocalSearch').fill('M1029');
  await root.locator('[data-local-id="M1029"]').click();
  const detail=root.locator('#mitrelocalDetail');
@@ -111,13 +113,13 @@ test('M1053 complete data backup guidance is searchable and preserves WORM and t
  }
 });
 
-test('the still untranslated M1015 retains its original and no false full translation status',async({page})=>{
+test('the still untranslated M1033 retains its original and no false full translation status',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('M1015');
- await root.locator('[data-local-id="M1015"]').click();
+ await root.locator('#mitrelocalSearch').fill('M1033');
+ await root.locator('[data-local-id="M1033"]').click();
  const detail=root.locator('#mitrelocalDetail');
- await expect(detail).toContainText('Active Directory Configuration');
+ await expect(detail).toContainText('Limit Software Installation');
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
- expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('M1015'))).toBeNull();
+ expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('M1033'))).toBeNull();
 });
