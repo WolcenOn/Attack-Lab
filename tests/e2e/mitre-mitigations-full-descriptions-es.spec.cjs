@@ -15,7 +15,7 @@ async function enter(page){
  return root;
 }
 
-test('M full-description coverage includes all ICS/Mobile plus 24 Enterprise; 19 Enterprise pending',async({page})=>{
+test('M full-description coverage covers all 109 ICS, Mobile and Enterprise descriptions',async({page})=>{
  await page.goto('/');
  const result=await page.evaluate(async()=>{
   const original=await(await fetch('data/mitre/v20/mitigations-00.json')).json();
@@ -42,18 +42,18 @@ test('M full-description coverage includes all ICS/Mobile plus 24 Enterprise; 19
   };
  });
  expect(result).toEqual({
-  total:109,translated:90,ids:90,unique:90,
-  byDomain:{ics:53,mobile:13,enterprise:24,enterprisePending:19},
+  total:109,translated:109,ids:109,unique:109,
+  byDomain:{ics:53,mobile:13,enterprise:43,enterprisePending:0},
   invalid:[],unexpectedPending:[],
-  localCoverage:{mitigations:90,totalMitigations:109,ics:53,mobile:13,enterprise:24},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:90,fullDescriptions:189},
+  localCoverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,fullDescriptions:208},
   sourceTextRetained:true
  });
 });
 
 test('ICS M0930: complete network segmentation draft, English source, relationships and MITRE link',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 90/109');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('M 109/109');
  await root.locator('#mitrelocalSearch').fill('M0930');
  await root.locator('[data-local-id="M0930"]').click();
  const detail=root.locator('#mitrelocalDetail');
@@ -120,14 +120,14 @@ test('Mobile M1009 retains dated future-language, official footnotes and technic
  await expect(detail).toContainText('Apple intends to mandate use');
 });
 
-test('Enterprise M1033 is still marked pending, while old DS/A/TA overlays remain available',async({page})=>{
+test('Enterprise M1033 is now fully translated, while old DS/A/TA overlays remain available',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalSearch').fill('M1033');
  await root.locator('[data-local-id="M1033"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).toContainText('Limit Software Installation');
- await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
- await expect(detail).not.toContainText('Descripción íntegra traducida');
+ await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
+ await expect(detail).toContainText('Descripción íntegra traducida');
  const all=await page.evaluate(()=>({
   ds:window.AttackFullSpanishV20.entry('DS0021')?.scope,
   a:window.AttackFullSpanishV20.entry('A0003')?.scope,

@@ -28,9 +28,9 @@ test('60 full Spanish description drafts cover exactly every historical DS and I
   return {coverage:api.coverage,source:api.source,ds:ds.length,assets:a.length,
    unique:new Set(entries.map(x=>x.id)).size,bad,
    originalReferences:api.description('A0003').includes('IEC 61131 [1]'),
-   unknown:api.entry('M1033'),oldEnglishRetained:entries.every(x=>x.description_en.length>30)};
+   unknown:api.entry('M9999'),oldEnglishRetained:entries.every(x=>x.description_en.length>30)};
  });
- expect(result.coverage).toEqual({datasources:42,assets:18,tactics:39,mitigations:90,fullDescriptions:189});
+ expect(result.coverage).toEqual({datasources:42,assets:18,tactics:39,mitigations:109,fullDescriptions:208});
  expect(result.source).toBe('draft_needs_review');
  expect(result.ds).toBe(42);
  expect(result.assets).toBe(18);
@@ -100,15 +100,15 @@ test('full description for process source and ICS gateway is not truncated to a 
  await expect(detail).not.toContainText('**');
 });
 
-test('other categories do not falsely claim a complete translation',async({page})=>{
+test('newly covered M1033 is correctly labeled as full translation',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalType').selectOption('mitigations');
  await root.locator('#mitrelocalSearch').fill('M1033');
  await root.locator('[data-local-id="M1033"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).toContainText('Limit Software Installation');
- await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
- await expect(detail).not.toContainText('Descripción íntegra traducida');
+ await expect(detail).toContainText('Descripción íntegra de MITRE traducida al español');
+ await expect(detail).toContainText('Descripción íntegra traducida');
 });
 
 test('historical DS warning and MITRE source URL survive the new full-description workflow',async({page})=>{
