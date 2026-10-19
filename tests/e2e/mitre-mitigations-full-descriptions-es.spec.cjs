@@ -46,7 +46,7 @@ test('M full-description coverage covers all 109 ICS, Mobile and Enterprise desc
   byDomain:{ics:53,mobile:13,enterprise:43,enterprisePending:0},
   invalid:[],unexpectedPending:[],
   localCoverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:240,fullDescriptions:509},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:420,fullDescriptions:689},
   sourceTextRetained:true
  });
 });

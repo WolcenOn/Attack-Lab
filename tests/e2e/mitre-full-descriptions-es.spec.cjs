@@ -30,7 +30,7 @@ test('60 full Spanish description drafts cover exactly every historical DS and I
    originalReferences:api.description('A0003').includes('IEC 61131 [1]'),
    unknown:api.entry('M9999'),oldEnglishRetained:entries.every(x=>x.description_en.length>30)};
  });
- expect(result.coverage).toEqual({datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:240,fullDescriptions:509});
+ expect(result.coverage).toEqual({datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:420,fullDescriptions:689});
  expect(result.source).toBe('draft_needs_review');
  expect(result.ds).toBe(42);
  expect(result.assets).toBe(18);
