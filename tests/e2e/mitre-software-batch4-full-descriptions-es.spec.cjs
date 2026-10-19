@@ -37,22 +37,22 @@ test('software batch 4 has 60 complete translations, all source references, 240 
    translated:api.ids.length,unique:new Set(api.ids).size,
    invalid,s0209Source:original.find(x=>x.id==='S0209')?.description_en??null,
    s0209Translated:full.entry('S0209'),s0241:full.entry('S0241')?.scope,
-   s0486:full.entry('S0486'),coverage:api.coverage,global:full.coverage,
+   s0551:full.entry('S0551'),coverage:api.coverage,global:full.coverage,
    oldS:full.entry('S0002')?.scope,oldC:full.entry('C0066')?.scope
   };
  },fourthBatch);
  expect(audit).toEqual({
-  sourceCount:359,selected:60,expectedUnique:60,translated:480,unique:480,
+  sourceCount:359,selected:60,expectedUnique:60,translated:540,unique:540,
   invalid:[],s0209Source:null,s0209Translated:null,s0241:'full_description',
-  s0486:null,coverage:{software:480,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:480,fullDescriptions:749},
+  s0551:null,coverage:{software:540,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:540,fullDescriptions:809},
   oldS:'full_description',oldC:'full_description'
  });
 });
 
 test('Tor S0183 retains onion routing and is available in full Spanish and original English',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 480/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 540/974');
  await root.locator('#mitrelocalSearch').fill('enrutamiento cebolla');
  await expect(root.locator('[data-local-id="S0183"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0183"]').click();
@@ -127,7 +127,7 @@ test('Invoke-PSImage S0231 preserves the whole image embedding and macro-trigger
  }
 });
 
-test('S0209 without an English source is not fabricated; S0241 complete and S0486 pending',async({page})=>{
+test('S0209 without an English source is not fabricated; S0241 complete and S0551 pending',async({page})=>{
  const root=await enter(page);
  await root.locator('#mitrelocalSearch').fill('S0241');
  await root.locator('[data-local-id="S0241"]').click();
@@ -136,10 +136,10 @@ test('S0209 without an English source is not fabricated; S0241 complete and S048
   'interfaz gráfica de usuario','[1] [2]']){
   await expect(detail).toContainText(phrase);
  }
- await root.locator('#mitrelocalSearch').fill('S0486');
- await root.locator('[data-local-id="S0486"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0551');
+ await root.locator('[data-local-id="S0551"]').click();
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
  expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('S0209'))).toBeNull();
- expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('S0486'))).toBeNull();
+ expect(await page.evaluate(()=>window.AttackFullSpanishV20.entry('S0551'))).toBeNull();
 });
