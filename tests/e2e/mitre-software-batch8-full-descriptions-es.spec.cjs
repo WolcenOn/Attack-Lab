@@ -29,16 +29,16 @@ test('S0486–S0550: 60 original source descriptions, no invented IDs or dropped
   }).map(x=>x.id);
   return {source:src.length,batch:batch.length,chosen:chosen.length,uniqueNew:new Set(chosen).size,
    ids:s.ids.length,unique:new Set(s.ids).size,errors,coverage:s.coverage,global:all.coverage,
-   next:all.entry('S1052')};
+   next:all.entry('S1114')};
  },ids);
- expect(audit).toEqual({source:307,batch:60,chosen:60,uniqueNew:60,ids:720,unique:720,errors:[],
-  coverage:{software:720,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:720,fullDescriptions:989},
+ expect(audit).toEqual({source:307,batch:60,chosen:60,uniqueNew:60,ids:780,unique:780,errors:[],
+  coverage:{software:780,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:780,fullDescriptions:1049},
   next:null});
 });
 test('ngrok is legitimate dual-use, searchable in Spanish with original EN available',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 720/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 780/974');
  await root.locator('#mitrelocalSearch').fill('proxy inverso');
  await expect(root.locator('[data-local-id="S0508"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0508"]').click();
@@ -63,7 +63,7 @@ test('REvil S0496, SLOTHFULMEDIA S0533 preserve uncertainty and repeated footnot
  const count=await page.evaluate(()=>window.AttackFullSpanishV20.entry('S0533').description.match(/\[4\]/g)?.length);
  expect(count).toBe(2);
 });
-test('GoldenSpy, BloodHound and AdFind keep tool-specific claims; S1052 is pending',async({page})=>{
+test('GoldenSpy, BloodHound and AdFind keep tool-specific claims; S1114 is pending',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  for(const [id,terms] of [
   ['S0493',['Intelligent Tax','Aisino Credit Information','impuestos locales']],
@@ -74,7 +74,7 @@ test('GoldenSpy, BloodHound and AdFind keep tool-specific claims; S1052 is pendi
   await root.locator('[data-local-id="'+id+'"]').click();
   for(const term of terms)await expect(detail).toContainText(term);
  }
- await root.locator('#mitrelocalSearch').fill('S1052');
- await root.locator('[data-local-id="S1052"]').click();
+ await root.locator('#mitrelocalSearch').fill('S1114');
+ await root.locator('[data-local-id="S1114"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
