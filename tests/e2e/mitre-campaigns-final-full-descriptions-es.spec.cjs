@@ -106,7 +106,7 @@ test('C0055 botnet technical identifiers and C0057 two-stage 3CX supply-chain de
  await root.locator('#mitrelocalSearch').fill('C0057');
  await root.locator('[data-local-id="C0057"]').click();
  for(const phrase of ['dos etapas','X_Trader','UNC4736','Windows y macOS',
-  '660.000 clientes','12 millones','Gopuram','marzo de 2023']){
+  '600.000 clientes','12 millones','Gopuram','marzo de 2023']){
   await expect(detail).toContainText(phrase);
  }
 });
