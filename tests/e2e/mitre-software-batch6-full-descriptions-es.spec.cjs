@@ -42,7 +42,7 @@ test('recover fifth batch and add 120 full S drafts from both MITRE software sha
   };
  },batch6);
  expect(result).toEqual({
-  shards:[359,307],idsCount:120,sourceMatched:120,ids:480,unique:600,bad:[],
+  shards:[359,307],idsCount:120,sourceMatched:120,ids:600,unique:600,bad:[],
   recoveredS0302:'full_description',lastS0423:'full_description',
   missingS0392:null,untranslatedS0617:null,
   coverage:{software:600,totalSoftware:974},
