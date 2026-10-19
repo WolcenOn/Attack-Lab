@@ -39,7 +39,7 @@ test('TA source coverage is exactly 39/41; missing English TA0038 and TA0039 rem
   sourceCount:41,sourceEnglish:39,translatedCount:39,unique:39,
   missing:['TA0038','TA0039'],invalid:[],unexpected:[],
   taCoverage:{tactics:39,totalTactics:41,sourceDescriptions:39},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:720,fullDescriptions:989},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:780,fullDescriptions:1049},
   missingEntries:[null,null],englishUnmodified:true
  });
 });
