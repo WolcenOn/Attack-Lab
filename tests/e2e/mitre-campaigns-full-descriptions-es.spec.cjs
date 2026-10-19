@@ -44,7 +44,7 @@ test('first 20 campaign IDs remain valid while the campaign family reaches 61/61
  expect(audit).toEqual({
   total:61,sourceCovered:20,overlayIds:61,unique:61,invalid:[],missing:[],
   campaignCoverage:{campaigns:61,totalCampaigns:61},
-  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:420,fullDescriptions:689},
+  globalCoverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:480,fullDescriptions:749},
   firstNameUnchanged:true,translatedC0025:'full_description'
  });
 });
