@@ -397,3 +397,10 @@ Se incorporan **60 traducciones españolas completas del campo inglés `descript
 Incluye herramientas de seguridad y administración de uso dual como Peirates, ROADTools, SILENTTRINITY, Donut, Mythic y Rclone; malware como WhisperGate, HermeticWiper, Cyclops Blink, VPNFilter, DCSrv e INCONTROLLER; y los matices documentales sobre atribución y límites de certeza. **S1023 conserva dos referencias [1]**, S1033 conserva que Moses Staff no solicita rescates, y S1045 conserva la incertidumbre de la evaluación de investigadores de 2022. La interfaz permite búsqueda en español, consulta del original inglés y alternancia reversible ES/EN.
 
 Las referencias numeradas y todos los IDs fuente se comprueban mediante `tests/e2e/mitre-software-batch11-full-descriptions-es.spec.cjs`. El texto original de `data/mitre/v20/` no cambia. Las traducciones siguen siendo borradores completos `draft_needs_review`, pendientes de revisión bilingüe humana y sin carácter oficial MITRE.
+
+
+## Software S — duodécimo lote S1052–S1113 (780/974 propuestos)
+
+Se añaden otras **60 traducciones completas** al overlay español de MITRE ATT&CK v20, tomadas de los 60 registros reales entre S1052 y S1113 en `software-02.json`; no se generan los IDs inexistentes. El siguiente sin descripción completa española es **S1114**. El acumulado propuesto asciende a **780/974 software** (194 pendientes) y **1.049/5.707 descripciones completas** del catálogo (18,4 %; 4.658 pendientes).
+
+Se cubren ransomware, troyanos bancarios Android, puertas traseras, herramientas de uso dual, software ICS y web shells que afectan a productos Pulse Secure VPN. Se mantienen las reservas de certeza documental (vínculos con Conti, COATHANGER y el Gobierno chino, víctimas estimadas de FlyTrap), la *ausencia de impacto* en el espécimen inicial de Industroyer2, los números de las referencias y el acceso al original en inglés. Los originales MITRE permanecen intactos. Suite: `tests/e2e/mitre-software-batch12-full-descriptions-es.spec.cjs`. Todas las traducciones siguen en **borrador pendiente de revisión bilingüe humana** y no son oficiales de MITRE.

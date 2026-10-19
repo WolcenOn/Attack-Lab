@@ -50,7 +50,7 @@ test('all 61 campaign full descriptions are present, exact reference markers and
  expect(audit).toEqual({
   total:61,overlayIds:61,unique:61,invalid:[],untranslated:[],
   newIds:41,newUnique:41,coverage:{campaigns:61,totalCampaigns:61},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:720,fullDescriptions:989},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:780,fullDescriptions:1049},
   firstSeenUnmodified:true,originalEnglishUnmodified:true
  });
 });
