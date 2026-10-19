@@ -36,24 +36,24 @@ test('recover fifth batch and add 120 full S drafts from both MITRE software sha
    recoveredS0302:full.entry('S0302')?.scope,
    lastS0423:full.entry('S0423')?.scope,
    missingS0392:source.find(x=>x.id==='S0392')??null,
-   untranslatedS0486:full.entry('S0486'),
+   untranslatedS0551:full.entry('S0551'),
    coverage:api.coverage,global:full.coverage,
    originalEnglish:source.find(x=>x.id==='S0368').description_en.includes('attackers never intended')
   };
  },batch6);
  expect(result).toEqual({
-  shards:[359,307],idsCount:120,sourceMatched:120,ids:480,unique:480,bad:[],
+  shards:[359,307],idsCount:120,sourceMatched:120,ids:480,unique:540,bad:[],
   recoveredS0302:'full_description',lastS0423:'full_description',
-  missingS0392:null,untranslatedS0486:null,
-  coverage:{software:480,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:480,fullDescriptions:749},
+  missingS0392:null,untranslatedS0551:null,
+  coverage:{software:540,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:540,fullDescriptions:809},
   originalEnglish:true
  });
 });
 
 test('NotPetya S0368 retains explicit destructive purpose, date, exploits and ES to EN to ES',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 480/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 540/974');
  await root.locator('#mitrelocalSearch').fill('los atacantes nunca pretendieron');
  await expect(root.locator('[data-local-id="S0368"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0368"]').click();
@@ -120,17 +120,17 @@ test('S0413 MailSniper permission boundaries and S0423 Ginp targeting Spanish ba
  }
 });
 
-test('S0486 remains pending and earlier DS/A/TA/M/C/S drafts stay accessible',async({page})=>{
+test('S0551 remains pending and earlier DS/A/TA/M/C/S drafts stay accessible',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('S0486');
- await root.locator('[data-local-id="S0486"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0551');
+ await root.locator('[data-local-id="S0551"]').click();
  await expect(root.locator('#mitrelocalDetail')).not.toContainText('Descripción íntegra traducida');
  const scopes=await page.evaluate(()=>Object.fromEntries(
-  ['DS0001','A0003','TA0112','M1055','C0066','S0181','S0302','S0368','S0423','S0486'].map(id=>
+  ['DS0001','A0003','TA0112','M1055','C0066','S0181','S0302','S0368','S0423','S0551'].map(id=>
    [id,window.AttackFullSpanishV20.entry(id)?.scope||null])
  ));
  expect(scopes).toEqual({DS0001:'full_description',A0003:'full_description',
   TA0112:'full_description',M1055:'full_description',C0066:'full_description',
   S0181:'full_description',S0302:'full_description',S0368:'full_description',
-  S0423:'full_description',S0486:null});
+  S0423:'full_description',S0551:null});
 });
