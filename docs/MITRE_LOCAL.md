@@ -388,3 +388,12 @@ Se añaden **60 descripciones inglesas completas traducidas al español**, desde
 Entre las nuevas fichas están HELLOKITTY, FIVEHANDS, Sliver, Babuk, Kobalos, XCSSET, FoggyWeb, Tomiris y AADInternals. Se mantienen las referencias `[n]`, nombres, atribuciones condicionales y la separación entre malware, utilidades administrativas y herramientas legítimas de uso dual. El original inglés es consultable en modo ES y permanece intacto al alternar EN↔ES. No se modifican los JSON fuente en `data/mitre/v20/`.
 
 La nueva suite `tests/e2e/mitre-software-batch10-full-descriptions-es.spec.cjs` y las expectativas actualizadas de las suites anteriores comprueban la integridad y cobertura. Todas las traducciones nuevas siguen en `draft_needs_review`, `scope:'full_description'`, sin revisión humana y sin carácter oficial de MITRE.
+
+
+## Software S — undécimo lote S0683–S1051 (720/974 propuestos)
+
+Se incorporan **60 traducciones españolas completas del campo inglés `description_en`**: cinco entradas de `software-01.json` y cincuenta y cinco de `software-02.json`, desde S0683 hasta S1051, respetando los IDs de la instantánea MITRE v20 y el salto real de S0699 a S1000. El registro **S1052** permanece pendiente. La cobertura acumulada propuesta es **720/974 entradas S** (254 pendientes) y **989/5.707 fichas del catálogo** (17,3 %, 4.718 sin traducción íntegra acreditada).
+
+Incluye herramientas de seguridad y administración de uso dual como Peirates, ROADTools, SILENTTRINITY, Donut, Mythic y Rclone; malware como WhisperGate, HermeticWiper, Cyclops Blink, VPNFilter, DCSrv e INCONTROLLER; y los matices documentales sobre atribución y límites de certeza. **S1023 conserva dos referencias [1]**, S1033 conserva que Moses Staff no solicita rescates, y S1045 conserva la incertidumbre de la evaluación de investigadores de 2022. La interfaz permite búsqueda en español, consulta del original inglés y alternancia reversible ES/EN.
+
+Las referencias numeradas y todos los IDs fuente se comprueban mediante `tests/e2e/mitre-software-batch11-full-descriptions-es.spec.cjs`. El texto original de `data/mitre/v20/` no cambia. Las traducciones siguen siendo borradores completos `draft_needs_review`, pendientes de revisión bilingüe humana y sin carácter oficial MITRE.
