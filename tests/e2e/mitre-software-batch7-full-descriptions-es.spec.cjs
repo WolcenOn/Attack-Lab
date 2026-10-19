@@ -37,22 +37,22 @@ test('batch 7 adds 60 full descriptions from source software-01 and retains ever
    translated:api.ids.length,unique:new Set(api.ids).size,invalid,
    missingS0429:source.find(x=>x.id==='S0429')??null,
    missingS0474:source.find(x=>x.id==='S0474')??null,
-   pendingS0486:all.entry('S0486'),
+   pendingS0551:all.entry('S0551'),
    priorS0423:all.entry('S0423')?.scope,
    coverage:api.coverage,global:all.coverage};
  },seventhBatch);
  expect(result).toEqual({
-  shard:307,selected:60,expected:60,translated:480,unique:480,invalid:[],
-  missingS0429:null,missingS0474:null,pendingS0486:null,
+  shard:307,selected:60,expected:60,translated:540,unique:540,invalid:[],
+  missingS0429:null,missingS0474:null,pendingS0551:null,
   priorS0423:'full_description',
-  coverage:{software:480,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:480,fullDescriptions:749}
+  coverage:{software:540,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:540,fullDescriptions:809}
  });
 });
 
 test('PoetRAT S0428 shows ICS/SCADA and Azerbaijan details and source EN remains accessible',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 480/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 540/974');
  await root.locator('#mitrelocalSearch').fill('STIBNITE');
  await expect(root.locator('[data-local-id="S0428"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0428"]').click();
@@ -123,17 +123,17 @@ test('USBferry S0452 retains air-gap limitations and EventBot S0478 Android acce
  expect(refs).toBe(2);
 });
 
-test('no fabricated S0429 or S0474; S0486 pending, earlier DS/A/TA/M/C/S overlays retained',async({page})=>{
+test('no fabricated S0429 or S0474; S0551 pending, earlier DS/A/TA/M/C/S overlays retained',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('S0486');
- await root.locator('[data-local-id="S0486"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0551');
+ await root.locator('[data-local-id="S0551"]').click();
  await expect(root.locator('#mitrelocalDetail')).not.toContainText('Descripción íntegra traducida');
  const result=await page.evaluate(()=>Object.fromEntries(
-  ['DS0001','A0003','TA0112','M1055','C0066','S0241','S0302','S0423','S0485','S0429','S0474','S0486']
+  ['DS0001','A0003','TA0112','M1055','C0066','S0241','S0302','S0423','S0485','S0429','S0474','S0551']
   .map(id=>[id,window.AttackFullSpanishV20.entry(id)?.scope||null])
  ));
  expect(result).toEqual({DS0001:'full_description',A0003:'full_description',
   TA0112:'full_description',M1055:'full_description',C0066:'full_description',
   S0241:'full_description',S0302:'full_description',S0423:'full_description',
-  S0485:'full_description',S0429:null,S0474:null,S0486:null});
+  S0485:'full_description',S0429:null,S0474:null,S0551:null});
 });
