@@ -28,16 +28,16 @@ test('batch 10 covers 60 authentic IDs, exact reference sequences and 660/974',a
     tr.description.length<25||refs(tr.description)!==refs(x.description_en);
   }).map(x=>x.id);
   return {source:source.length,found:found.length,newUnique:new Set(chosen).size,
-   total:s.ids.length,unique:new Set(s.ids).size,invalid,pending:full.entry('S0683'),
+   total:s.ids.length,unique:new Set(s.ids).size,invalid,pending:full.entry('S1052'),
    software:s.coverage,global:full.coverage};
  },ids);
- expect(audit).toEqual({source:307,found:60,newUnique:60,total:660,unique:660,
-  invalid:[],pending:null,software:{software:660,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:660,fullDescriptions:929}});
+ expect(audit).toEqual({source:307,found:60,newUnique:60,total:720,unique:720,
+  invalid:[],pending:null,software:{software:720,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:720,fullDescriptions:989}});
 });
 test('Sliver is searchable in Spanish, preserves red-team context and reversible EN',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 660/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 720/974');
  await root.locator('#mitrelocalSearch').fill('marco de mando y control');
  await expect(root.locator('[data-local-id="S0633"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0633"]').click();
@@ -60,7 +60,7 @@ test('Turian, GrimAgent, Tomiris and Lizar retain uncertainty qualifiers',async(
   await expect(detail).toContainText(phrase);
  }
 });
-test('Wevtutil and AADInternals remain utilities; S0683 is pending',async({page})=>{
+test('Wevtutil and AADInternals remain utilities; S1052 is pending',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  await root.locator('#mitrelocalSearch').fill('S0645');
  await root.locator('[data-local-id="S0645"]').click();
@@ -68,7 +68,7 @@ test('Wevtutil and AADInternals remain utilities; S0683 is pending',async({page}
  await root.locator('#mitrelocalSearch').fill('S0677');
  await root.locator('[data-local-id="S0677"]').click();
  await expect(detail).toContainText('La herramienta está disponible públicamente en GitHub');
- await root.locator('#mitrelocalSearch').fill('S0683');
- await root.locator('[data-local-id="S0683"]').click();
+ await root.locator('#mitrelocalSearch').fill('S1052');
+ await root.locator('[data-local-id="S1052"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
