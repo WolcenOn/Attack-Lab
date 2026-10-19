@@ -38,7 +38,7 @@ test('batch 2 adds exactly 12 distinct full translations, preserving originals a
  },batch2);
  expect(audit).toEqual({
   found:12,distinct:12,invalid:[],enterpriseCovered:43,enterpriseStillPending:0,
-  coverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:600,fullDescriptions:869},
+  coverage:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:660,fullDescriptions:929},
   mitigationCoverage:{mitigations:109,totalMitigations:109,ics:53,mobile:13,enterprise:43}
  });
 });
