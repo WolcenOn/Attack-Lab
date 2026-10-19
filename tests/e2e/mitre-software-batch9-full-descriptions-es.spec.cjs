@@ -14,7 +14,7 @@ async function enter(page){
  await root.locator('#mitrelocalType').selectOption('software');
  return root;
 }
-test('batch 9 audits 60 original entries, full ES source references and 600/974 coverage',async({page})=>{
+test('batch 9 audits 60 original entries, full ES source references and 660/974 coverage',async({page})=>{
  await page.goto('/');
  const audit=await page.evaluate(async chosen=>{
   const src=await(await fetch('data/mitre/v20/software-01.json')).json();
@@ -29,15 +29,15 @@ test('batch 9 audits 60 original entries, full ES source references and 600/974 
   }).map(x=>x.id);
   return {source:src.length,selected:selected.length,uniqueNew:new Set(chosen).size,
    total:s.ids.length,unique:new Set(s.ids).size,bad,
-   next:all.entry('S0617'),software:s.coverage,global:all.coverage};
+   next:all.entry('S0683'),software:s.coverage,global:all.coverage};
  },ids);
- expect(audit).toEqual({source:307,selected:60,uniqueNew:60,total:600,unique:600,bad:[],
-  next:null,software:{software:600,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:600,fullDescriptions:869}});
+ expect(audit).toEqual({source:307,selected:60,uniqueNew:60,total:660,unique:660,bad:[],
+  next:null,software:{software:660,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:660,fullDescriptions:929}});
 });
 test('S0603 Stuxnet preserves ICS historical sequence, references and reversible English',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 600/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 660/974');
  await root.locator('#mitrelocalSearch').fill('vulnerabilidades de día cero');
  await expect(root.locator('[data-local-id="S0603"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0603"]').click();
@@ -60,7 +60,7 @@ test('S0578 SUPERNOVA remains unrelated to SolarWinds APT29 operation; ICS Indus
  await root.locator('[data-local-id="S0604"]').click();
  for(const t of ['subestaciones eléctricas','diciembre de 2016','red eléctrica','[1]','[2]','[3]'])await expect(detail).toContainText(t);
 });
-test('S0591 legitimate ConnectWise; S0609 deprecated English source; S0617 still pending',async({page})=>{
+test('S0591 legitimate ConnectWise; S0609 deprecated English source; S0683 still pending',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  await root.locator('#mitrelocalSearch').fill('S0591');
  await root.locator('[data-local-id="S0591"]').click();
@@ -69,7 +69,7 @@ test('S0591 legitimate ConnectWise; S0609 deprecated English source; S0617 still
  await root.locator('[data-local-id="S0609"]').click();
  await expect(detail).toContainText('se declaró obsoleta');
  await expect(detail).toContainText('ATT&CK for ICS');
- await root.locator('#mitrelocalSearch').fill('S0617');
- await root.locator('[data-local-id="S0617"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0683');
+ await root.locator('[data-local-id="S0683"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });

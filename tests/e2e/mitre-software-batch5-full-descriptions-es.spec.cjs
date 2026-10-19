@@ -36,20 +36,20 @@ test('batch 5 adds 60 genuine software descriptions, no S0296 source, 300 IDs an
    software:api.ids.length,unique:new Set(api.ids).size,wrong,
    gapS0296:source.find(x=>x.id==='S0296')??null,
    noS0209:full.entry('S0209'),noS0296:full.entry('S0296'),
-   translatedS0302:full.entry('S0302')?.scope,pendingS0617:full.entry('S0617'),
+   translatedS0302:full.entry('S0302')?.scope,pendingS0683:full.entry('S0683'),
    coverage:api.coverage,global:full.coverage};
  },fifthBatch);
  expect(result).toEqual({
-  shard:359,selected:60,expected:60,software:600,unique:600,wrong:[],
+  shard:359,selected:60,expected:60,software:660,unique:660,wrong:[],
   gapS0296:null,noS0209:null,noS0296:null,translatedS0302:'full_description',
-  pendingS0617:null,coverage:{software:600,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:600,fullDescriptions:869}
+  pendingS0683:null,coverage:{software:660,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:660,fullDescriptions:929}
  });
 });
 
 test('TrickBot S0266 maintains early Dyre uncertainty and ransomware evolution in ES to EN to ES',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 600/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 660/974');
  await root.locator('#mitrelocalSearch').fill('posible sucesor de Dyre');
  await expect(root.locator('[data-local-id="S0266"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0266"]').click();
@@ -118,7 +118,7 @@ test('UPPERCUT S0275 retains earlier exclusivity assumption and later MirrorFace
  }
 });
 
-test('dual-use Koadic and short mobile entries show full drafts; S0617 remains pending',async({page})=>{
+test('dual-use Koadic and short mobile entries show full drafts; S0683 remains pending',async({page})=>{
  const root=await enter(page);
  const detail=root.locator('#mitrelocalDetail');
  await root.locator('#mitrelocalSearch').fill('S0250');
@@ -131,8 +131,8 @@ test('dual-use Koadic and short mobile entries show full drafts; S0617 remains p
  await root.locator('[data-local-id="S0302"]').click();
  await expect(detail).toContainText('redes sociales');
  await expect(detail).toContainText('Descripción íntegra traducida');
- await root.locator('#mitrelocalSearch').fill('S0617');
- await root.locator('[data-local-id="S0617"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0683');
+ await root.locator('[data-local-id="S0683"]').click();
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
