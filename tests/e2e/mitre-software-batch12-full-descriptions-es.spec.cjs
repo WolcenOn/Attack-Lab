@@ -27,15 +27,15 @@ test('batch12 verifies 60 exact original IDs and references without invented ent
     tr.description===x.description_en||tr.description.length<25||refs(tr.description)!==refs(x.description_en);
   }).map(x=>x.id);
   return {source:source.length,found:found.length,newUnique:new Set(selected).size,total:s.ids.length,
-   unique:new Set(s.ids).size,invalid,next:full.entry('S1178'),software:s.coverage,global:full.coverage};
+   unique:new Set(s.ids).size,invalid,next:full.entry('S1238'),software:s.coverage,global:full.coverage};
  },ids);
- expect(audit).toEqual({source:279,found:60,newUnique:60,total:840,unique:840,
-  invalid:[],next:null,software:{software:840,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:840,fullDescriptions:1109}});
+ expect(audit).toEqual({source:279,found:60,newUnique:60,total:900,unique:900,
+  invalid:[],next:null,software:{software:900,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:900,fullDescriptions:1169}});
 });
 test('Brute Ratel C4 keeps legitimate simulation purpose and reversible Spanish-English access',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 840/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 900/974');
  await root.locator('#mitrelocalSearch').fill('simulación de ataques adversarios');
  await expect(root.locator('[data-local-id="S1063"]')).toHaveCount(1);
  await root.locator('[data-local-id="S1063"]').click();
@@ -62,7 +62,7 @@ test('Industroyer2 did not impact substations; Black Basta, Royal and COATHANGER
   for(const p of phrases)await expect(detail).toContainText(p);
  }
 });
-test('Pacu and AsyncRAT are open-source tools, FlyTrap estimates preserved and S1178 remains pending',async({page})=>{
+test('Pacu and AsyncRAT are open-source tools, FlyTrap estimates preserved and S1238 remains pending',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  for(const [id,phrase] of [
   ['S1091','marco de explotación de AWS de código abierto'],
@@ -73,7 +73,7 @@ test('Pacu and AsyncRAT are open-source tools, FlyTrap estimates preserved and S
   await root.locator('[data-local-id="'+id+'"]').click();
   await expect(detail).toContainText(phrase);
  }
- await root.locator('#mitrelocalSearch').fill('S1178');
- await root.locator('[data-local-id="S1178"]').click();
+ await root.locator('#mitrelocalSearch').fill('S1238');
+ await root.locator('[data-local-id="S1238"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
