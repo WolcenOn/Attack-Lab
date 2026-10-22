@@ -29,16 +29,16 @@ test('batch13 audits 60 real IDs, repeated footnotes and global/segment coverage
   return {source:source.length,found:found.length,newUnique:new Set(selected).size,total:s.ids.length,
    unique:new Set(s.ids).size,invalid,refsMispadu:refs(full.description('S1122')),
    refsMispaduEn:refs(source.find(x=>x.id==='S1122').description_en),
-   next:full.entry('S1238'),software:s.coverage,global:full.coverage};
+   next:full.entry('S9052'),software:s.coverage,global:full.coverage};
  },ids);
- expect(audit).toEqual({source:279,found:60,newUnique:60,total:900,unique:900,
+ expect(audit).toEqual({source:279,found:60,newUnique:60,total:960,unique:960,
   invalid:[],refsMispadu:'[1]|[2]|[2]|[2]|[3]|[4]',refsMispaduEn:'[1]|[2]|[2]|[2]|[3]|[4]',
-  next:null,software:{software:900,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:900,fullDescriptions:1169}});
+  next:null,software:{software:960,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229}});
 });
 test('FRP remains a legitimate reverse proxy; Spanish search and original English reversible',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 900/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
  await root.locator('#mitrelocalSearch').fill('herramienta disponible públicamente');
  await expect(root.locator('[data-local-id="S1144"]')).toHaveCount(1);
  await root.locator('[data-local-id="S1144"]').click();
@@ -65,7 +65,7 @@ test('AcidRain attribution, Pikabot caveat, FrostyGoop ICS and UPSTYLE observati
   for(const phrase of phrases)await expect(detail).toContainText(phrase);
  }
 });
-test('Covenant and attrib remain tools, uncertain metadata preserved, S1238 is pending',async({page})=>{
+test('Covenant and attrib remain tools, uncertain metadata preserved, S9052 is pending',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  for(const [id,phrase] of [
   ['S1155','pruebas de penetración e investigación de seguridad'],
@@ -76,7 +76,7 @@ test('Covenant and attrib remain tools, uncertain metadata preserved, S1238 is p
   await root.locator('[data-local-id="'+id+'"]').click();
   await expect(detail).toContainText(phrase);
  }
- await root.locator('#mitrelocalSearch').fill('S1238');
- await root.locator('[data-local-id="S1238"]').click();
+ await root.locator('#mitrelocalSearch').fill('S9052');
+ await root.locator('[data-local-id="S9052"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
