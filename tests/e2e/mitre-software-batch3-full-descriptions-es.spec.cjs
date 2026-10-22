@@ -33,20 +33,20 @@ test('S0121–S0180 are 60 unique complete ES descriptions with exact MITRE v20 
   }).map(x=>x.id);
   return {shard:original.length,selected:batch.length,distinct:new Set(ids).size,
    translated:s.ids.length,unique:new Set(s.ids).size,wrong,
-   pending:full.entry('S1238'),S0175Footnotes:refs(full.entry('S0175')?.description||''),
+   pending:full.entry('S9052'),S0175Footnotes:refs(full.entry('S0175')?.description||''),
    software:s.coverage,all:full.coverage,old:full.entry('S0002')?.scope,
    c:full.entry('C0066')?.scope};
  },batch3);
- expect(v).toEqual({shard:359,selected:60,distinct:60,translated:900,unique:900,
+ expect(v).toEqual({shard:359,selected:60,distinct:60,translated:960,unique:960,
   wrong:[],pending:null,S0175Footnotes:'',
-  software:{software:900,totalSoftware:974},
-  all:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:900,fullDescriptions:1169},
+  software:{software:960,totalSoftware:974},
+  all:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229},
   old:'full_description',c:'full_description'});
 });
 
 test('S0140 Shamoon retains incident chronology, artifacts and name ambiguity in ES↔EN',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 900/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
  await root.locator('#mitrelocalSearch').fill('Cutting Sword of Justice');
  await expect(root.locator('[data-local-id="S0140"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0140"]').click();
@@ -125,18 +125,18 @@ test('S0174 Responder retains exact authentication protocols; S0175 has no inven
  expect(description).not.toMatch(/\[\d+\]/);
 });
 
-test('S1238 is pending, while S0180 and all earlier translated families remain intact',async({page})=>{
+test('S9052 is pending, while S0180 and all earlier translated families remain intact',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('S1238');
- await root.locator('[data-local-id="S1238"]').click();
+ await root.locator('#mitrelocalSearch').fill('S9052');
+ await root.locator('[data-local-id="S9052"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
  const audit=await page.evaluate(()=>Object.fromEntries(
-  ['DS0001','A0003','TA0112','M1055','C0066','S0002','S0121','S0180','S1238'].map(id=>
+  ['DS0001','A0003','TA0112','M1055','C0066','S0002','S0121','S0180','S9052'].map(id=>
     [id,window.AttackFullSpanishV20.entry(id)?.scope||null])
  ));
  expect(audit).toEqual({DS0001:'full_description',A0003:'full_description',
   TA0112:'full_description',M1055:'full_description',C0066:'full_description',
-  S0002:'full_description',S0121:'full_description',S0180:'full_description',S1238:null});
+  S0002:'full_description',S0121:'full_description',S0180:'full_description',S9052:null});
 });
