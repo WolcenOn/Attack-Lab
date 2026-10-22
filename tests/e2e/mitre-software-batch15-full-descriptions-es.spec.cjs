@@ -15,7 +15,7 @@ async function enter(page){
  await root.locator('#mitrelocalType').selectOption('software');
  return root;
 }
-test('batch15 audits all 44+16 source entries, footnotes, duplication and 960/974 coverage',async({page})=>{
+test('batch15 audits all 44+16 source entries, footnotes, duplication and 973/974 coverage',async({page})=>{
  await page.goto('/');
  const audit=await page.evaluate(async ({ids2,ids3})=>{
   const [two,three]=await Promise.all(['software-02.json','software-03.json'].map(async name=>await(await fetch('data/mitre/v20/'+name)).json()));
@@ -31,17 +31,17 @@ test('batch15 audits all 44+16 source entries, footnotes, duplication and 960/97
    newUnique:new Set([...ids2,...ids3]).size,total:s.ids.length,unique:new Set(s.ids).size,
    invalid,redlineRefs:refs(full.description('S1240')),
    originalRedlineRefs:refs(two.find(x=>x.id==='S1240').description_en),
-   next:full.entry('S9052'),software:s.coverage,global:full.coverage};
+   next:full.entry('S0209'),software:s.coverage,global:full.coverage};
  },{ids2,ids3});
- expect(audit).toEqual({shards:[279,29],sources:[44,16],newUnique:60,total:960,unique:960,
+ expect(audit).toEqual({shards:[279,29],sources:[44,16],newUnique:60,total:973,unique:973,
   invalid:[],redlineRefs:'[1]|[2]|[3]|[1]|[4]|[5]|[4]',
   originalRedlineRefs:'[1]|[2]|[3]|[1]|[4]|[5]|[4]',
-  next:null,software:{software:960,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229}});
+  next:null,software:{software:973,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:973,fullDescriptions:1242}});
 });
 test('TruffleHog remains a security tool and Spanish discovery with English source is reversible',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 973/974');
  await root.locator('#mitrelocalSearch').fill('descubrir secretos');
  await expect(root.locator('[data-local-id="S9009"]')).toHaveCount(1);
  await root.locator('[data-local-id="S9009"]').click();
@@ -68,7 +68,7 @@ test('DCHSpy, VajraSpy, LazyWiper and NGate preserve assessments and legitimate-
   for(const phrase of phrases)await expect(detail).toContainText(phrase);
  }
 });
-test('Diskpart preserves dual-use, supply-chain records and next S9052 pending',async({page})=>{
+test('Diskpart preserves dual-use, supply-chain records and next S0209 redirect-only',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  for(const [id,phrase] of [
   ['S9002','utilidad de línea de comandos de Windows'],
@@ -79,7 +79,7 @@ test('Diskpart preserves dual-use, supply-chain records and next S9052 pending',
   await root.locator('[data-local-id="'+id+'"]').click();
   await expect(detail).toContainText(phrase);
  }
- await root.locator('#mitrelocalSearch').fill('S9052');
- await root.locator('[data-local-id="S9052"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0209');
+ await root.locator('[data-local-id="S0209"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });

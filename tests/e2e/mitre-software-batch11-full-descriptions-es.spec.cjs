@@ -30,16 +30,16 @@ test('batch11 validates 5+55 exact source records, footnotes, unique IDs and cov
    from2:s2.filter(x=>ids2.includes(x.id)).length,newUnique:new Set([...ids1,...ids2]).size,
    total:api.ids.length,unique:new Set(api.ids).size,missingOrInvalid,
    s1023References:refs(all.description('S1023')),originalS1023:refs(s2.find(x=>x.id==='S1023').description_en),
-   next:all.entry('S9052'),software:api.coverage,global:all.coverage};
+   next:all.entry('S0209'),software:api.coverage,global:all.coverage};
  },{ids1:shard1,ids2:shard2});
- expect(audit).toEqual({shards:[307,279],selected:60,from1:5,from2:55,newUnique:60,total:960,unique:960,
+ expect(audit).toEqual({shards:[307,279],selected:60,from1:5,from2:55,newUnique:60,total:973,unique:973,
   missingOrInvalid:[],s1023References:'[1]|[1]',originalS1023:'[1]|[1]',next:null,
-  software:{software:960,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229}});
+  software:{software:973,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:973,fullDescriptions:1242}});
 });
 test('Peirates and ROADTools stay legitimate tools and ES search/EN original are reversible',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 973/974');
  await root.locator('#mitrelocalSearch').fill('recopilar tokens de cuentas de servicio');
  await expect(root.locator('[data-local-id="S0683"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0683"]').click();
@@ -68,7 +68,7 @@ test('ICS and uncertain attribution keep caveats in Cyclops Blink, Meteor and IN
   for(const p of phrases)await expect(detail).toContainText(p);
  }
 });
-test('DCSrv has no ransom demand; Rclone remains a command-line tool; next S9052 is pending',async({page})=>{
+test('DCSrv has no ransom demand; Rclone remains a command-line tool; next S0209 is redirect-only',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  await root.locator('#mitrelocalSearch').fill('S1033');
  await root.locator('[data-local-id="S1033"]').click();
@@ -76,7 +76,7 @@ test('DCSrv has no ransom demand; Rclone remains a command-line tool; next S9052
  await root.locator('#mitrelocalSearch').fill('S1040');
  await root.locator('[data-local-id="S1040"]').click();
  await expect(detail).toContainText('programa de línea de comandos para sincronizar archivos');
- await root.locator('#mitrelocalSearch').fill('S9052');
- await root.locator('[data-local-id="S9052"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0209');
+ await root.locator('[data-local-id="S0209"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });

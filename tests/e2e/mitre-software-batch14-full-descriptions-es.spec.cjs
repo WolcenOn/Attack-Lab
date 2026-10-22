@@ -29,16 +29,16 @@ test('batch14 validates 60 actual source records, ordered footnotes, repeated ci
   return {shard:source.length,found:found.length,newUnique:new Set(selected).size,softwareCount:s.ids.length,
    unique:new Set(s.ids).size,invalid,repeatedTranslated:refs(full.description('S1201')),
    repeatedSource:refs(source.find(x=>x.id==='S1201').description_en),
-   next:full.entry('S9052'),software:s.coverage,global:full.coverage};
+   next:full.entry('S0209'),software:s.coverage,global:full.coverage};
  },ids);
- expect(audit).toEqual({shard:279,found:60,newUnique:60,softwareCount:960,unique:960,invalid:[],
+ expect(audit).toEqual({shard:279,found:60,newUnique:60,softwareCount:973,unique:973,invalid:[],
   repeatedTranslated:'[1]|[1]',repeatedSource:'[1]|[1]',next:null,
-  software:{software:960,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229}});
+  software:{software:973,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:973,fullDescriptions:1242}});
 });
 test('Quick Assist is a consent-based utility; Spanish search and English source reversible',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 973/974');
  await root.locator('#mitrelocalSearch').fill('aprobación del usuario final');
  await expect(root.locator('[data-local-id="S1209"]')).toHaveCount(1);
  await root.locator('[data-local-id="S1209"]').click();
@@ -66,7 +66,7 @@ test('RansomHub and Megazord keep uncertainty; BlackByte keys and BOLDMOVE scope
   for(const phrase of phrases)await expect(detail).toContainText(phrase);
  }
 });
-test('BitLocker and cipher.exe remain legitimate; Mustang Panda paths and S9052 pending',async({page})=>{
+test('BitLocker and cipher.exe remain legitimate; Mustang Panda paths and S0209 redirect-only',async({page})=>{
  const root=await enter(page),detail=root.locator('#mitrelocalDetail');
  for(const [id,phrase] of [
   ['S1178','aprovecha la aplicación legítima BitLocker'],
@@ -77,7 +77,7 @@ test('BitLocker and cipher.exe remain legitimate; Mustang Panda paths and S9052 
   await root.locator('[data-local-id="'+id+'"]').click();
   await expect(detail).toContainText(phrase);
  }
- await root.locator('#mitrelocalSearch').fill('S9052');
- await root.locator('[data-local-id="S9052"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0209');
+ await root.locator('[data-local-id="S0209"]').click();
  await expect(detail).not.toContainText('Descripción íntegra traducida');
 });
