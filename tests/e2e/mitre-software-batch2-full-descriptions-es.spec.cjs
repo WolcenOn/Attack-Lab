@@ -35,21 +35,21 @@ test('second 60 full S drafts preserve every source footnote and bring global co
   return {shardRecords:source.length,total:s.ids.length,unique:new Set(s.ids).size,
    selected:subset.length,newUnique:new Set(ids).size,issues,
    missing:source.filter(x=>ids.includes(x.id)&&!all.entry(x.id)).map(x=>x.id),
-   pendingS9052:all.entry('S9052'),softwareCoverage:s.coverage,global:all.coverage,
+   pendingS0209:all.entry('S0209'),softwareCoverage:s.coverage,global:all.coverage,
    legacy:all.entry('M1055')?.scope};
  },batch2);
  expect(result).toEqual({
-  shardRecords:359,total:960,unique:960,selected:60,newUnique:60,
-  issues:[],missing:[],pendingS9052:null,
-  softwareCoverage:{software:960,totalSoftware:974},
-  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:960,fullDescriptions:1229},
+  shardRecords:359,total:973,unique:973,selected:60,newUnique:60,
+  issues:[],missing:[],pendingS0209:null,
+  softwareCoverage:{software:973,totalSoftware:974},
+  global:{datasources:42,assets:18,tactics:39,mitigations:109,campaigns:61,software:973,fullDescriptions:1242},
   legacy:'full_description'
  });
 });
 
 test('BlackEnergy S0089 keeps historical evolution, Georgia 2008 and Ukrainian targets in ES/EN',async({page})=>{
  const root=await enter(page);
- await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 960/974');
+ await expect(root.locator('#mitrelocalTranslationStats')).toContainText('S 973/974');
  await root.locator('#mitrelocalSearch').fill('conjunto de herramientas de malware');
  await expect(root.locator('[data-local-id="S0089"]')).toHaveCount(1);
  await root.locator('[data-local-id="S0089"]').click();
@@ -125,18 +125,18 @@ test('UACMe S0116 keeps legitimate assessment characterization and XTunnel S0117
  }
 });
 
-test('S9052 stays pending; completed DS/A/TA/M/C/S contracts remain accessible',async({page})=>{
+test('S0209 stays pending; completed DS/A/TA/M/C/S contracts remain accessible',async({page})=>{
  const root=await enter(page);
- await root.locator('#mitrelocalSearch').fill('S9052');
- await root.locator('[data-local-id="S9052"]').click();
+ await root.locator('#mitrelocalSearch').fill('S0209');
+ await root.locator('[data-local-id="S0209"]').click();
  const detail=root.locator('#mitrelocalDetail');
  await expect(detail).not.toContainText('Descripción íntegra de MITRE traducida al español');
  await expect(detail).not.toContainText('Descripción íntegra traducida');
  const ids=await page.evaluate(()=>Object.fromEntries(
-  ['DS0001','A0003','TA0112','M1055','C0066','S0061','S0120','S9052'].map(id=>
+  ['DS0001','A0003','TA0112','M1055','C0066','S0061','S0120','S0209'].map(id=>
   [id,window.AttackFullSpanishV20.entry(id)?.scope||null])
  ));
  expect(ids).toEqual({DS0001:'full_description',A0003:'full_description',
   TA0112:'full_description',M1055:'full_description',C0066:'full_description',
-  S0061:'full_description',S0120:'full_description',S9052:null});
+  S0061:'full_description',S0120:'full_description',S0209:null});
 });
